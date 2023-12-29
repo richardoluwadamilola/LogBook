@@ -28,7 +28,7 @@
 
       <label for="photo">Photo:</label>
       <input type="file" id="photo" (change)="handlePhotoUpload($event)" accept="image/*">
-      <img *ngIf="visitorForm.get('photo').value" [src]="visitorForm.get('photo').value" alt="Visitor Photo" style="max-width: 100px; max-height: 100px;">
+      <img *ngIf="visitorForm.get('photo').value" [src]="visitorForm.get('photo').value" alt="Visitor Photo">
   
       <button type="submit" [disabled]="visitorForm.invalid">Submit</button>
     </form>
