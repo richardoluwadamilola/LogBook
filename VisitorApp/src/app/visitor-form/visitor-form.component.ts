@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-visitor-form',
@@ -10,3 +10,6 @@ import { Component } from '@angular/core';
 export class VisitorFormComponent {
 
 }
+
+
+

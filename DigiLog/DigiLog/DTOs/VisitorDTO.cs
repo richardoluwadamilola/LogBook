@@ -26,9 +26,9 @@ namespace DigiLog.DTOs
         [Display(Name = "Reason for Visit")]
         public ReasonForVisit ReasonForVisit { get; set; }
         public string? ReasonForVisitDescription { get; set; }
-        //[Required]
-        //[Display(Name = "Photo (Base64 Encoded)")]
-        //public byte[]? Photo { get; set; }
+        [Required]
+        [Display(Name = "Photo (Base64 Encoded)")]
+        public byte[]? Photo { get; set; }
         //public int? TagNumber { get; set; }
 
     }

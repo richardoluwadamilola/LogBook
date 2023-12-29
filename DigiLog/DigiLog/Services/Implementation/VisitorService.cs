@@ -68,7 +68,7 @@ namespace DigiLog.Services.Implementation
                     PhoneNumber = visitor.PhoneNumber,
                     ReasonForVisit = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    //Photo = visitor.Photo
+                    Photo = visitor.Photo
 
                 })
             .ToList();
