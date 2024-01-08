@@ -1,0 +1,38 @@
+<div>
+    <h2>Visitor Form</h2>
+    <p>Fill out the form below to register as a visitor.</p>
+    <form [formGroup]="visitorForm" (ngSubmit)="submitForm()">
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" formControlName="firstName" required>
+      
+      <label for="middleName">Middle Name:</label>
+      <input type="text" id="middleName" formControlName="middleName" required>
+  
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" formControlName="lastName" required>
+  
+      <label for="contactAddress">Contact Address:</label>
+      <input type="text" id="contactaddress" formControlName="contactaddress" required>
+  
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="text" id="phonenumber" formControlName="phonenumber" required>
+  
+      <label for="personHereToSee">Person Here To See:</label>
+      <select id="personheretosee" formControlName="personheretosee" required>
+        <option *ngFor="let employee of employees" [value]="employee.id">{{ employee.firstname }} {{ employee.middlename }} {{ employee.lastname }}</option>
+      </select>
+  
+      <label for="reasonForVisit">Reason For Visit:</label>
+      <input type="text" id="reasonforvisit" formControlName="reasonforvisit" required>
+  
+      <label for="reasonForVisitDescription">Reason For Visit Description:</label>
+      <input type="text" id="reasonforvisitdescription" formControlName="reasonforvisitdescription">
+  
+      <label for="photo">Photo:</label>
+      <input type="file" id="photo" (change)="handlePhotoUpload($event)" accept="image/*">
+      <img *ngIf="visitorForm.get('photo')?.value" [src]="visitorForm.get('photo')?.value" alt="Visitor Photo"/>
+  
+      <button type="submit" [disabled]="visitorForm.invalid">Submit</button>
+    </form>
+  </div>
+  
