@@ -48,7 +48,9 @@ namespace DigiLog.Models
 
     public enum ReasonForVisit
     {
+        [Display(Name = "Official Visit")]
         Official,
+        [Display(Name = "Personal Visit")]
         Personal
     }
 }

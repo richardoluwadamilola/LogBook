@@ -33,7 +33,7 @@ namespace DigiLog.Services.Implementation
                 LastName = visitorDto.LastName,
                 ContactAddress = visitorDto.ContactAddress,
                 PhoneNumber = visitorDto.PhoneNumber,
-                ReasonForVisit = visitorDto.ReasonForVisit,
+                ReasonForVisit = (ReasonForVisit)visitorDto.ReasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
                // Photo = visitorDto.Photo,
                 ArrivalTime = DateTime.Now,

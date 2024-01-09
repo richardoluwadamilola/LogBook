@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { Employee } from '../services/api/models/employee.model';
+import { ReasonForVisit } from '../services/api/models/visitor';
 
 @Component({
   selector: 'app-visitor-form',
@@ -11,6 +12,8 @@ import { Employee } from '../services/api/models/employee.model';
 export class VisitorFormComponent implements OnInit {
   visitorForm!: FormGroup;
   employees: Employee[] = [];
+
+  takenPicture: string | null = null;
 
   constructor(private fb: FormBuilder, private visitorService: VisitorService) { }
 
@@ -22,57 +25,84 @@ export class VisitorFormComponent implements OnInit {
   createForm(): void {
     this.visitorForm = this.fb.group({
       firstName: ['', Validators.required],
-      middlename: ['', Validators.required],
+      middleName: ['', Validators.required],
       lastName: ['', Validators.required],
       contactaddress: ['', Validators.required],
       phonenumber: ['', Validators.required],
-      personheretosee: ['', Validators.required],
-      reasonforvisit: ['', Validators.required],
+      personheretosee: [null, Validators.required],
+      reasonForVisit: [null, Validators.required],
       reasonforvisitdescription: [''],
       photo: [null, Validators.required],
     });
   }
 
+  reasons = [
+    { label: 'Official', value: ReasonForVisit.Official },
+    { label: 'Personal', value: ReasonForVisit.Personal }
+  ];
+
   getEmployees(): void {
     this.visitorService.getEmployees().subscribe(
       (data: any[]) => {
         this.employees = data;
+        console.log('Employees:', this.employees);
       },
-      (error: any) => { // Explicitly specify the type of 'error' parameter as 'any'
+      (error: any) => {
         console.error('Error getting employees', error);
       }
     );
-  }
+  }  
 
-  handlePhotoUpload(event: any): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      // Convert the file to a data URL for preview
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.visitorForm.patchValue({
-          photo: reader.result as string
-        });
-      };
-    }
+  takePicture(): void {
+    // Access the device camera and trigger the picture taking process
+    const videoOptions = { facingMode: 'user', width: 320, height: 240 };
+    navigator.mediaDevices.getUserMedia({ video: videoOptions })
+      .then((stream) => {
+        const video = document.createElement('video');
+        document.body.appendChild(video);
+        video.srcObject = stream;
+        video.play();
+
+        // Capture a frame as an image
+        setTimeout(() => {
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const context = canvas.getContext('2d');
+          context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+          // Convert the canvas image to a data URL
+          this.takenPicture = canvas.toDataURL('image/png');
+
+          // Set the captured photo in the form control
+          this.visitorForm.get('photo')?.setValue(this.takenPicture);
+
+          // Stop the camera stream and remove the video element
+          stream.getTracks().forEach(track => track.stop());
+          document.body.removeChild(video);
+        }, 1000); // Adjust the timeout based on your needs
+      })
+      .catch((error) => {
+        console.error('Error accessing the camera:', error);
+      });
   }
 
   submitForm(): void {
     if (this.visitorForm.valid) {
       const formData = this.visitorForm.value;
-      // Call a service to save visitor details (to be implemented in VisitorService)
+      // Call a service to save visitor details
       this.visitorService.saveVisitorDetails(formData).subscribe(
-        (response: any) => { // Explicitly specify the type of 'response' parameter as 'any'
+        (response: any) => {
           console.log('Visitor details saved successfully', response);
           // Reset the form after successful submission
           this.visitorForm.reset();
         },
-        (error: any) => { // Explicitly specify the type of 'error' parameter as 'any'
+        (error: any) => {
           console.error('Error saving visitor details', error);
         }
       );
+    } else {
+      console.error('Invalid form data');
     }
   }
 }
-
