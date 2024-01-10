@@ -90,18 +90,25 @@ export class VisitorFormComponent implements OnInit {
     if (this.visitorForm.valid) {
       const formData = this.visitorForm.value;
       
+      // Log formData before modifying the employeeId
+      console.log('Original FormData:', formData);
+  
+      // Ensure employeeId is a number, and check for NaN
       if (formData.employeeId !== null && !isNaN(formData.employeeId)) {
         formData.employeeId = Number(formData.employeeId);
       } else {
         console.error('Invalid employeeId:', formData.employeeId);
         return;
       }
-
-      console.log(formData);
-
+  
+      // Log formData after modifying the employeeId
+      console.log('Modified FormData:', formData);
+  
+      // Call a service to save visitor details
       this.visitorService.saveVisitorDetails(formData).subscribe(
         (response: any) => {
           console.log('Visitor details saved successfully', response);
+          // Reset the form after successful submission
           this.visitorForm.reset();
         },
         (error: any) => {
@@ -112,5 +119,6 @@ export class VisitorFormComponent implements OnInit {
       console.error('Invalid form data');
     }
   }
+  
 }
 

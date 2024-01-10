@@ -5,7 +5,7 @@ namespace DigiLog.DTOs
 {
     public class VisitorDTO
     {
-        internal int Id;
+        internal long Id;
         [Required]
         [Display(Name = "First Name")]
         public string? FirstName { get; set; }
@@ -22,7 +22,7 @@ namespace DigiLog.DTOs
         [Display(Name = "Phone Number")]
         [RegularExpression(@"^\d{11}$", ErrorMessage = "Invalid Phone number format")]
         public string? PhoneNumber { get; set; }
-        public int EmployeeId { get; set; }
+        public long EmployeeId { get; set; }
         [Required]
         [Display(Name = "Reason for Visit")]
         public ReasonForVisit ReasonForVisit { get; set; }

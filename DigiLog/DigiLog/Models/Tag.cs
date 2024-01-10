@@ -7,7 +7,7 @@ namespace DigiLog.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int TagID { get; set; }
+        public long TagID { get; set; }
         public string? TagNumber { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }

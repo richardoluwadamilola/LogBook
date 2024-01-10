@@ -1,4 +1,5 @@
 ﻿using DigiLog.DTOs;
+using DigiLog.Models.ResponseModels;
 
 namespace DigiLog.Services.Abstraction
 {
@@ -6,7 +7,9 @@ namespace DigiLog.Services.Abstraction
     {
         //int GenerateTagNumber();
         List<TagDTO> GetTags();
-        void AssignTagToVisitor(int tagId, int visitorId);
-        void CheckOutVisitor(int tagId);
+        ServiceResponse<string> AssignTagToVisitor(long tagId, long visitorId);
+        ServiceResponse<string> CheckOutVisitor(long tagId);
+
+       
     }
 }

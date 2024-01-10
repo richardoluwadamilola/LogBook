@@ -1,9 +1,9 @@
 ﻿using DigiLog.Data;
 using DigiLog.DTOs;
 using DigiLog.Models;
+using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
 using Microsoft.Extensions.Logging;
-using static DigiLog.ErrorLog;
 
 namespace DigiLog.Services.Implementation
 {
@@ -14,44 +14,32 @@ namespace DigiLog.Services.Implementation
         private readonly ILogger<VisitorService> _logger;
         private readonly ITagService _tagService;
 
-        public VisitorService(LogDbContext context, ILogger<VisitorService> logger, IEmployeeService employeeService, ITagService tagService)
+        public VisitorService(LogDbContext context, IEmployeeService employeeService, ITagService tagService)
         {
             _context = context;
-            _logger = logger;
             _employeeService = employeeService;
             _tagService = tagService;
         }
 
-        public VisitorDTO CreateVisitor(VisitorDTO visitorDto)
+        public ServiceResponse<string> CreateVisitor(VisitorDTO visitorDto)
         {
-
-
             var visitor = new Visitor
             {
-
-                //Create a new Visitor entity
                 FirstName = visitorDto.FirstName,
                 MiddleName = visitorDto.MiddleName,
                 LastName = visitorDto.LastName,
                 ContactAddress = visitorDto.ContactAddress,
                 PhoneNumber = visitorDto.PhoneNumber,
                 EmployeeId = visitorDto.EmployeeId,
-                ReasonForVisit = (ReasonForVisit)visitorDto.ReasonForVisit,
+                ReasonForVisit = visitorDto.ReasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
-                Photo = visitorDto.Photo,
-                ArrivalTime = DateTime.Now,
-                DateCreated = DateTime.Now,
-                DateModified = DateTime.Now,
-                Deleted = false
+                Photo = visitorDto.Photo
             };
 
-            //Adds the visitor to the database.
             _context.Visitors.Add(visitor);
             _context.SaveChanges();
 
-            //Update DTO with the saved ID.
-            visitorDto.Id = visitor.Id;
-            return visitorDto;
+            return new ServiceResponse<string> { HasError = false, Description = "Successful" };
         }
         public List<EmployeeDTO> GetEmployees()
         {

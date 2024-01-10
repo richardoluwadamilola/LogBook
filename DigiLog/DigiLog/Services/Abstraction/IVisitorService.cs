@@ -1,10 +1,11 @@
 ﻿using DigiLog.DTOs;
+using DigiLog.Models.ResponseModels;
 
 namespace DigiLog.Services.Abstraction
 {
     public interface IVisitorService
     {
-        VisitorDTO CreateVisitor(VisitorDTO visitorDto);
+        ServiceResponse<string> CreateVisitor(VisitorDTO visitorDto);
         List<VisitorDTO> GetVisitorsByCheckInDate(DateTime date);
         List<EmployeeDTO> GetEmployees();
     }

@@ -1,6 +1,7 @@
 ﻿using DigiLog.Data;
 using DigiLog.DTOs;
 using DigiLog.Models;
+using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ namespace DigiLog.Services.Implementation
             _context = context;
         }
 
-        public void CreateEmployee(EmployeeDTO employeeDto)
+        public ServiceResponse<string> CreateEmployee(EmployeeDTO employeeDto)
         {
             //Create Employee.
             var employee = new Employee
@@ -27,22 +28,29 @@ namespace DigiLog.Services.Implementation
 
             _context.Employees.Add(employee);
             _context.SaveChanges();
+            return new ServiceResponse<string> { HasError = false, Description = "Successful" };
         }
-        public EmployeeDTO GetEmployeeById(int employeeId)
+        public ServiceResponse<EmployeeDTO> GetEmployeeById(long employeeId)
         {
             //Get Employee by EmployeeId.
             var employee = _context.Employees.Find(employeeId);
 
-            if (employee == null) return null;
+            if (employee == null)
+                return new ServiceResponse<EmployeeDTO> { HasError = true, Description = "Employee not found" };
 
-            return new EmployeeDTO
+            return new ServiceResponse<EmployeeDTO>
             {
-                Id = employee.Id,
-                FirstName = employee.FirstName,
-                MiddleName = employee.MiddleName,
-                LastName = employee.LastName,
-                Department = employee.Department,
+                HasError = false,
+                Description = "Successful",
+                Data = new EmployeeDTO
+                {
+                    Id = employee.Id,
+                    FirstName = employee.FirstName,
+                    MiddleName = employee.MiddleName,
+                    LastName = employee.LastName,
+                    Department = employee.Department,
 
+                }
             };
         }
 

@@ -24,67 +24,63 @@ namespace DigiLog.Controllers
         [HttpGet]
         public IActionResult GetEmployees()
         {
-            try
+            // Retrieves all employees from the employee service.
+            var employees = _employeeService.GetEmployees();
+
+            if (employees == null || employees.Count == 0)
             {
-                //Retrieves all employees from the employee service.
-                var employee = _employeeService.GetEmployees();
-                return Ok(employee);
+                // Return error indicating that no employees were found.
+                return NotFound("No employees found");
             }
-            catch (ErrorLog.AppException ex)
-            {
-                //Returns an error message.
-                return BadRequest(new { ErrorCode = ex.ErrorCode, Message = ex.Message });
-            }
+
+            // Return the list of employees.
+            return Ok(employees);
         }
 
         // GET api/<EmployeeController>/5
         [HttpGet("{employeeId}")]
         public IActionResult GetEmployeeById(int employeeId)
         {
-            try
+            // Retrieves an employee by employeeId from the employee service.
+            var employee = _employeeService.GetEmployeeById(employeeId);
+
+            if (employee == null)
             {
-                //Retrieves an employee by employeeId from the employee service.
-                var employee = _employeeService.GetEmployeeById(employeeId);
-                return Ok(employee);
+                // Return error indicating that the employee was not found.
+                return NotFound("Employee not found");
             }
-            catch (ErrorLog.AppException ex)
-            {
-                //Returns an error message.
-                return BadRequest(new { ErrorCode = ex.ErrorCode, Message = ex.Message });
-            }
+
+            // Return the employee.
+            return Ok(employee);
         }
+
 
         // POST api/<EmployeeController>
         [HttpPost]
         public IActionResult CreateEmployee([FromBody] EmployeeDTO employeeDto)
         {
-            try
-            {
-                //Calls the employee service to create an employee.
-                _employeeService.CreateEmployee(employeeDto);
-                //Returns the create employee.
-                return CreatedAtAction(nameof(GetEmployeeById), new { employeeId = employeeDto.Id }, employeeDto);
-            }
-            catch (ErrorLog.AppException ex)
-            {
-                //Returns an error message.
-                return BadRequest(new { ErrorCode = ex.ErrorCode, Message = ex.Message });
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(employeeDto);
+            //Calls the employee service to create an employee.
+            var response = _employeeService.CreateEmployee(employeeDto);
+            //Returns the create employee.
+            return Ok(response);
+
         }
         [HttpGet("search")]
         public IActionResult SearchEmployees([FromQuery] string keyword)
         {
-            try
+            // Retrieves a list of employees by keyword from the employee service.
+            var employees = _employeeService.SearchEmployees(keyword);
+
+            if (employees == null || employees.Count == 0)
             {
-                //Retrieves a list of employees by keyword from the employee service.
-                var employee = _employeeService.SearchEmployees(keyword);
-                return Ok(employee);
+                return NotFound("No employees found");
             }
-            catch (ErrorLog.AppException ex)
-            {
-                //Returns an error message.
-                return BadRequest(new { ErrorCode = ex.ErrorCode, Message = ex.Message });
-            }
+
+            // Return the list of employees.
+            return Ok(employees);
         }
+
     }
 }

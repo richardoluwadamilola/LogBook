@@ -6,7 +6,7 @@ namespace DigiLog.Models
     public class Visitor
     {
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Required]
         [Display(Name  = "First Name")]
         public string? FirstName { get; set; }
@@ -39,11 +39,11 @@ namespace DigiLog.Models
 
         //Foreign Relationships
         [ForeignKey("Employee")]
-        public int EmployeeId { get; set; }
+        public long EmployeeId { get; set; }
         public Employee? Employee { get; set; }
 
         [ForeignKey("Tag")]
-        public int TagID { get; set; }
+        public long TagID { get; set; }
     }
 
     public enum ReasonForVisit

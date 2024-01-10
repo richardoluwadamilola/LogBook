@@ -1,5 +1,7 @@
 ﻿using DigiLog.Data;
 using DigiLog.DTOs;
+using DigiLog.Models;
+using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,47 +26,29 @@ namespace DigiLog.Controllers
 
         // POST: api/<VisitorController>
         [HttpPost]
-        public ActionResult<VisitorDTO> CreateVisitor([FromBody] VisitorDTO visitorDto)
+        public ActionResult<ServiceResponse<string>> CreateVisitor([FromBody] VisitorDTO visitorDto)
         {
-            try
-            {
-                var createdVisitor = _visitorService.CreateVisitor(visitorDto);
-                return Ok(createdVisitor);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Error creating visitor: {ex.Message}");
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(new ServiceResponse<string> { HasError = true, Description = "Invalid model state" });
+
+            var createdVisitor = _visitorService.CreateVisitor(visitorDto);
+            return Ok(new ServiceResponse<string> { HasError = false, Description = "Successful" });
         }
 
         // GET: api/Visitor/GetEmployees
         [HttpGet("GetEmployees")]
         public ActionResult<List<EmployeeDTO>> GetEmployees()
         {
-            try
-            {
-                var employees = _visitorService.GetEmployees();
-                return Ok(employees);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Error getting employees: {ex.Message}");
-            }
+            var employees = _visitorService.GetEmployees();
+            return Ok(new ServiceResponse<List<EmployeeDTO>> { Data = employees, HasError = false, Description = "Successful" });
         }
 
         // GET: api/Visitor/GetVisitorsByCheckInDate?date=2023-01-01
         [HttpGet("GetVisitorsByCheckInDate")]
         public ActionResult<List<VisitorDTO>> GetVisitorsByCheckInDate([FromQuery] DateTime date)
         {
-            try
-            {
-                var visitors = _visitorService.GetVisitorsByCheckInDate(date);
-                return Ok(visitors);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Error getting visitors: {ex.Message}");
-            }
+            var visitors = _visitorService.GetVisitorsByCheckInDate(date);
+            return Ok(new ServiceResponse<List<VisitorDTO>> { Data = visitors, HasError = false, Description = "Successful" });
         }
 
 

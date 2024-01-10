@@ -25,9 +25,16 @@ namespace DigiLog.Controllers
         [HttpGet]
         public IActionResult GetTags()
         {
-            //Retrieves the list of tags from the tag service.
+            // Retrieves all tags from the tag service.
             var tags = _tagService.GetTags();
-            //Returns the list of tags.
+
+            if (tags == null || tags.Count == 0)
+            {
+                // Return error indicating that no tags were found.
+                return NotFound("No tags found");
+            }
+
+            // Return the list of tags.
             return Ok(tags);
         }
 
@@ -35,19 +42,14 @@ namespace DigiLog.Controllers
         [HttpPost("assign")]
         public IActionResult AssignTagToVisitor([FromBody] AssignTagDto assignTagDto)
         {
-            try
-            {
-                // Calls the tag service to assign a tag to a visitor.
-                _tagService.AssignTagToVisitor(assignTagDto.TagID, assignTagDto.VisitorId);
+            if (!ModelState.IsValid)
+                return BadRequest(assignTagDto);
 
-                // Returns a success message or additional details.
-                return Ok(new { Message = "Tag assigned successfully.", TagId = assignTagDto.TagID, VisitorId = assignTagDto.VisitorId });
-            }
-            catch (ErrorLog.AppException ex)
-            {
-                // Returns an error message.
-                return BadRequest(new { ErrorCode = ex.ErrorCode, Message = ex.Message });
-            }
+            // Calls the tag service to assign a tag to a visitor.
+            var response = _tagService.AssignTagToVisitor(assignTagDto.TagID, assignTagDto.VisitorId);
+
+            // Returns the service response.
+            return Ok(response);
         }
 
 
@@ -55,18 +57,14 @@ namespace DigiLog.Controllers
         [HttpDelete("checkout")]
         public IActionResult CheckOutVisitor([FromBody] CheckOutTagDto checkOutTagDto)
         {
-            try
-            {
-                //Calls the tag service to check out a visitor.
-                _tagService.CheckOutVisitor(checkOutTagDto.TagID);
-                //Returns a success message.
-                return Ok("Visitor checked out successfully.");
-            }
-            catch (ErrorLog.AppException ex)
-            {
-                //Returns an error message.
-                return BadRequest(new { ErrorCode = ex.ErrorCode, Message = ex.Message });
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(checkOutTagDto);
+
+            // Calls the tag service to check out a visitor.
+            var response = _tagService.CheckOutVisitor(checkOutTagDto.TagID);
+
+            // Returns the service response.
+            return Ok(response);
         }
 
     }
