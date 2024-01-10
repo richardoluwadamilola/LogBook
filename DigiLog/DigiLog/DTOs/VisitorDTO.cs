@@ -22,6 +22,7 @@ namespace DigiLog.DTOs
         [Display(Name = "Phone Number")]
         [RegularExpression(@"^\d{11}$", ErrorMessage = "Invalid Phone number format")]
         public string? PhoneNumber { get; set; }
+        public int EmployeeId { get; set; }
         [Required]
         [Display(Name = "Reason for Visit")]
         public ReasonForVisit ReasonForVisit { get; set; }

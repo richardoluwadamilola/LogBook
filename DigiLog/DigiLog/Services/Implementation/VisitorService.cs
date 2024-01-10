@@ -24,6 +24,8 @@ namespace DigiLog.Services.Implementation
 
         public VisitorDTO CreateVisitor(VisitorDTO visitorDto)
         {
+
+
             var visitor = new Visitor
             {
 
@@ -33,9 +35,10 @@ namespace DigiLog.Services.Implementation
                 LastName = visitorDto.LastName,
                 ContactAddress = visitorDto.ContactAddress,
                 PhoneNumber = visitorDto.PhoneNumber,
+                EmployeeId = visitorDto.EmployeeId,
                 ReasonForVisit = (ReasonForVisit)visitorDto.ReasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
-               // Photo = visitorDto.Photo,
+               Photo = visitorDto.Photo,
                 ArrivalTime = DateTime.Now,
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now,
@@ -66,6 +69,7 @@ namespace DigiLog.Services.Implementation
                     LastName = visitor.LastName,
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
+                    EmployeeId = visitor.EmployeeId,
                     ReasonForVisit = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     Photo = visitor.Photo
