@@ -38,7 +38,7 @@ namespace DigiLog.Services.Implementation
                 EmployeeId = visitorDto.EmployeeId,
                 ReasonForVisit = (ReasonForVisit)visitorDto.ReasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
-               Photo = visitorDto.Photo,
+                Photo = visitorDto.Photo,
                 ArrivalTime = DateTime.Now,
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now,

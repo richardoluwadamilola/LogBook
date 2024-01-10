@@ -12,7 +12,6 @@ export interface Visitor {
     lastName: string;
     contactAddress: string;
     phoneNumber: string;
-    personHereToSee: string;
     reasonForVisit: ReasonForVisit;
     reasonForVisitDescription: string;
     photo: string;

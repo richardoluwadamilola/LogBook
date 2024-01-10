@@ -12,7 +12,6 @@ import { ReasonForVisit } from '../services/api/models/visitor';
 export class VisitorFormComponent implements OnInit {
   visitorForm!: FormGroup;
   employees: Employee[] = [];
-
   takenPicture: string | null = null;
 
   constructor(private fb: FormBuilder, private visitorService: VisitorService) { }
@@ -27,11 +26,11 @@ export class VisitorFormComponent implements OnInit {
       firstName: ['', Validators.required],
       middleName: ['', Validators.required],
       lastName: ['', Validators.required],
-      contactaddress: ['', Validators.required],
-      phonenumber: ['', Validators.required],
-      personheretosee: [null, Validators.required],
+      contactAddress: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      employeeId: [null, Validators.required],
       reasonForVisit: [null, Validators.required],
-      reasonforvisitdescription: [''],
+      reasonForVisitDescription: [''],
       photo: [null, Validators.required],
     });
   }
@@ -43,7 +42,7 @@ export class VisitorFormComponent implements OnInit {
 
   getEmployees(): void {
     this.visitorService.getEmployees().subscribe(
-      (data: any[]) => {
+      (data: Employee[]) => {
         this.employees = data;
         console.log('Employees:', this.employees);
       },
@@ -90,11 +89,19 @@ export class VisitorFormComponent implements OnInit {
   submitForm(): void {
     if (this.visitorForm.valid) {
       const formData = this.visitorForm.value;
-      // Call a service to save visitor details
+      
+      if (formData.employeeId !== null && !isNaN(formData.employeeId)) {
+        formData.employeeId = Number(formData.employeeId);
+      } else {
+        console.error('Invalid employeeId:', formData.employeeId);
+        return;
+      }
+
+      console.log(formData);
+
       this.visitorService.saveVisitorDetails(formData).subscribe(
         (response: any) => {
           console.log('Visitor details saved successfully', response);
-          // Reset the form after successful submission
           this.visitorForm.reset();
         },
         (error: any) => {
@@ -106,3 +113,4 @@ export class VisitorFormComponent implements OnInit {
     }
   }
 }
+

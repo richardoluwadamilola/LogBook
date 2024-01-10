@@ -6,7 +6,7 @@ namespace DigiLog.Data
 {
     public class LogDbContext : DbContext
     {
-        public LogDbContext(DbContextOptions options) : base(options)
+        public LogDbContext(DbContextOptions<LogDbContext> options) : base(options)
         {
         }
 
