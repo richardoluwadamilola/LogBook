@@ -93,6 +93,9 @@ export class VisitorFormComponent implements OnInit {
       // Log formData before modifying the employeeId
       console.log('Original FormData:', formData);
   
+      // Log the employeeId separately
+      console.log('Form Control Value (employeeId):', this.visitorForm.get('employeeId')?.value);
+
       // Ensure employeeId is a number, and check for NaN
       if (formData.employeeId !== null && !isNaN(formData.employeeId)) {
         formData.employeeId = Number(formData.employeeId);
@@ -119,6 +122,7 @@ export class VisitorFormComponent implements OnInit {
       console.error('Invalid form data');
     }
   }
+  
   
 }
 

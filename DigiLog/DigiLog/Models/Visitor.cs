@@ -29,7 +29,7 @@ namespace DigiLog.Models
         public string? ReasonForVisitDescription { get; set; }
         [Required]
         [Display(Name = "Photo (Base64 Encoded)")]
-        public byte[]? Photo {  get; set; }
+        public byte[]? Photo { get; set; }
         public DateTime ArrivalTime { get; set; } = DateTime.Now;
         public DateTime DepartureTime { get; set; }
         public DateTime DateCreated {  get; set; }

@@ -1,4 +1,5 @@
 using DigiLog.Data;
+using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
 using DigiLog.Services.Implementation;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
+
+app.UseMiddleware<ApiExceptionMiddleware>();
 
 app.UseAuthorization();
 

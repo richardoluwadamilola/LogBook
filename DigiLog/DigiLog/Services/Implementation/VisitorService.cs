@@ -3,7 +3,6 @@ using DigiLog.DTOs;
 using DigiLog.Models;
 using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
-using Microsoft.Extensions.Logging;
 
 namespace DigiLog.Services.Implementation
 {
@@ -11,7 +10,6 @@ namespace DigiLog.Services.Implementation
     {
         private readonly IEmployeeService _employeeService;
         private readonly LogDbContext _context;
-        private readonly ILogger<VisitorService> _logger;
         private readonly ITagService _tagService;
 
         public VisitorService(LogDbContext context, IEmployeeService employeeService, ITagService tagService)
