@@ -1,5 +1,4 @@
-﻿using DigiLog.Data;
-using DigiLog.DTOs;
+﻿using DigiLog.DTOs;
 using DigiLog.Services.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,12 +10,12 @@ namespace DigiLog.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly LogDbContext _context;
+        //private readonly LogDbContext _context;
         private readonly IEmployeeService _employeeService;
 
-        public EmployeeController(LogDbContext context, IEmployeeService employeeService)
+        public EmployeeController(IEmployeeService employeeService)
         {
-            _context = context;
+            //_context = context;
             _employeeService = employeeService;
         }
 

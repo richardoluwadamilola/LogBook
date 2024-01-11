@@ -20,7 +20,7 @@
       <label for="personheretosee">Person Here To See:</label>
 <select formControlName="employeeId" required>
   <option disabled value="">Please select the person to see</option>
-  <option *ngFor="let employee of employees" [value]="employee.employeeId">
+  <option *ngFor="let employee of employees" [value]="employee.id">
     {{ employee.firstName }} {{ employee.middleName }} {{ employee.lastName }}
   </option>
 </select>

@@ -31,17 +31,13 @@ namespace DigiLog.Services.Implementation
                 EmployeeId = visitorDto.EmployeeId,
                 ReasonForVisit = visitorDto.ReasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
-                Photo = visitorDto.Photo
+                //Photo = visitorDto.Photo
             };
 
             _context.Visitors.Add(visitor);
             _context.SaveChanges();
 
-            return new ServiceResponse<string> { HasError = false, Description = "Successful" };
-        }
-        public List<EmployeeDTO> GetEmployees()
-        {
-            return _employeeService.GetEmployees();
+            return new ServiceResponse<string>();
         }
         public List<VisitorDTO> GetVisitorsByCheckInDate(DateTime date)
         {
@@ -58,7 +54,7 @@ namespace DigiLog.Services.Implementation
                     EmployeeId = visitor.EmployeeId,
                     ReasonForVisit = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    Photo = visitor.Photo
+                    //Photo = visitor.Photo
 
                 })
             .ToList();

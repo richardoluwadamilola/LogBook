@@ -2,7 +2,7 @@
 {
     public class TagDTO
     {
-        internal long TagID { get; set; }
+        public long TagID { get; set; }
         public string? TagNumber { get; set; }
     }
     public class AssignTagDto

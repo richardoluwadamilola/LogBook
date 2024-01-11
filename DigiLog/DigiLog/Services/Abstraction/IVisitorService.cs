@@ -7,6 +7,6 @@ namespace DigiLog.Services.Abstraction
     {
         ServiceResponse<string> CreateVisitor(VisitorDTO visitorDto);
         List<VisitorDTO> GetVisitorsByCheckInDate(DateTime date);
-        List<EmployeeDTO> GetEmployees();
+        
     }
 }

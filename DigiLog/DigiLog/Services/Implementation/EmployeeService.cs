@@ -28,7 +28,7 @@ namespace DigiLog.Services.Implementation
 
             _context.Employees.Add(employee);
             _context.SaveChanges();
-            return new ServiceResponse<string> { HasError = false, Description = "Successful" };
+            return new ServiceResponse<string>();
         }
         public ServiceResponse<EmployeeDTO> GetEmployeeById(long employeeId)
         {
@@ -36,7 +36,7 @@ namespace DigiLog.Services.Implementation
             var employee = _context.Employees.Find(employeeId);
 
             if (employee == null)
-                return new ServiceResponse<EmployeeDTO> { HasError = true, Description = "Employee not found" };
+                return new ServiceResponse<EmployeeDTO>();
 
             return new ServiceResponse<EmployeeDTO>
             {

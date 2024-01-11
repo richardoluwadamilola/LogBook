@@ -12,12 +12,12 @@ namespace DigiLog.Controllers
     [ApiController]
     public class TagController : ControllerBase
     {
-        private readonly LogDbContext _context;
+        //private readonly LogDbContext _context;
         private readonly ITagService _tagService;
 
-        public TagController(LogDbContext context, ITagService tagService)
+        public TagController(ITagService tagService)
         {
-            _context = context;
+            //_context = context;
             _tagService = tagService;
         }
 

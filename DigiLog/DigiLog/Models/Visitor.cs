@@ -27,9 +27,9 @@ namespace DigiLog.Models
         [Display(Name = "Reason for Visit")]
         public ReasonForVisit ReasonForVisit { get; set; }
         public string? ReasonForVisitDescription { get; set; }
-        [Required]
-        [Display(Name = "Photo (Base64 Encoded)")]
-        public byte[]? Photo { get; set; }
+        //[Required]
+        //[Display(Name = "Photo (Base64 Encoded)")]
+        //public byte[]? Photo { get; set; }
         public DateTime ArrivalTime { get; set; } = DateTime.Now;
         public DateTime DepartureTime { get; set; }
         public DateTime DateCreated {  get; set; }
