@@ -57,7 +57,7 @@ namespace DigiLog.Controllers
                 return BadRequest(assignTagDto);
 
             // Calls the tag service to assign a tag to a visitor.
-            var response = _tagService.AssignTagToVisitor(assignTagDto.TagNumber, assignTagDto.VisitorId);
+            var response = _tagService.AssignTagToVisitor(assignTagDto);
 
             // Returns the service response.
             return Ok(response);

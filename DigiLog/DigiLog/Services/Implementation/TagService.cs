@@ -34,28 +34,28 @@ namespace DigiLog.Services.Implementation
             return new ServiceResponse<string>();
         }
 
-        public ServiceResponse<string> AssignTagToVisitor(string tagNumber, long visitorId)
+        public ServiceResponse<string> AssignTagToVisitor(AssignTagDto assignTagDto)
         {
             var response = new ServiceResponse<string>();
 
             // Find an available tag
-            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == tagNumber);
+            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == assignTagDto.TagNumber);
 
             if (tag == null)
             {
                 response.HasError = true;
-                response.Description = $"Tag with ID {tagNumber} not found";
+                response.Description = $"Tag with ID {assignTagDto.VisitorId} not found";
                 return response;
             }
 
 
             if (tag.IsAvailable)
             {
-                var visitor = _context.Visitors.Find(visitorId);
+                var visitor = _context.Visitors.Find(assignTagDto.VisitorId);
                 if (visitor == null)
                 {
                     response.HasError = true;
-                    response.Description = $"Visitor with ID {visitorId} not found.";
+                    response.Description = $"Visitor with ID {assignTagDto.VisitorId} not found.";
                     return response;
 
                 }
@@ -64,14 +64,14 @@ namespace DigiLog.Services.Implementation
                 _context.SaveChanges();
 
                 response.HasError = false;
-                response.Description = $"Tag with ID {tagNumber} assigned to Visitor with ID {visitorId} successfully.";
+                response.Description = $"Tag with ID {assignTagDto.TagNumber} assigned to Visitor with ID {assignTagDto.VisitorId} successfully.";
 
                 return response;
             }
             else
             {
                 response.HasError = true;
-                response.Description = $"Tag with ID {tagNumber} is not available.";
+                response.Description = $"Tag with ID {assignTagDto.TagNumber} is not available.";
                 return response;
             }
 
