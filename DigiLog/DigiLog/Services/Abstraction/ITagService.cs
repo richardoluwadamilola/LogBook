@@ -8,7 +8,7 @@ namespace DigiLog.Services.Abstraction
         ServiceResponse<string> CreateTag(TagDTO tagDto);
         List<TagDTO> GetTags();
         ServiceResponse<string> AssignTagToVisitor(string tagNumber, long visitorId);
-        ServiceResponse<string> CheckOutVisitor(string tagNumber);
+        ServiceResponse<string> CheckOutVisitor(CheckOutTagDto checkOutTagDto);
 
        
     }

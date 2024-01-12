@@ -77,17 +77,17 @@ namespace DigiLog.Services.Implementation
 
         }
 
-        public ServiceResponse<string> CheckOutVisitor(string tagNumber)
+        public ServiceResponse<string> CheckOutVisitor(CheckOutTagDto checkOutTagDto)
         {
             var response = new ServiceResponse<string>();
 
             // Find the visitor using the tagId
-            var visitor = _context.Visitors.FirstOrDefault(v => v.TagNumber == tagNumber);
+            var visitor = _context.Visitors.FirstOrDefault(v => v.Id == checkOutTagDto.VisitorId);
 
             if (visitor == null)
             {
                 response.HasError = true;
-                response.Description = $"No visitor found with Tag ID {tagNumber}.";
+                response.Description = $"No visitor found with  ID {checkOutTagDto.VisitorId}.";
                 return response;
             }
 
@@ -95,7 +95,7 @@ namespace DigiLog.Services.Implementation
             if (visitor.DepartureTime > DateTime.MinValue)
             {
                 response.HasError = true;
-                response.Description = $"Visitor with Tag ID {tagNumber} is already checked out.";
+                response.Description = $"Visitor with  ID {checkOutTagDto.VisitorId} is already checked out.";
                 return response;
             }
 
@@ -103,7 +103,7 @@ namespace DigiLog.Services.Implementation
             visitor.DepartureTime = DateTime.Now;
 
             // Reassign tag 
-            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == tagNumber);
+            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == checkOutTagDto.TagNumber);
 
             if (tag != null)
             {
@@ -113,7 +113,7 @@ namespace DigiLog.Services.Implementation
             _context.SaveChanges();
 
             response.HasError = false;
-            response.Description = $"Visitor with Tag ID {tagNumber} checked out successfully.";
+            response.Description = $"No visitor found with  ID  {checkOutTagDto.VisitorId} checked out successfully.";
 
             return response;
         }

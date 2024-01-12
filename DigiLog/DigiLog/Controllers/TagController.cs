@@ -72,7 +72,7 @@ namespace DigiLog.Controllers
                 return BadRequest(checkOutTagDto);
 
             // Calls the tag service to check out a visitor.
-            var response = _tagService.CheckOutVisitor(checkOutTagDto.TagNumber);
+            var response = _tagService.CheckOutVisitor(checkOutTagDto);
 
             // Returns the service response.
             return Ok(response);
