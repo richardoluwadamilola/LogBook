@@ -83,8 +83,14 @@ namespace DigiLog.Services.Implementation
 
             // Set departure time to the current time
             visitor.DepartureTime = DateTime.Now;
-            
 
+            //Reassign tag 
+            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == tagNumber);
+
+            if (tag != null)
+            {
+                tag.IsAvailable = true;
+            }
             _context.SaveChanges();
 
             response.HasError = false;
