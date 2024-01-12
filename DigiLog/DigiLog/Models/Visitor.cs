@@ -10,7 +10,6 @@ namespace DigiLog.Models
         [Required]
         [Display(Name  = "First Name")]
         public string? FirstName { get; set; }
-        [Required]
         [Display(Name = "Middle Name")]
         public string? MiddleName { get; set; }
         [Required]
@@ -39,11 +38,11 @@ namespace DigiLog.Models
 
         //Foreign Relationships
         [ForeignKey("Employee")]
-        public long EmployeeId { get; set; }
+        public string EmployeeNumber { get; set; }
         public Employee? Employee { get; set; }
 
         [ForeignKey("Tag")]
-        public long TagID { get; set; }
+        public string? TagNumber { get; set; }
     }
 
     public enum ReasonForVisit

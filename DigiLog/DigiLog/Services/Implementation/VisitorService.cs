@@ -23,15 +23,20 @@ namespace DigiLog.Services.Implementation
         {
             var visitor = new Visitor
             {
+                //Create Visitor.
                 FirstName = visitorDto.FirstName,
                 MiddleName = visitorDto.MiddleName,
                 LastName = visitorDto.LastName,
                 ContactAddress = visitorDto.ContactAddress,
                 PhoneNumber = visitorDto.PhoneNumber,
-                EmployeeId = visitorDto.EmployeeId,
-                ReasonForVisit = visitorDto.ReasonForVisit,
+                EmployeeNumber = visitorDto.EmployeeNumber,
+                ReasonForVisit = (ReasonForVisit)visitorDto.ReasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
                 //Photo = visitorDto.Photo
+                ArrivalTime = DateTime.Now,
+                DateCreated = DateTime.Now,
+                DateModified = DateTime.Now,
+                Deleted = false
             };
 
             _context.Visitors.Add(visitor);
@@ -51,7 +56,7 @@ namespace DigiLog.Services.Implementation
                     LastName = visitor.LastName,
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
-                    EmployeeId = visitor.EmployeeId,
+                    EmployeeNumber = visitor.EmployeeNumber,
                     ReasonForVisit = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     //Photo = visitor.Photo

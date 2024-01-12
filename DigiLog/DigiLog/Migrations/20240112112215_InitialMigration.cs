@@ -4,8 +4,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace DigiLog.Migrations
 {
     /// <inheritdoc />
@@ -21,15 +19,15 @@ namespace DigiLog.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(type: "longtext", nullable: true)
+                    EmployeeNumber = table.Column<string>(type: "varchar(10)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FirstName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     MiddleName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastName = table.Column<string>(type: "longtext", nullable: true)
+                    LastName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Department = table.Column<string>(type: "longtext", nullable: true)
+                    Department = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -37,7 +35,7 @@ namespace DigiLog.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeNumber);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -45,9 +43,7 @@ namespace DigiLog.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    TagID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    TagNumber = table.Column<string>(type: "longtext", nullable: true)
+                    TagNumber = table.Column<string>(type: "varchar(10)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -55,7 +51,7 @@ namespace DigiLog.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tags", x => x.TagID);
+                    table.PrimaryKey("PK_Tags", x => x.TagNumber);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -63,11 +59,11 @@ namespace DigiLog.Migrations
                 name: "Visitors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    MiddleName = table.Column<string>(type: "longtext", nullable: false)
+                    MiddleName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -78,48 +74,32 @@ namespace DigiLog.Migrations
                     ReasonForVisit = table.Column<int>(type: "int", nullable: false),
                     ReasonForVisitDescription = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Photo = table.Column<byte[]>(type: "longblob", nullable: false),
                     ArrivalTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DepartureTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Deleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    TagID = table.Column<int>(type: "int", nullable: false)
+                    EmployeeNumber = table.Column<string>(type: "varchar(10)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TagNumber = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Visitors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Visitors_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_Visitors_Employees_EmployeeNumber",
+                        column: x => x.EmployeeNumber,
                         principalTable: "Employees",
-                        principalColumn: "Id",
+                        principalColumn: "EmployeeNumber",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.InsertData(
-                table: "Tags",
-                columns: new[] { "TagID", "DateCreated", "DateModified", "Deleted", "TagNumber" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1731), new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1739), false, "VIS-A60" },
-                    { 2, new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1742), new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1742), false, "VIS-A61" },
-                    { 3, new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1743), new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1744), false, "VIS-A62" },
-                    { 4, new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1745), new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1746), false, "VIS-A78" },
-                    { 5, new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1747), new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1747), false, "VIS-A66" },
-                    { 6, new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1748), new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1748), false, "VIS-A56" },
-                    { 7, new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1749), new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1749), false, "VIS-A87" },
-                    { 8, new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1750), new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1751), false, "VIS-A78" },
-                    { 9, new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1751), new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1752), false, "VIS-A88" },
-                    { 10, new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1753), new DateTime(2023, 12, 14, 17, 2, 5, 608, DateTimeKind.Local).AddTicks(1753), false, "VIS-A48" }
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_Visitors_EmployeeId",
+                name: "IX_Visitors_EmployeeNumber",
                 table: "Visitors",
-                column: "EmployeeId");
+                column: "EmployeeNumber");
         }
 
         /// <inheritdoc />

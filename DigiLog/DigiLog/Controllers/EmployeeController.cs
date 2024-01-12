@@ -37,11 +37,11 @@ namespace DigiLog.Controllers
         }
 
         // GET api/<EmployeeController>/5
-        [HttpGet("{employeeId}")]
-        public IActionResult GetEmployeeById(int employeeId)
+        [HttpGet("{employeeNumber}")]
+        public IActionResult GetEmployeeById(string employeeNumber)
         {
             // Retrieves an employee by employeeId from the employee service.
-            var employee = _employeeService.GetEmployeeById(employeeId);
+            var employee = _employeeService.GetEmployeeById(employeeNumber);
 
             if (employee == null)
             {

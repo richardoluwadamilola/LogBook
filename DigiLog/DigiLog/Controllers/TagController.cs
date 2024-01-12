@@ -39,6 +39,17 @@ namespace DigiLog.Controllers
         }
 
         // POST api/<TagController>
+        [HttpPost("create")]
+        public IActionResult CreateTag([FromBody] TagDTO tagDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var createdTag = _tagService.CreateTag(tagDto);
+            return Ok();
+        }
+
+        // POST api/<TagController>
         [HttpPost("assign")]
         public IActionResult AssignTagToVisitor([FromBody] AssignTagDto assignTagDto)
         {
@@ -46,7 +57,7 @@ namespace DigiLog.Controllers
                 return BadRequest(assignTagDto);
 
             // Calls the tag service to assign a tag to a visitor.
-            var response = _tagService.AssignTagToVisitor(assignTagDto.TagID, assignTagDto.VisitorId);
+            var response = _tagService.AssignTagToVisitor(assignTagDto.TagNumber, assignTagDto.VisitorId);
 
             // Returns the service response.
             return Ok(response);
@@ -61,7 +72,7 @@ namespace DigiLog.Controllers
                 return BadRequest(checkOutTagDto);
 
             // Calls the tag service to check out a visitor.
-            var response = _tagService.CheckOutVisitor(checkOutTagDto.TagID);
+            var response = _tagService.CheckOutVisitor(checkOutTagDto.TagNumber);
 
             // Returns the service response.
             return Ok(response);

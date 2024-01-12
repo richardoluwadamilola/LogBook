@@ -18,17 +18,34 @@ namespace DigiLog.Services.Implementation
             
         }
 
-        public ServiceResponse<string> AssignTagToVisitor(long tagId, long visitorId)
+        public ServiceResponse<string> CreateTag(TagDTO tagDto)
+        {
+            //Create Tag.
+            var tag = new Tag
+            {
+                TagNumber = tagDto.TagNumber,
+                DateCreated = DateTime.Now,
+                DateModified = DateTime.Now,
+                Deleted = false
+                
+            };
+
+            _context.Tags.Add(tag);
+            _context.SaveChanges();
+            return new ServiceResponse<string>();
+        }
+
+        public ServiceResponse<string> AssignTagToVisitor(string tagNumber, long visitorId)
         {
             var response = new ServiceResponse<string>();
 
             // Find an available tag
-            var tag = _context.Tags.FirstOrDefault(t => t.TagID == tagId && !_context.Visitors.Any(v => v.TagID == t.TagID));
+            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == tagNumber && !_context.Visitors.Any(v => v.TagNumber == t.TagNumber));
 
             if (tag == null)
             {
                 response.HasError = true;
-                response.Description = $"Tag with ID {tagId} not found or already in use.";
+                response.Description = $"Tag with ID {tagNumber} not found or already in use.";
                 return response;
             }
 
@@ -41,38 +58,37 @@ namespace DigiLog.Services.Implementation
                 return response;
             }
 
-            visitor.TagID = tag.TagID;
+            visitor.TagNumber = tag.TagNumber;
             _context.SaveChanges();
 
             response.HasError = false;
-            response.Description = $"Tag with ID {tagId} assigned to Visitor with ID {visitorId} successfully.";
+            response.Description = $"Tag with ID {tagNumber} assigned to Visitor with ID {visitorId} successfully.";
 
             return response;
         }
 
-        public ServiceResponse<string> CheckOutVisitor(long tagId)
+        public ServiceResponse<string> CheckOutVisitor(string tagNumber)
         {
             var response = new ServiceResponse<string>();
 
             // Find the visitor using the tagId
-            var visitor = _context.Visitors.FirstOrDefault(v => v.TagID == tagId);
+            var visitor = _context.Visitors.FirstOrDefault(v => v.TagNumber == tagNumber);
 
             if (visitor == null)
             {
                 response.HasError = true;
-                response.Description = $"No visitor found with Tag ID {tagId}.";
+                response.Description = $"No visitor found with Tag ID {tagNumber}.";
                 return response;
             }
 
             // Set departure time to the current time
             visitor.DepartureTime = DateTime.Now;
-            //Remove tag from visitor
-            visitor.TagID = 0;
+            
 
             _context.SaveChanges();
 
             response.HasError = false;
-            response.Description = $"Visitor with Tag ID {tagId} checked out successfully.";
+            response.Description = $"Visitor with Tag ID {tagNumber} checked out successfully.";
 
             return response;
         }
@@ -82,8 +98,7 @@ namespace DigiLog.Services.Implementation
             return _context.Tags
                 .Select(tag => new TagDTO
                 {
-                    TagID = tag.TagID,
-                    TagNumber = tag.TagNumber,
+                    TagNumber = tag.TagNumber
                 })
                 .ToList();
         }

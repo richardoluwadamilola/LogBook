@@ -20,20 +20,25 @@ namespace DigiLog.Services.Implementation
             //Create Employee.
             var employee = new Employee
             {
+                EmployeeNumber = employeeDto.EmployeeNumber,
                 FirstName = employeeDto.FirstName,
                 MiddleName = employeeDto.MiddleName,
                 LastName = employeeDto.LastName,
                 Department = employeeDto.Department,
+                DateCreated = DateTime.Now,
+                DateModified = DateTime.Now,
+                Deleted = false
+
             };
 
             _context.Employees.Add(employee);
             _context.SaveChanges();
             return new ServiceResponse<string>();
         }
-        public ServiceResponse<EmployeeDTO> GetEmployeeById(long employeeId)
+        public ServiceResponse<EmployeeDTO> GetEmployeeById(string employeeNumber)
         {
             //Get Employee by EmployeeId.
-            var employee = _context.Employees.Find(employeeId);
+            var employee = _context.Employees.Find(employeeNumber);
 
             if (employee == null)
                 return new ServiceResponse<EmployeeDTO>();
@@ -44,7 +49,7 @@ namespace DigiLog.Services.Implementation
                 Description = "Successful",
                 Data = new EmployeeDTO
                 {
-                    Id = employee.Id,
+                    EmployeeNumber = employee.EmployeeNumber,
                     FirstName = employee.FirstName,
                     MiddleName = employee.MiddleName,
                     LastName = employee.LastName,
@@ -60,7 +65,7 @@ namespace DigiLog.Services.Implementation
             return _context.Employees
                 .Select(e => new EmployeeDTO
                 {
-                    Id = e.Id,
+                    EmployeeNumber = e.EmployeeNumber,
                     FirstName = e.FirstName,
                     MiddleName = e.MiddleName,
                     LastName = e.LastName,
@@ -85,7 +90,7 @@ namespace DigiLog.Services.Implementation
                     EF.Functions.Like(e.Department.ToLower(), $"%{keyword}%"))
                 .Select(e => new EmployeeDTO
                 {
-                    Id = e.Id,
+                    EmployeeNumber = e.EmployeeNumber,
                     FirstName = e.FirstName,
                     MiddleName = e.MiddleName,
                     LastName = e.LastName,

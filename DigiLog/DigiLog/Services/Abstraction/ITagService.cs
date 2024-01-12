@@ -5,10 +5,10 @@ namespace DigiLog.Services.Abstraction
 {
     public interface ITagService
     {
-        //int GenerateTagNumber();
+        ServiceResponse<string> CreateTag(TagDTO tagDto);
         List<TagDTO> GetTags();
-        ServiceResponse<string> AssignTagToVisitor(long tagId, long visitorId);
-        ServiceResponse<string> CheckOutVisitor(long tagId);
+        ServiceResponse<string> AssignTagToVisitor(string tagNumber, long visitorId);
+        ServiceResponse<string> CheckOutVisitor(string tagNumber);
 
        
     }

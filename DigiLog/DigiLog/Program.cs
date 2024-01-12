@@ -23,7 +23,6 @@ builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IVisitorService, VisitorService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
-builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddLogging();
 
 

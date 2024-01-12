@@ -6,9 +6,8 @@ namespace DigiLog.Models
     public class Tag
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long TagID { get; set; }
-        public string? TagNumber { get; set; }
+        [Column(TypeName = "varchar(10)")]
+        public string TagNumber { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public bool Deleted { get; set; }

@@ -9,7 +9,6 @@ namespace DigiLog.DTOs
         [Required]
         [Display(Name = "First Name")]
         public string? FirstName { get; set; }
-        [Required]
         [Display(Name = "Middle Name")]
         public string? MiddleName { get; set; }
         [Required]
@@ -22,7 +21,7 @@ namespace DigiLog.DTOs
         [Display(Name = "Phone Number")]
         [RegularExpression(@"^\d{11}$", ErrorMessage = "Invalid Phone number format")]
         public string? PhoneNumber { get; set; }
-        public long EmployeeId { get; set; }
+        public string EmployeeNumber { get; set; }
         [Required]
         [Display(Name = "Reason for Visit")]
         public ReasonForVisit ReasonForVisit { get; set; }

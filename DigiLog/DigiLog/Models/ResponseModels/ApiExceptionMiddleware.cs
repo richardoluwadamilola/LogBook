@@ -1,5 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace DigiLog.Models.ResponseModels
 {
@@ -22,12 +27,12 @@ namespace DigiLog.Models.ResponseModels
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong: {ex}");
-                await HandleExceptionAsync(httpContext, ex, env);
+                _logger.LogError($"An unexpected error occurred: {ex}");
+                HandleException(httpContext, ex, env);
             }
         }
 
-        private async Task HandleExceptionAsync(HttpContext context, Exception exception, IWebHostEnvironment env)
+        private void HandleException(HttpContext context, Exception exception, IWebHostEnvironment env)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -38,8 +43,11 @@ namespace DigiLog.Models.ResponseModels
                 Message = env.IsDevelopment() ? exception.Message : "Internal Server Error"
             });
 
-            await context.Response.WriteAsync(response);
-            
+            // Log the exception
+            _logger.LogError($"Exception details: {exception}");
+
+            // Send the response to the client
+            context.Response.WriteAsync(response);
         }
     }
 }
