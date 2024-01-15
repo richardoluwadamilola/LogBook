@@ -3,6 +3,8 @@ using DigiLog.DTOs;
 using DigiLog.Models;
 using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
+using System.Buffers.Text;
+using System.Net.NetworkInformation;
 
 namespace DigiLog.Services.Implementation
 {
@@ -32,7 +34,7 @@ namespace DigiLog.Services.Implementation
                 EmployeeNumber = visitorDto.EmployeeNumber,
                 ReasonForVisit = (ReasonForVisit)visitorDto.ReasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
-                Photo = visitorDto.Photo,
+                Photo = GetByteFromImageString(visitorDto.Photo),
                 ArrivalTime = DateTime.Now,
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now,
@@ -57,14 +59,28 @@ namespace DigiLog.Services.Implementation
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
-                    ReasonForVisit = visitor.ReasonForVisit,
+                    ReasonForVisit = (int)visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    Photo = visitor.Photo
+                    Photo = GetImageStringFromByte(visitor.Photo)
 
                 })
             .ToList();
 
             return visitors;
+        }
+
+        public static byte[] GetByteFromImageString(string image)
+        {
+            image = image.Replace("data:image/png;base64,", "");
+            byte[] imageByte = Convert.FromBase64String(image);
+            return imageByte;
+            
+        }
+
+        public static string GetImageStringFromByte(byte[] image)
+        {
+            string imageString = Convert.ToBase64String(image);
+            return "data:image/png;base64," + imageString;
         }
     }
 }

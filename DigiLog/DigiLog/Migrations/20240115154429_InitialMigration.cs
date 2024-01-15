@@ -23,7 +23,7 @@ namespace DigiLog.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     FirstName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    MiddleName = table.Column<string>(type: "longtext", nullable: true)
+                    MiddleName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -45,6 +45,7 @@ namespace DigiLog.Migrations
                 {
                     TagNumber = table.Column<string>(type: "varchar(10)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsAvailable = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Deleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
@@ -63,7 +64,7 @@ namespace DigiLog.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    MiddleName = table.Column<string>(type: "longtext", nullable: true)
+                    MiddleName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -71,9 +72,11 @@ namespace DigiLog.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PhoneNumber = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ReasonForVisit = table.Column<int>(type: "int", nullable: false),
-                    ReasonForVisitDescription = table.Column<string>(type: "longtext", nullable: true)
+                    ReasonForVisit = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    ReasonForVisitDescription = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Photo = table.Column<byte[]>(type: "longblob", nullable: false),
                     ArrivalTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DepartureTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -81,7 +84,7 @@ namespace DigiLog.Migrations
                     Deleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     EmployeeNumber = table.Column<string>(type: "varchar(10)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    TagNumber = table.Column<string>(type: "longtext", nullable: true)
+                    TagNumber = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>

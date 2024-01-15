@@ -46,6 +46,7 @@ namespace DigiLog.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("EmployeeNumber");
@@ -113,20 +114,27 @@ namespace DigiLog.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<byte[]>("Photo")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
                     b.Property<string>("ReasonForVisit")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ReasonForVisitDescription")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("TagNumber")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

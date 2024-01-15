@@ -7,7 +7,7 @@ namespace DigiLog.Models
     {
         [Key]
         [Column(TypeName = "varchar(10)")]
-        public string TagNumber { get; set; }
+        public string TagNumber { get; set; } = string.Empty;
         public bool IsAvailable { get; set; } = true;
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }

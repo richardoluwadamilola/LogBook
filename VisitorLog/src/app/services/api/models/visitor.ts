@@ -1,8 +1,8 @@
 import { Employee } from "./employee.model";
 
 export enum ReasonForVisit {
-    Official = 'Official',
-    Personal = 'Personal'
+    Official = 0,
+    Personal = 1
 }
 
 export interface Visitor {
@@ -12,7 +12,7 @@ export interface Visitor {
     lastName: string;
     contactAddress: string;
     phoneNumber: string;
-    reasonForVisit: ReasonForVisit;
+    reasonForVisit: number;
     reasonForVisitDescription: string;
     photo: string;
     employeeNumber: string;

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DigiLog.Migrations
 {
     [DbContext(typeof(LogDbContext))]
-    [Migration("20240112163117_DBMigration")]
-    partial class DBMigration
+    [Migration("20240115154429_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,7 @@ namespace DigiLog.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("EmployeeNumber");
@@ -116,20 +117,27 @@ namespace DigiLog.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<byte[]>("Photo")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
                     b.Property<string>("ReasonForVisit")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ReasonForVisitDescription")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("TagNumber")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
