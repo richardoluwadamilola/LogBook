@@ -18,9 +18,9 @@
       <input type="text" id="phoneNumber" formControlName="phoneNumber" required>
   
       <label for="personheretosee">Person Here To See:</label>
-<select formControlName="employeeId" required>
+<select formControlName="employeeNumber" required>
   <option disabled value="">Please select the person to see</option>
-  <option *ngFor="let employee of employees" [value]="employee.id">
+  <option *ngFor="let employee of employees" [value]="employee.employeeNumber">
     {{ employee.firstName }} {{ employee.middleName }} {{ employee.lastName }}
   </option>
 </select>

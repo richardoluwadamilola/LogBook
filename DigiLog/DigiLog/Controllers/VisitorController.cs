@@ -31,7 +31,7 @@ namespace DigiLog.Controllers
                 return BadRequest(new ServiceResponse<string> { HasError = true, Description = "Invalid model state" });
 
             var createdVisitor = _visitorService.CreateVisitor(visitorDto);
-            return Ok();
+            return Ok(new ServiceResponse<string> { Data = createdVisitor.Data, Description = "Visitor created successfully" });
         }
 
 

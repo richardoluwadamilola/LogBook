@@ -32,7 +32,7 @@ namespace DigiLog.Services.Implementation
                 EmployeeNumber = visitorDto.EmployeeNumber,
                 ReasonForVisit = (ReasonForVisit)visitorDto.ReasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
-                //Photo = visitorDto.Photo
+                Photo = visitorDto.Photo,
                 ArrivalTime = DateTime.Now,
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now,
@@ -59,7 +59,7 @@ namespace DigiLog.Services.Implementation
                     EmployeeNumber = visitor.EmployeeNumber,
                     ReasonForVisit = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    //Photo = visitor.Photo
+                    Photo = visitor.Photo
 
                 })
             .ToList();

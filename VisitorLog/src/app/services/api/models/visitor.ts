@@ -15,6 +15,6 @@ export interface Visitor {
     reasonForVisit: ReasonForVisit;
     reasonForVisitDescription: string;
     photo: string;
-    employeeId: number;
+    employeeNumber: string;
     employee: Employee;
 }

@@ -28,7 +28,7 @@ export class VisitorFormComponent implements OnInit {
       lastName: ['', Validators.required],
       contactAddress: ['', Validators.required],
       phoneNumber: ['', Validators.required],
-      employeeId: [null, Validators.required],
+      employeeNumber: [null, Validators.required],
       reasonForVisit: [null, Validators.required],
       reasonForVisitDescription: [''],
       photo: [null, Validators.required],
@@ -90,39 +90,43 @@ export class VisitorFormComponent implements OnInit {
     if (this.visitorForm.valid) {
       const formData = this.visitorForm.value;
       
-      // Log formData before modifying the employeeId
+      // Log formData before modifying the employeeNumber
       console.log('Original FormData:', formData);
   
-      // Log the employeeId separately
-      console.log('Form Control Value (employeeId):', this.visitorForm.get('employeeId')?.value);
-
-      // Ensure employeeId is a number, and check for NaN
-      if (formData.employeeId !== null && !isNaN(formData.employeeId)) {
-        formData.employeeId = Number(formData.employeeId);
+      // Log the employeeNumber separately
+      console.log('Form Control Value (employeeNumber):', this.visitorForm.get('employeeNumber')?.value);
+  
+      // Ensure employeeNumber is not null
+      if (formData.employeeNumber !== null) {
+        // You don't need to convert it to a number
       } else {
-        console.error('Invalid employeeId:', formData.employeeId);
+        console.error('Invalid employeeNumber:', formData.employeeNumber);
         return;
       }
   
-      // Log formData after modifying the employeeId
+      // Log formData after modifying the employeeNumber
       console.log('Modified FormData:', formData);
-  
+
       // Call a service to save visitor details
-      this.visitorService.saveVisitorDetails(formData).subscribe(
-        (response: any) => {
-          console.log('Visitor details saved successfully', response);
+    this.visitorService.saveVisitorDetails(formData).subscribe(
+      (response: any) => {
+        console.log('Visitor details saved successfully', response);
+        // Check the response for success or error
+        if (response && response.hasError) {
+          console.error('Error saving visitor details:', response.description);
+        } else {
+          console.log('Visitor details saved successfully');
           // Reset the form after successful submission
           this.visitorForm.reset();
-        },
-        (error: any) => {
-          console.error('Error saving visitor details', error);
         }
-      );
-    } else {
-      console.error('Invalid form data');
-    }
+      },
+      (error: any) => {
+        console.error('Error saving visitor details', error);
+      }
+    );
+  } else {
+    console.error('Invalid form data');
   }
-  
-  
+}
 }
 

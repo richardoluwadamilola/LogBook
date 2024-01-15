@@ -13,19 +13,12 @@ export class VisitorService {
   constructor(private http: HttpClient) { }
 
   saveVisitorDetails(visitorData: any): Observable<any> {
-    // Ensure employeeId is a number, and check for NaN
-    if (visitorData.employeeId !== null && !isNaN(visitorData.employeeId)) {
-      visitorData.employeeId = Number(visitorData.employeeId);
-    } else {
-      console.error('Invalid employeeId:', visitorData.employeeId);
-      throw Error('Invalid employeeId');
-    }
-  
     console.log('Request Payload:', visitorData);
     
     return this.http.post(this.apiUrl, visitorData).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Error saving visitor details', error);
+        console.error('Error Details:', error.error);
         throw error;
       })
     );
