@@ -7,10 +7,11 @@ import { AppComponent } from './app.component';
 import { VisitorFormComponent } from './visitor-form/visitor-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    VisitorFormComponent
+    VisitorFormComponent,
   ],
   imports: [
     BrowserModule,

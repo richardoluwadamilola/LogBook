@@ -1,0 +1,41 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Tag } from '../services/api/models/tag';
+import { TagService } from '../services/api/tags/tag.service';
+
+@Component({
+  selector: 'app-tag-management',
+  templateUrl: './tag-management.component.html',
+  styleUrls: ['./tag-management.component.css']
+})
+export class TagManagementComponent implements OnInit{
+  tagForm: FormGroup;
+  tags: Tag[] = [];
+
+  constructor(private fb: FormBuilder, private tagService: TagService ) { 
+    this.tagForm = this.fb.group({
+      tagNumber: ['', Validators.required],
+      isAvailable: [true, Validators.required]
+    });
+  }
+
+  ngOnInit(): void {
+  }
+
+  createTag(): void {
+    const tag: Tag = {
+      tagNumber: this.tagForm.value.tagNumber,
+      isAvailable: this.tagForm.value.isAvailable
+    };
+
+    this.tagService.createTag(tag).subscribe(
+      (data: any) => {
+        console.log('Tag created successfully', data);
+      },
+      (error: any) => {
+        console.error('Error creating tag', error);
+      }
+    );
+  }
+
+}

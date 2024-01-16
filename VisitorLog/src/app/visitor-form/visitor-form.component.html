@@ -34,6 +34,8 @@
       <input type="text" id="reasonForVisitDescription" formControlName="reasonForVisitDescription">
   
       <button type="button" (click)="takePicture()">Take Picture</button>
+      <button type="button" (click)="retakePicture()">Retake Picture</button>
+     
       <!-- Display the taken picture -->
       <img *ngIf="takenPicture" [src]="takenPicture" alt="Visitor Picture">
 

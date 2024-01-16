@@ -86,6 +86,14 @@ export class VisitorFormComponent implements OnInit {
       });
   }
 
+  retakePicture(): void {
+    // Reset the takenPicture variable to allow retaking a new picture
+    this.takenPicture = null;
+    // Call the takePicture method to start the picture-taking process again
+    this.takePicture();
+  }
+  
+
   submitForm(): void {
     if (this.visitorForm.valid) {
       const formData = this.visitorForm.value;

@@ -46,7 +46,7 @@ namespace DigiLog.Controllers
                 return BadRequest();
 
             var createdTag = _tagService.CreateTag(tagDto);
-            return Ok();
+            return Ok(createdTag);
         }
 
         // POST api/<TagController>

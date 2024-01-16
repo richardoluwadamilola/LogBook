@@ -1,0 +1,72 @@
+/* styles.css */
+
+/* Style the form container */
+div {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Style form headings */
+  h2 {
+    color: #333;
+  }
+  
+  p {
+    color: #666;
+  }
+  
+  /* Style form labels */
+  label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  /* Style form inputs */
+  input,
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  
+  /* Style buttons */
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Style the visitor picture */
+  img {
+    display: block;
+    margin-top: 10px;
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Media queries for responsiveness */
+  @media screen and (max-width: 600px) {
+    /* Adjust styles for smaller screens */
+    div {
+      max-width: 100%;
+    }
+  }
+  
+  @media screen and (max-width: 400px) {
+    /* Further adjustments for even smaller screens */
+    button {
+      font-size: 14px;
+    }
+  }
+  
