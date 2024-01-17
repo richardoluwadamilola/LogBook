@@ -10,7 +10,7 @@ namespace DigiLog.DTOs
         [Display(Name = "First Name")]
         public string FirstName { get; set; } = string.Empty;
         [Display(Name = "Middle Name")]
-        public string MiddleName { get; set; } = string.Empty;
+        public string MiddleName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; } = string.Empty;
         [Required]
@@ -23,8 +23,7 @@ namespace DigiLog.DTOs
         public string EmployeeNumber { get; set; } = string.Empty;
         [Display(Name = "Reason for Visit")]
         public int ReasonForVisit { get; set; }
-        public string ReasonForVisitDescription { get; set; } = string.Empty;
-        [Required]
+        public string ReasonForVisitDescription { get; set; }
         [Display(Name = "Photo (Base64 Encoded)")]
         public string Photo { get; set; } = string.Empty;
         //public int? TagNumber { get; set; }

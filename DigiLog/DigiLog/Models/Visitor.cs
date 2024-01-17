@@ -10,8 +10,8 @@ namespace DigiLog.Models
         [Required]
         [Display(Name  = "First Name")]
         public string FirstName { get; set; } = string.Empty;
-        public string MiddleName { get; set; } = string.Empty;
-        [Required]
+        [Display(Name = "Middle Name")]
+        public string MiddleName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; } = string.Empty;
         [Required]
@@ -24,8 +24,7 @@ namespace DigiLog.Models
         [Required]
         [Display(Name = "Reason for Visit")]
         public ReasonForVisit ReasonForVisit { get; set; }
-        public string ReasonForVisitDescription { get; set; } = string.Empty;
-        [Required]
+        public string ReasonForVisitDescription { get; set; }
         [Display(Name = "Photo (Base64 Encoded)")]
         public byte[]? Photo { get; set; }
         public DateTime ArrivalTime { get; set; } = DateTime.Now;
