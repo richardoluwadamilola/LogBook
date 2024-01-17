@@ -1,27 +1,29 @@
-.admin {
+/* styles.css or your component-specific style file */
+
+.menu {
     background-color: #87ceeb;
     padding: 10px;
     margin-top: 20px;
   }
   
-  .admin ul {
+  .menu ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
   
-  .admin li {
+  .menu li {
     display: inline-block;
     margin-right: 20px;
   }
   
-  .admin a {
+  .menu a {
     text-decoration: none;
     color: white;
     font-weight: bold;
   }
   
-  .admin a:hover {
+  .menu a:hover {
     color: #f2f2f2;
   }
   

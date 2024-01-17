@@ -24,7 +24,7 @@ export class VisitorFormComponent implements OnInit {
   createForm(): void {
     this.visitorForm = this.fb.group({
       firstName: ['', Validators.required],
-      middleName: ['', Validators.required],
+      middleName: [''],
       lastName: ['', Validators.required],
       contactAddress: ['', Validators.required],
       phoneNumber: ['', Validators.required],
@@ -126,6 +126,8 @@ export class VisitorFormComponent implements OnInit {
           console.log('Visitor details saved successfully');
           // Reset the form after successful submission
           this.visitorForm.reset();
+          // Reset the takenPicture variable
+          this.takenPicture = null;
         }
       },
       (error: any) => {

@@ -9,14 +9,14 @@ namespace DigiLog.Models
         public long Id { get; set; }
         [Required]
         [Display(Name  = "First Name")]
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string MiddleName { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Last Name")]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Contact Address")]
-        public string ContactAddress { get; set; }
+        public string ContactAddress { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Phone Number")]
         [RegularExpression(@"^\d{11}$", ErrorMessage ="Invalid Phone number format")]
@@ -24,7 +24,7 @@ namespace DigiLog.Models
         [Required]
         [Display(Name = "Reason for Visit")]
         public ReasonForVisit ReasonForVisit { get; set; }
-        public string ReasonForVisitDescription { get; set; }
+        public string ReasonForVisitDescription { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Photo (Base64 Encoded)")]
         public byte[]? Photo { get; set; }
@@ -38,7 +38,7 @@ namespace DigiLog.Models
         //Foreign Relationships
         [ForeignKey("Employee")]
         [Required]
-        public string EmployeeNumber { get; set; }
+        public string EmployeeNumber { get; set; } = string.Empty;
         public Employee? Employee { get; set; } 
 
         [ForeignKey("Tag")]

@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Employee } from '../models/employee.model';
+import { Visitor } from '../models/visitor';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ import { Employee } from '../models/employee.model';
 export class VisitorService {
   private apiUrl = 'https://localhost:7020/api/Visitor'
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
 
   saveVisitorDetails(visitorData: any): Observable<any> {
@@ -24,9 +26,12 @@ export class VisitorService {
       })
     );
   }
-  
 
   getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>('https://localhost:7020/api/Employee');
   }
+
+  getVisitorsByCheckInDate(date: Date): Observable<Visitor[]> {
+    return this.http.get<Visitor[]>(`https://localhost:7020/api/Visitor/GetVisitorsByCheckInDate?date=${date}`);
+  }  
 }

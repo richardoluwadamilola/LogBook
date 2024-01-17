@@ -1,3 +1,6 @@
+
+
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Tag } from '../services/api/models/tag';
@@ -31,6 +34,7 @@ export class TagManagementComponent implements OnInit{
     this.tagService.createTag(tag).subscribe(
       (data: any) => {
         console.log('Tag created successfully', data);
+        this.tagForm.reset();
       },
       (error: any) => {
         console.error('Error creating tag', error);

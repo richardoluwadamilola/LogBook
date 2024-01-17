@@ -60,8 +60,11 @@ namespace DigiLog.Services.Implementation
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
                     ReasonForVisit = (int)visitor.ReasonForVisit,
+                    ReasonForVisitEnum = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    Photo = GetImageStringFromByte(visitor.Photo)
+                    Photo = GetImageStringFromByte(visitor.Photo),
+                    ArrivalTime = visitor.ArrivalTime,
+                    DepartureTime = visitor.DepartureTime,
 
                 })
             .ToList();

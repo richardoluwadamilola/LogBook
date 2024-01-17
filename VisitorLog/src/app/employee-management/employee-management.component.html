@@ -1,1 +1,23 @@
-<p>employee-management works!</p>
+<div>
+    <h2>Visitor Form</h2>
+    <p>Please fill in the following details</p>
+    <form [formGroup]="employeeForm" (ngSubmit)="submitForm()">
+        <label for="employeeNumber">Employee Number:</label>
+        <input type="text" id="employeeNumber" formControlName="employeeNumber" required>
+
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" formControlName="firstName" required>
+
+        <label for="middleName">Middle Name:</label>
+        <input type="text" id="middleName" formControlName="middleName">
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" formControlName="lastName" required>   
+
+        <label for="department">Department:</label>
+        <input type="text" id="department" formControlName="department" required>
+      
+      <button type="submit">Add</button>
+    </form>
+  </div>
+  

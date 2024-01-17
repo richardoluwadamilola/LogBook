@@ -40,7 +40,7 @@ namespace DigiLog.Controllers
         public ActionResult<List<VisitorDTO>> GetVisitorsByCheckInDate([FromQuery] DateTime date)
         {
             var visitors = _visitorService.GetVisitorsByCheckInDate(date);
-            return Ok();
+            return Ok(visitors);
         }
 
 

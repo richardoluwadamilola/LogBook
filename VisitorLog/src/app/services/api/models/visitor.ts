@@ -13,8 +13,11 @@ export interface Visitor {
     contactAddress: string;
     phoneNumber: string;
     reasonForVisit: number;
+    reasonForVisitEnum: ReasonForVisit;
     reasonForVisitDescription: string;
     photo: string;
     employeeNumber: string;
     employee: Employee;
+    arrivalTime: Date;
+    departureTime: Date;
 }
