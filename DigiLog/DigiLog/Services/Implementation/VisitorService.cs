@@ -41,13 +41,16 @@ namespace DigiLog.Services.Implementation
                 Deleted = false
             };
 
+            //Add visitor to the database.
             _context.Visitors.Add(visitor);
+            //Save changes to the database.
             _context.SaveChanges();
 
             return new ServiceResponse<string>();
         }
         public List<VisitorDTO> GetVisitorsByCheckInDate(DateTime date)
         {
+            //Get Visitors by check in date.
            var visitors = _context.Visitors
                 .Where(v => v.ArrivalTime.Date ==  date.Date)
                 .Select(visitor => new VisitorDTO
@@ -74,15 +77,20 @@ namespace DigiLog.Services.Implementation
 
         public static byte[] GetByteFromImageString(string image)
         {
+            // Remove the image format prefix ("data:image/png;base64,") to extract the base64-encoded string
             image = image.Replace("data:image/png;base64,", "");
+            // Convert the base64-encoded string to a byte array
             byte[] imageByte = Convert.FromBase64String(image);
+            // Return the byte array
             return imageByte;
             
         }
 
         public static string GetImageStringFromByte(byte[] image)
         {
+            // Convert the byte array to a base64-encoded string
             string imageString = Convert.ToBase64String(image);
+            // Return the base64-encoded string with the image format prefix
             return "data:image/png;base64," + imageString;
         }
     }

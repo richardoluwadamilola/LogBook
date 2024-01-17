@@ -27,9 +27,12 @@ namespace DigiLog.Controllers
         [HttpPost]
         public ActionResult<ServiceResponse<string>> CreateVisitor([FromBody] VisitorDTO visitorDto)
         {
+            // Check if model state is valid.
             if (!ModelState.IsValid)
+                // Return error indicating that the model state is invalid.
                 return BadRequest(new ServiceResponse<string> { HasError = true, Description = "Invalid model state" });
 
+            // Create visitor.
             var createdVisitor = _visitorService.CreateVisitor(visitorDto);
             return Ok(new ServiceResponse<string> { Data = createdVisitor.Data, Description = "Visitor created successfully" });
         }
@@ -39,6 +42,7 @@ namespace DigiLog.Controllers
         [HttpGet("GetVisitorsByCheckInDate")]
         public ActionResult<List<VisitorDTO>> GetVisitorsByCheckInDate([FromQuery] DateTime date)
         {
+            // Get visitors by check in date.
             var visitors = _visitorService.GetVisitorsByCheckInDate(date);
             return Ok(visitors);
         }
