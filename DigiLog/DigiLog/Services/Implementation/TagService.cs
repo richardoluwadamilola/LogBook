@@ -45,7 +45,7 @@ namespace DigiLog.Services.Implementation
             if (tag == null)
             {
                 response.HasError = true;
-                response.Description = $"Tag with ID {assignTagDto.VisitorId} not found";
+                response.Description = "TagNumber not found.";
                 return response;
             }
 

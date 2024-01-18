@@ -13,6 +13,9 @@ import { TagManagementComponent } from './tag-management/tag-management.componen
 import { EmployeeManagementComponent } from './employee-management/employee-management.component';
 import { VisitorManagementComponent } from './visitor-management/visitor-management.component';
 import { DatePipe } from '@angular/common';
+import { AssignTagComponent } from './assign-tag/assign-tag.component';
+import { CheckoutTagComponent } from './checkout-tag/checkout-tag.component';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -25,6 +28,10 @@ import { DatePipe } from '@angular/common';
     TagManagementComponent,
     EmployeeManagementComponent,
     VisitorManagementComponent,
+    AssignTagComponent,
+    CheckoutTagComponent,
+    HomeComponent,
+
   ],
   imports: [
     BrowserModule,

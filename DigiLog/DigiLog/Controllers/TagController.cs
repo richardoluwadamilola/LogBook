@@ -54,7 +54,7 @@ namespace DigiLog.Controllers
         public IActionResult AssignTagToVisitor([FromBody] AssignTagDto assignTagDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(assignTagDto);
+                return BadRequest(ModelState);
 
             // Calls the tag service to assign a tag to a visitor.
             var response = _tagService.AssignTagToVisitor(assignTagDto);

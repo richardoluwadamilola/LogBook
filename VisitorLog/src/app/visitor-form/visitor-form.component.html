@@ -1,3 +1,4 @@
+<body>
 <div>
     <h2>Visitor Form</h2>
     <p>Please fill in the following details</p>
@@ -16,7 +17,7 @@
   
       <label for="phoneNumber">Phone Number:</label>
       <input type="text" id="phoneNumber" formControlName="phoneNumber" required>
-  
+      
       <label for="personheretosee">Person Here To See:</label>
 <select formControlName="employeeNumber" required>
   <option disabled value="">Please select the person to see</option>
@@ -39,7 +40,10 @@
       <!-- Display the taken picture -->
       <img *ngIf="takenPicture" [src]="takenPicture" alt="Visitor Picture">
 
-      <button type="submit">Submit</button>
+      <button type="submit" *ngIf="!formSubmitted">Submit</button>
+      <div *ngIf="formSubmitted">
+      <h3>Your details have been successfully submitted.</h3></div>
     </form>
   </div>
+  </body>
   

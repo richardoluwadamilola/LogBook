@@ -23,6 +23,7 @@ export class TagManagementComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.getTags();
   }
 
   createTag(): void {
@@ -35,9 +36,22 @@ export class TagManagementComponent implements OnInit{
       (data: any) => {
         console.log('Tag created successfully', data);
         this.tagForm.reset();
+        this.getTags();
       },
       (error: any) => {
         console.error('Error creating tag', error);
+      }
+    );
+  }
+
+  getTags(): void {
+    this.tagService.getTags().subscribe(
+      (data: Tag[]) => {
+        this.tags = data;
+        console.log('Tags:', this.tags);
+      },
+      (error: any) => {
+        console.error('Error getting tags', error);
       }
     );
   }

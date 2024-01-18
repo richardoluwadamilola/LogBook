@@ -6,6 +6,13 @@
         <input type="text" id="tagNumber" formControlName="tagNumber" required>
 
         <button type="submit">Create Tag</button>
-
     </form>
+
+    <div *ngIf="tags.length > 0">
+    <h3>Available Tags</h3>
+    <ul>
+        <li *ngFor="let tag of tags">{{tag.tagNumber }}</li>
+    </ul>
+    </div>
+
 </div>

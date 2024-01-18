@@ -13,6 +13,7 @@ export class VisitorFormComponent implements OnInit {
   visitorForm!: FormGroup;
   employees: Employee[] = [];
   takenPicture: string | null = null;
+  formSubmitted = false;
 
   constructor(private fb: FormBuilder, private visitorService: VisitorService) { }
 
@@ -124,10 +125,15 @@ export class VisitorFormComponent implements OnInit {
           console.error('Error saving visitor details:', response.description);
         } else {
           console.log('Visitor details saved successfully');
-          // Reset the form after successful submission
-          this.visitorForm.reset();
-          // Reset the takenPicture variable
-          this.takenPicture = null;
+          // Set the formSubmitted flag to true
+          this.formSubmitted = true;
+          
+          // Delay the form reset for 5 seconds (adjust the time based on your preference)
+          setTimeout(() => {
+            this.formSubmitted = false;
+            this.visitorForm.reset();
+            this.takenPicture = null;
+          }, 5000);
         }
       },
       (error: any) => {
