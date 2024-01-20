@@ -67,14 +67,14 @@ namespace DigiLog.Services.Implementation
                 _context.SaveChanges();
 
                 response.HasError = false;
-                response.Description = $"Tag with ID {assignTagDto.TagNumber} assigned to Visitor with ID {assignTagDto.VisitorId} successfully.";
+                response.Description = $"TagNumber assigned to visitor with ID {assignTagDto.VisitorId} successfully.";
 
                 return response;
             }
             else
             {
                 response.HasError = true;
-                response.Description = $"Tag with ID {assignTagDto.TagNumber} is not available.";
+                response.Description = "TagNumber not available or already assigned to another visitor";
                 return response;
             }
         }
