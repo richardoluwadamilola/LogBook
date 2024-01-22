@@ -9,8 +9,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AssignTagComponent {
   tagAssignmentForm!: FormGroup;
-  //assignTagDto: any = {};
-
+  errorMessage : string | null = null;
+  successMessage : string | null = null;
   constructor(private fb: FormBuilder, private tagService: TagService) { }
 
   ngOnInit(): void {
@@ -30,10 +30,21 @@ export class AssignTagComponent {
       this.tagService.assignTagToVisitor(assignTagDto).subscribe(
         (data: any) => {
           console.log('Tag assigned successfully', data);
-          this.tagAssignmentForm.reset();
+
+          if (data.error) {
+            this.errorMessage = data.description;
+            this.successMessage = null;
+            return;
+          } else {
+            this.successMessage = data.description;
+            this.errorMessage = null;
+            this.tagAssignmentForm.reset();
+          }
         },
         (error: any) => {
           console.error('Error assigning tag', error);
+          this.errorMessage = 'An unexpected error occurred';
+          this.successMessage = null;
         }
       );
     }

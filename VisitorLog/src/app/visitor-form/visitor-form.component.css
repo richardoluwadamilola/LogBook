@@ -1,28 +1,9 @@
-body {
-  margin: 0;
-  height: 160vh;
-}
-
-body {
-  background-image: url('src/image/background.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-
-}
-
 div {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    
-
-   
-    
-    
   }
-  
-  /* Style form headings */
+ 
   h2 {
     color: #01021b;
   }
@@ -31,14 +12,12 @@ div {
     color: #190f0f;
   }
   
-  /* Style form labels */
   label {
     display: block;
     margin-top: 10px;
     font-weight: bold;
   }
   
-  /* Style form inputs */
   input,
   select {
     width: 100%;
@@ -48,7 +27,6 @@ div {
     box-sizing: border-box;
   }
   
-  /* Style buttons */
   button {
     background-color: #0d181c;
     color: white;
@@ -58,7 +36,6 @@ div {
     cursor: pointer;
   }
   
-  /* Style the visitor picture */
   img {
     display: block;
     margin-top: 10px;
@@ -67,16 +44,13 @@ div {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   }
   
-  /* Media queries for responsiveness */
   @media screen and (max-width: 600px) {
-    /* Adjust styles for smaller screens */
     div {
       max-width: 100%;
     }
   }
   
   @media screen and (max-width: 400px) {
-    /* Further adjustments for even smaller screens */
     button {
       font-size: 14px;
     }

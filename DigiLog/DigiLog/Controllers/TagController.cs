@@ -64,8 +64,8 @@ namespace DigiLog.Controllers
         }
 
 
-        // DELETE api/<TagController>/5
-        [HttpDelete("checkout")]
+        // PUT api/<TagController>/5
+        [HttpPut("checkout")]
         public IActionResult CheckOutVisitor([FromBody] CheckOutTagDto checkOutTagDto)
         {
             if (!ModelState.IsValid)

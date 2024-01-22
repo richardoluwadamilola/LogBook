@@ -1,6 +1,7 @@
+<body>
 <div>
-    <h2>Visitor Form</h2>
-    <p>Please fill in the following details</p>
+    <h2>Employees</h2>
+    <p>Please enter in the following details</p>
     <form [formGroup]="employeeForm" (ngSubmit)="submitForm()">
         <label for="employeeNumber">Employee Number:</label>
         <input type="text" id="employeeNumber" formControlName="employeeNumber" required>
@@ -20,4 +21,5 @@
       <button type="submit">Add</button>
     </form>
   </div>
+</body>
   

@@ -7,8 +7,8 @@ import { TagManagementComponent } from './tag-management/tag-management.componen
 import { EmployeeManagementComponent } from './employee-management/employee-management.component';
 import { VisitorManagementComponent } from './visitor-management/visitor-management.component';
 import { AssignTagComponent } from './assign-tag/assign-tag.component';
-import { CheckoutTagComponent } from './checkout-tag/checkout-tag.component';
 import { HomeComponent } from './home/home.component';
+import { CheckoutVisitorComponent } from './checkout-visitor/checkout-visitor.component';
 
 
 const routes: Routes = [
@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'employee', component: EmployeeManagementComponent},
   { path: 'visitor', component: VisitorManagementComponent},
   { path: 'assign', component: AssignTagComponent},
-  { path: 'checkout', component: CheckoutTagComponent},
+  { path: 'checkout', component: CheckoutVisitorComponent}
 
   
 ];

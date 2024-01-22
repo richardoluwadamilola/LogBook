@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,16 @@ export class TagService {
     return this.http.post(`${this.apiUrl}/assign`, assignTagDto).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Error assigning tag', error);
-        throw error;
+        return throwError(error);
+      })
+    );
+  }
+
+  checkOutVisitor(checkoutTagDto: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/checkout`, checkoutTagDto).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error checking out tag', error);
+        return throwError(error);
       })
     );
   }
