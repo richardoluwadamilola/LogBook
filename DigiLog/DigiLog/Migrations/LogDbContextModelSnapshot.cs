@@ -19,6 +19,27 @@ namespace DigiLog.Migrations
                 .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("DigiLog.Models.Department", b =>
+                {
+                    b.Property<long>("DepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
+
+                    b.HasKey("DepartmentId");
+
+                    b.ToTable("Departments");
+                });
+
             modelBuilder.Entity("DigiLog.Models.Employee", b =>
                 {
                     b.Property<string>("EmployeeNumber")
@@ -30,28 +51,46 @@ namespace DigiLog.Migrations
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<long>("DepartmentId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("MiddleName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("EmployeeNumber");
 
+                    b.HasIndex("DepartmentId");
+
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("DigiLog.Models.Photo", b =>
+                {
+                    b.Property<long>("PhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<byte[]>("PhotoData")
+                        .HasColumnType("longblob");
+
+                    b.Property<long>("VisitorId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("PhotoId");
+
+                    b.HasIndex("VisitorId")
+                        .IsUnique();
+
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("DigiLog.Models.Tag", b =>
@@ -64,9 +103,6 @@ namespace DigiLog.Migrations
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("tinyint(1)");
@@ -95,9 +131,6 @@ namespace DigiLog.Migrations
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<DateTime>("DepartureTime")
                         .HasColumnType("datetime(6)");
 
@@ -105,25 +138,13 @@ namespace DigiLog.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(10)");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("MiddleName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<byte[]>("Photo")
-                        .IsRequired()
-                        .HasColumnType("longblob");
 
                     b.Property<string>("ReasonForVisit")
                         .IsRequired()
@@ -135,13 +156,37 @@ namespace DigiLog.Migrations
 
                     b.Property<string>("TagNumber")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeNumber");
 
+                    b.HasIndex("TagNumber");
+
                     b.ToTable("Visitors");
+                });
+
+            modelBuilder.Entity("DigiLog.Models.Employee", b =>
+                {
+                    b.HasOne("DigiLog.Models.Department", "Department")
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("DigiLog.Models.Photo", b =>
+                {
+                    b.HasOne("DigiLog.Models.Visitor", "Visitor")
+                        .WithOne("Photo")
+                        .HasForeignKey("DigiLog.Models.Photo", "VisitorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Visitor");
                 });
 
             modelBuilder.Entity("DigiLog.Models.Visitor", b =>
@@ -152,7 +197,26 @@ namespace DigiLog.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DigiLog.Models.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("DigiLog.Models.Department", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("DigiLog.Models.Visitor", b =>
+                {
+                    b.Navigation("Photo")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

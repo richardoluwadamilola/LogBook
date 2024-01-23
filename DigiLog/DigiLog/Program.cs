@@ -1,7 +1,9 @@
 using DigiLog.Data;
-using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
 using DigiLog.Services.Implementation;
+
+
+//using DigiLog.Models.ResponseModels;
 using Microsoft.EntityFrameworkCore;
 
 IConfiguration configuration = new ConfigurationBuilder()
@@ -14,21 +16,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+string? connectionString = configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<LogDbContext>(o => o.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 2, 0))));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ITagService, TagService>();
-builder.Services.AddScoped<IVisitorService, VisitorService>();
-builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-
 builder.Services.AddLogging();
-
-
-string? connectionString = configuration.GetConnectionString("DefaultConnection");
-
-builder.Services.AddDbContext<LogDbContext>(o => o.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 2, 0)) ));
 
 builder.Services.AddCors(options =>
 {
@@ -40,6 +37,10 @@ builder.Services.AddCors(options =>
             .WithMethods("OPTIONS");
     });
 });
+
+builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddScoped<IVisitorService, VisitorService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 var app = builder.Build();
 
@@ -54,7 +55,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
-app.UseMiddleware<ApiExceptionMiddleware>();
+//app.UseMiddleware<ApiExceptionMiddleware>();
 
 app.UseAuthorization();
 

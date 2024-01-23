@@ -8,30 +8,25 @@ namespace DigiLog.Models
         [Key]
         public long Id { get; set; }
         [Required]
-        [Display(Name  = "First Name")]
-        public string FirstName { get; set; } = string.Empty;
-        [Display(Name = "Middle Name")]
-        public string MiddleName { get; set; }
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; } = string.Empty;
+        [Display(Name  = "Full Name")]
+        [Column(TypeName = "varchar(50)")]
+        public string FullName { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Contact Address")]
         public string ContactAddress { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Phone Number")]
-        [RegularExpression(@"^\d{11}$", ErrorMessage ="Invalid Phone number format")]
+        [RegularExpression(@"^\+(?:[0-9] ?){6,14}[0-9]$", ErrorMessage = "Invalid Phone number format")]
         public string PhoneNumber { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Reason for Visit")]
         public ReasonForVisit ReasonForVisit { get; set; }
         public string ReasonForVisitDescription { get; set; }
-        [Display(Name = "Photo (Base64 Encoded)")]
-        public byte[]? Photo { get; set; }
+        public Photo Photo { get; set; }
         public DateTime ArrivalTime { get; set; } = DateTime.Now;
         public DateTime DepartureTime { get; set; }
         public DateTime DateCreated {  get; set; }
         public DateTime DateModified { get; set; }
-        public bool Deleted { get; set; }
 
 
         //Foreign Relationships
@@ -42,6 +37,7 @@ namespace DigiLog.Models
 
         [ForeignKey("Tag")]
         public string TagNumber { get; set; } = string.Empty;
+        public Tag? Tag { get; set; }
     }
 
     public enum ReasonForVisit

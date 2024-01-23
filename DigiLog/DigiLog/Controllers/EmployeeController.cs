@@ -2,8 +2,6 @@
 using DigiLog.Services.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace DigiLog.Controllers
 {
     [Route("api/[controller]")]
@@ -66,20 +64,46 @@ namespace DigiLog.Controllers
             return Ok(response);
 
         }
-        [HttpGet("search")]
-        public IActionResult SearchEmployees([FromQuery] string keyword)
+
+        // PUT api/<EmployeeController>/5
+        [HttpPut("{employeeNumber}")]
+        public IActionResult UpdateEmployee(string employeeNumber, [FromBody] EmployeeDTO employeeDto)
         {
-            // Retrieves a list of employees by keyword from the employee service.
-            var employees = _employeeService.SearchEmployees(keyword);
+            if (!ModelState.IsValid)
+                return BadRequest(employeeDto);
 
-            if (employees == null || employees.Count == 0)
-            {
-                return NotFound("No employees found");
-            }
+            //Calls the employee service to update an employee.
+            var response = _employeeService.UpdateEmployee(employeeDto);
 
-            // Return the list of employees.
-            return Ok(employees);
+            //Returns the update employee.
+            return Ok(response);
         }
+
+        // DELETE api/<EmployeeController>/5
+        [HttpDelete("{employeeNumber}")]
+        public IActionResult DeleteEmployee(string employeeNumber)
+        {
+            //Calls the employee service to delete an employee.
+            var response = _employeeService.DeleteEmployee(employeeNumber);
+
+            //Returns the delete employee.
+            return Ok(response);
+        }
+
+        //[HttpGet("search")]
+        //public IActionResult SearchEmployees([FromQuery] string keyword)
+        //{
+        //    // Retrieves a list of employees by keyword from the employee service.
+        //    var employees = _employeeService.SearchEmployees(keyword);
+
+        //    if (employees == null || employees.Count == 0)
+        //    {
+        //        return NotFound("No employees found");
+        //    }
+
+        //    // Return the list of employees.
+        //    return Ok(employees);
+        //}
 
     }
 }

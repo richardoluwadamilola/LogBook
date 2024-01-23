@@ -23,22 +23,25 @@ namespace DigiLog.Services.Implementation
 
         public ServiceResponse<string> CreateVisitor(VisitorDTO visitorDto)
         {
+
+            var photo = new Photo
+            {
+                PhotoData = GetByteFromImageString(visitorDto.Photo)
+            };
+
+
             var visitor = new Visitor
             {
                 //Create Visitor.
-                FirstName = visitorDto.FirstName,
-                MiddleName = visitorDto.MiddleName,
-                LastName = visitorDto.LastName,
+                FullName = visitorDto.FullName,
                 ContactAddress = visitorDto.ContactAddress,
                 PhoneNumber = visitorDto.PhoneNumber,
                 EmployeeNumber = visitorDto.EmployeeNumber,
                 ReasonForVisit = (ReasonForVisit)visitorDto.ReasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
-                Photo = GetByteFromImageString(visitorDto.Photo),
+                Photo = photo,
                 ArrivalTime = DateTime.Now,
                 DateCreated = DateTime.Now,
-                DateModified = DateTime.Now,
-                Deleted = false
             };
 
             //Add visitor to the database.
@@ -56,16 +59,14 @@ namespace DigiLog.Services.Implementation
                 .Select(visitor => new VisitorDTO
                 {
                     Id = visitor.Id,
-                    FirstName = visitor.FirstName,
-                    MiddleName= visitor.MiddleName,
-                    LastName = visitor.LastName,
+                    FullName = visitor.FullName,
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
                     ReasonForVisit = (int)visitor.ReasonForVisit,
                     ReasonForVisitEnum = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    Photo = GetImageStringFromByte(visitor.Photo),
+                    //Photo = photo,
                     ArrivalTime = visitor.ArrivalTime,
                     DepartureTime = visitor.DepartureTime,
 

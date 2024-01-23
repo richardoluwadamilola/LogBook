@@ -7,18 +7,14 @@ namespace DigiLog.DTOs
     {
         public long Id;
         [Required]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; } = string.Empty;
-        [Display(Name = "Middle Name")]
-        public string MiddleName { get; set; }
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; } = string.Empty;
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Contact Address")]
         public string ContactAddress { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Phone Number")]
-        [RegularExpression(@"^\d{11}$", ErrorMessage = "Invalid Phone number format")]
+        [RegularExpression(@"^\+(?:[0-9] ?){6,14}[0-9]$", ErrorMessage = "Invalid Phone number format")]
         public string PhoneNumber { get; set; } = string.Empty;
         public string EmployeeNumber { get; set; } = string.Empty;
         [Display(Name = "Reason for Visit")]

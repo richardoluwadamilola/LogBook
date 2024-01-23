@@ -25,13 +25,37 @@ namespace DigiLog.Services.Implementation
             {
                 TagNumber = tagDto.TagNumber,
                 DateCreated = DateTime.Now,
-                DateModified = DateTime.Now,
-                Deleted = false
+                //DateModified = DateTime.Now,
             };
 
             _context.Tags.Add(tag);
             _context.SaveChanges();
             return new ServiceResponse<string>();
+        }
+
+        // Check if a tag is available.
+        public ServiceResponse<bool> IsTagAvailable(string tagNumber)
+        {
+            var response = new ServiceResponse<bool>();
+
+            // Check if the tag exists
+            var tag = _context.Tags.Find(tagNumber);
+
+            if (tag == null)
+            {
+                response.HasError = true;
+                response.Description = $"Tag {tagNumber} not found.";
+                return response;
+            }
+
+            // Check if the tag is available
+            var isAvailable = !_context.Visitors.Any(v => v.TagNumber == tagNumber);
+
+            response.HasError = false;
+            response.Data = isAvailable;
+            response.Description = $"Tag {tagNumber} is {(isAvailable ? "available" : "not available")}.";
+
+            return response;
         }
 
         // Assign a tag to a visitor based on the provided AssignTagDto.
@@ -49,8 +73,6 @@ namespace DigiLog.Services.Implementation
                 return response;
             }
 
-            if (tag.IsAvailable)
-            {
                 // Find the visitor
                 var visitor = _context.Visitors.Find(assignTagDto.VisitorId);
 
@@ -63,21 +85,13 @@ namespace DigiLog.Services.Implementation
 
                 // Assign tag to the visitor
                 visitor.TagNumber = tag.TagNumber;
-                tag.IsAvailable = false;
-                _context.SaveChanges();
 
                 response.HasError = false;
                 response.Description = $"TagNumber assigned to visitor with ID {assignTagDto.VisitorId} successfully.";
 
                 return response;
             }
-            else
-            {
-                response.HasError = true;
-                response.Description = "TagNumber not available or already assigned to another visitor";
-                return response;
-            }
-        }
+            
 
         // Check out a visitor based on the provided CheckOutTagDto.
         public ServiceResponse<string> CheckOutVisitor(CheckOutTagDto checkOutTagDto)
@@ -94,6 +108,16 @@ namespace DigiLog.Services.Implementation
                 return response;
             }
 
+            // Check if visitor has a tag
+            // Check if the visitor has been assigned a tag
+            if (string.IsNullOrEmpty(visitor.TagNumber))
+            {
+                response.HasError = true;
+                response.Description = $"Visitor with ID {checkOutTagDto.VisitorId} has not been assigned a tag.";
+                return response;
+            }
+
+
             // Check if the visitor is already checked out
             if (visitor.DepartureTime > DateTime.MinValue)
             {
@@ -108,11 +132,7 @@ namespace DigiLog.Services.Implementation
             // Reassign tag if found
             var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == checkOutTagDto.TagNumber);
 
-            if (tag != null)
-            {
-                tag.IsAvailable = true;
-            }
-
+           
             _context.SaveChanges();
 
             response.HasError = false;
@@ -131,5 +151,30 @@ namespace DigiLog.Services.Implementation
                 })
                 .ToList();
         }
+
+        // Delete a tagNumber from the database.
+        public ServiceResponse<string> DeleteTag(string tagNumber)
+        {
+            var response = new ServiceResponse<string>();
+
+            // Find the tag
+            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == tagNumber);
+
+            if (tag == null)
+            {
+                response.HasError = true;
+                response.Description = $"Tag with ID {tagNumber} not found.";
+                return response;
+            }
+
+            // Remove the tag
+            _context.Tags.Remove(tag);
+            _context.SaveChanges();
+
+            response.HasError = false;
+            response.Description = $"Tag with ID {tagNumber} deleted successfully.";
+
+            return response;
+        }   
     }
 }
