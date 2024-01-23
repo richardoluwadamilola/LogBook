@@ -1,4 +1,5 @@
-﻿using DigiLog.Services.Abstraction;
+﻿using DigiLog.DTOs;
+using DigiLog.Services.Abstraction;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,46 @@ namespace DigiLog.Controllers
             }
 
             return Ok(departments);
+        }
+
+        [HttpGet("{departmentId}")]
+        public IActionResult GetDepartmentById(int departmentId)
+        {
+            var department = _departmentService.GetDepartmentById(departmentId);
+
+            if (department == null)
+            {
+                return NotFound("Department not found");
+            }
+
+            return Ok(department);
+        }
+
+        [HttpPost]
+        public IActionResult CreateDepartment([FromBody] DepartmentDTO departmentDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(departmentDto);
+
+            var createdDepartment = _departmentService.CreateDepartment(departmentDto);
+            return Ok(createdDepartment);
+        }
+
+        [HttpPut("{departmentId}")]
+        public IActionResult UpdateDepartment(int departmentId, [FromBody] DepartmentDTO departmentDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(departmentDto);
+
+            var updatedDepartment = _departmentService.UpdateDepartment(departmentDto);
+            return Ok(updatedDepartment);
+        }
+
+        [HttpDelete("{departmentId}")]
+        public IActionResult DeleteDepartment(int departmentId)
+        {
+            var deletedDepartment = _departmentService.DeleteDepartment(departmentId);
+            return Ok(deletedDepartment);
         }
     }
 }
