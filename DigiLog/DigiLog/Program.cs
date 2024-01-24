@@ -41,6 +41,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IVisitorService, VisitorService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
 var app = builder.Build();
 

@@ -9,7 +9,6 @@ namespace DigiLog.Models
         [Column(TypeName = "varchar(10)")]
         public string TagNumber { get; set; } = string.Empty;
         public DateTime DateCreated { get; set; }
-        public DateTime DateModified { get; set; }
 
 
     }

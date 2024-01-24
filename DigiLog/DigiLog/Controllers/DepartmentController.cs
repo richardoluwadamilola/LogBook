@@ -44,17 +44,17 @@ namespace DigiLog.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateDepartment([FromBody] DepartmentDTO departmentDto)
+        public IActionResult CreateDepartment([FromBody] CreateDepartmentDTO createDepartmentDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(departmentDto);
+                return BadRequest(createDepartmentDto);
 
-            var createdDepartment = _departmentService.CreateDepartment(departmentDto);
+            var createdDepartment = _departmentService.CreateDepartment(createDepartmentDto);
             return Ok(createdDepartment);
         }
 
         [HttpPut("{departmentId}")]
-        public IActionResult UpdateDepartment(int departmentId, [FromBody] DepartmentDTO departmentDto)
+        public IActionResult UpdateDepartment([FromBody] DepartmentDTO departmentDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(departmentDto);
@@ -64,7 +64,7 @@ namespace DigiLog.Controllers
         }
 
         [HttpDelete("{departmentId}")]
-        public IActionResult DeleteDepartment(int departmentId)
+        public IActionResult DeleteDepartment(long departmentId)
         {
             var deletedDepartment = _departmentService.DeleteDepartment(departmentId);
             return Ok(deletedDepartment);

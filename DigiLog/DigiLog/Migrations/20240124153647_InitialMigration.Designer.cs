@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DigiLog.Migrations
 {
     [DbContext(typeof(LogDbContext))]
-    [Migration("20240123123109_InitialMigration")]
+    [Migration("20240124153647_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -104,12 +104,6 @@ namespace DigiLog.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("tinyint(1)");
-
                     b.HasKey("TagNumber");
 
                     b.ToTable("Tags");
@@ -159,13 +153,11 @@ namespace DigiLog.Migrations
 
                     b.Property<string>("TagNumber")
                         .IsRequired()
-                        .HasColumnType("varchar(10)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeNumber");
-
-                    b.HasIndex("TagNumber");
 
                     b.ToTable("Visitors");
                 });
@@ -200,15 +192,7 @@ namespace DigiLog.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DigiLog.Models.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagNumber")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Employee");
-
-                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("DigiLog.Models.Department", b =>

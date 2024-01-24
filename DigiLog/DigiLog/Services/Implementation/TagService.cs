@@ -25,7 +25,6 @@ namespace DigiLog.Services.Implementation
             {
                 TagNumber = tagDto.TagNumber,
                 DateCreated = DateTime.Now,
-                //DateModified = DateTime.Now,
             };
 
             _context.Tags.Add(tag);

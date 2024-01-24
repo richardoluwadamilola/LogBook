@@ -20,11 +20,15 @@ namespace DigiLog.Models
         [Display(Name = "Last Name")]
         [Column(TypeName = "varchar(20)")]
         public string LastName { get; set; } = string.Empty;
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
+
+
         [Required]
         [ForeignKey("Department")]
         public long DepartmentId { get; set; }
         public Department Department { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateModified { get; set; }
+
+        
     }
 }

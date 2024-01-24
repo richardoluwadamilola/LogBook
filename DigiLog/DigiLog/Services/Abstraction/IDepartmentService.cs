@@ -5,7 +5,7 @@ namespace DigiLog.Services.Abstraction
 {
     public interface IDepartmentService
     {
-        ServiceResponse<string> CreateDepartment(DepartmentDTO departmentDto);
+        ServiceResponse<string> CreateDepartment(CreateDepartmentDTO createDepartmentDto);
         List<DepartmentDTO> GetDepartments();
         ServiceResponse<DepartmentDTO> GetDepartmentById(long departmentId);
         ServiceResponse<string> UpdateDepartment(DepartmentDTO departmentDto);

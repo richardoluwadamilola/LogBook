@@ -6,6 +6,7 @@ namespace DigiLog.Models
     public class Visitor
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         [Required]
         [Display(Name  = "Full Name")]
@@ -35,9 +36,8 @@ namespace DigiLog.Models
         public string EmployeeNumber { get; set; } = string.Empty;
         public Employee? Employee { get; set; } 
 
-        [ForeignKey("Tag")]
         public string TagNumber { get; set; } = string.Empty;
-        public Tag? Tag { get; set; }
+        //public Tag? Tag { get; set; }
     }
 
     public enum ReasonForVisit

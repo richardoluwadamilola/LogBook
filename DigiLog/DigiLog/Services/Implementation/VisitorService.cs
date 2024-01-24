@@ -3,6 +3,7 @@ using DigiLog.DTOs;
 using DigiLog.Models;
 using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
+using Microsoft.EntityFrameworkCore;
 using System.Buffers.Text;
 using System.Net.NetworkInformation;
 
@@ -42,6 +43,7 @@ namespace DigiLog.Services.Implementation
                 Photo = photo,
                 ArrivalTime = DateTime.Now,
                 DateCreated = DateTime.Now,
+
             };
 
             //Add visitor to the database.
@@ -51,10 +53,12 @@ namespace DigiLog.Services.Implementation
 
             return new ServiceResponse<string>();
         }
+
         public List<VisitorDTO> GetVisitorsByCheckInDate(DateTime date)
         {
             //Get Visitors by check in date.
            var visitors = _context.Visitors
+                .Include(v => v.Photo)
                 .Where(v => v.ArrivalTime.Date ==  date.Date)
                 .Select(visitor => new VisitorDTO
                 {
@@ -64,11 +68,72 @@ namespace DigiLog.Services.Implementation
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
                     ReasonForVisit = (int)visitor.ReasonForVisit,
-                    ReasonForVisitEnum = visitor.ReasonForVisit,
+                    //ReasonForVisitEnum = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    //Photo = photo,
                     ArrivalTime = visitor.ArrivalTime,
                     DepartureTime = visitor.DepartureTime,
+
+                    // Convert PhotoData to a base64-encoded string
+                    Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
+
+                })
+            .ToList();
+
+            return visitors;
+        }
+
+
+        // Get Visitors by Employee Number.
+        public List<VisitorDTO> GetVisitorsByEmployeeNumber(string employeeNumber)
+        {
+            //Get Visitors by Employee Number.
+            var visitors = _context.Visitors
+                .Include(v => v.Photo)
+                .Where(v => v.EmployeeNumber == employeeNumber)
+                .Select(visitor => new VisitorDTO
+                {
+                    Id = visitor.Id,
+                    FullName = visitor.FullName,
+                    ContactAddress = visitor.ContactAddress,
+                    PhoneNumber = visitor.PhoneNumber,
+                    EmployeeNumber = visitor.EmployeeNumber,
+                    ReasonForVisit = (int)visitor.ReasonForVisit,
+                    //ReasonForVisitEnum = visitor.ReasonForVisit,
+                    ReasonForVisitDescription = visitor.ReasonForVisitDescription,
+                    ArrivalTime = visitor.ArrivalTime,
+                    DepartureTime = visitor.DepartureTime,
+
+                    // Convert PhotoData to a base64-encoded string
+                    Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
+
+                })
+            .ToList();
+
+            return visitors;
+        }
+
+        // Get Visitors by Tag Number.
+        public List<VisitorDTO> GetVisitorsByTagNumber(string tagNumber)
+        {
+            //Get Visitors by Tag Number.
+            var visitors = _context.Visitors
+                .Include(v => v.Photo)
+                .Where(v => v.TagNumber == tagNumber)
+                .Select(visitor => new VisitorDTO
+                {
+                    Id = visitor.Id,
+                    FullName = visitor.FullName,
+                    ContactAddress = visitor.ContactAddress,
+                    PhoneNumber = visitor.PhoneNumber,
+                    EmployeeNumber = visitor.EmployeeNumber,
+                    ReasonForVisit = (int)visitor.ReasonForVisit,
+                    //ReasonForVisitEnum = visitor.ReasonForVisit,
+                    ReasonForVisitDescription = visitor.ReasonForVisitDescription,
+                    ArrivalTime = visitor.ArrivalTime,
+                    DepartureTime = visitor.DepartureTime,
+
+                    // Convert PhotoData to a base64-encoded string
+                    Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
 
                 })
             .ToList();

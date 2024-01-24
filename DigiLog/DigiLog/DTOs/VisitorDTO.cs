@@ -22,10 +22,9 @@ namespace DigiLog.DTOs
         public string ReasonForVisitDescription { get; set; }
         [Display(Name = "Photo (Base64 Encoded)")]
         public string Photo { get; set; } = string.Empty;
-        //public int? TagNumber { get; set; }
-        public DateTime ArrivalTime { get; set; } = DateTime.Now;
-        public DateTime DepartureTime { get; set; }
-        public ReasonForVisit ReasonForVisitEnum { get; set; }
+        public DateTime ArrivalTime { get; internal set; } = DateTime.Now;
+        public DateTime DepartureTime { get; internal set; }
+        //public ReasonForVisit ReasonForVisitEnum { get; set; }
 
     }
 }

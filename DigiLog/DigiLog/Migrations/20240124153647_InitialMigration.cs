@@ -38,9 +38,7 @@ namespace DigiLog.Migrations
                 {
                     TagNumber = table.Column<string>(type: "varchar(10)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsAvailable = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,9 +58,9 @@ namespace DigiLog.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastName = table.Column<string>(type: "varchar(20)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DepartmentId = table.Column<long>(type: "bigint", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DepartmentId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -110,12 +108,6 @@ namespace DigiLog.Migrations
                         principalTable: "Employees",
                         principalColumn: "EmployeeNumber",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Visitors_Tags_TagNumber",
-                        column: x => x.TagNumber,
-                        principalTable: "Tags",
-                        principalColumn: "TagNumber",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -155,11 +147,6 @@ namespace DigiLog.Migrations
                 name: "IX_Visitors_EmployeeNumber",
                 table: "Visitors",
                 column: "EmployeeNumber");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Visitors_TagNumber",
-                table: "Visitors",
-                column: "TagNumber");
         }
 
         /// <inheritdoc />
@@ -169,13 +156,13 @@ namespace DigiLog.Migrations
                 name: "Photos");
 
             migrationBuilder.DropTable(
+                name: "Tags");
+
+            migrationBuilder.DropTable(
                 name: "Visitors");
 
             migrationBuilder.DropTable(
                 name: "Employees");
-
-            migrationBuilder.DropTable(
-                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Departments");

@@ -47,6 +47,24 @@ namespace DigiLog.Controllers
             return Ok(visitors);
         }
 
+        // GET: api/Visitor/GetVisitorsByEmployeeNumber?employeeNumber=123456
+        [HttpGet("GetVisitorsByEmployeeNumber")]
+        public ActionResult<List<VisitorDTO>> GetVisitorsByEmployeeNumber([FromQuery] string employeeNumber)
+        {
+            // Get visitors by employee number.
+            var visitors = _visitorService.GetVisitorsByEmployeeNumber(employeeNumber);
+            return Ok(visitors);
+        }
+
+        // GET: api/Visitor/GetVisitorsByTagNumber?tagNumber=123456
+        [HttpGet("GetVisitorsByTagNumber")]
+        public ActionResult<List<VisitorDTO>> GetVisitorsByTagNumber([FromQuery] string tagNumber)
+        {
+            // Get visitors by tag number.
+            var visitors = _visitorService.GetVisitorsByTagNumber(tagNumber);
+            return Ok(visitors);
+        }
+
 
 
     }

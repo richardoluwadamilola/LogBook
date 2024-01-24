@@ -17,13 +17,12 @@ namespace DigiLog.Services.Implementation
         }
 
         // Create a department.
-        public ServiceResponse<string> CreateDepartment(DepartmentDTO departmentDto)
+        public ServiceResponse<string> CreateDepartment(CreateDepartmentDTO createDepartmentDto)
         {
             // Create Department.
             var department = new Department
             {
-                DepartmentId = departmentDto.DepartmentId,
-                DepartmentName = departmentDto.DepartmentName,
+                DepartmentName = createDepartmentDto.DepartmentName,
                 DateCreated = DateTime.Now,
             };
 
@@ -55,7 +54,6 @@ namespace DigiLog.Services.Implementation
             {
                 return new ServiceResponse<DepartmentDTO>
                 {
-                    HasError = true,
                     Description = $"Department with ID {departmentId} not found.",
                 };
             }
@@ -82,7 +80,6 @@ namespace DigiLog.Services.Implementation
             {
                 return new ServiceResponse<string>
                 {
-                    HasError = true,
                     Description = $"Department with ID {departmentDto.DepartmentId} not found.",
                 };
             }

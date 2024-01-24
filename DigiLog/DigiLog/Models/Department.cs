@@ -6,6 +6,7 @@ namespace DigiLog.Models
     public class Department
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long DepartmentId { get; set; }
 
         [Required]
