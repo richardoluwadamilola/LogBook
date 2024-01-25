@@ -3,6 +3,7 @@ using DigiLog.DTOs;
 using DigiLog.Models;
 using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
+using System.Transactions;
 
 namespace DigiLog.Services.Implementation
 {
@@ -62,33 +63,61 @@ namespace DigiLog.Services.Implementation
         {
             var response = new ServiceResponse<string>();
 
-            // Find an available tag
-            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == assignTagDto.TagNumber);
-
-            if (tag == null)
+            // Handle Concurrent handling of tag assignment
+            using (var scope = new TransactionScope())
             {
-                response.HasError = true;
-                response.Description = "TagNumber not found.";
-                return response;
-            }
-
-                // Find the visitor
-                var visitor = _context.Visitors.Find(assignTagDto.VisitorId);
-
-                if (visitor == null)
+                try
                 {
+                    // Find an available tag number 
+                    var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == assignTagDto.TagNumber);
+
+                    if (tag == null)
+                    {
+                        response.HasError = true;
+                        response.Description = "TagNumber not found.";
+                        return response;
+                    }
+
+                    // Check if the tag is available
+                    if (!_context.Visitors.Any(v => v.TagNumber == assignTagDto.TagNumber))
+                    {
+                        response.HasError = true;
+                        response.Description = $"TagNumber {assignTagDto.TagNumber} is not available.";
+                        return response;
+                    }
+
+                    // Find the visitor
+                    var visitor = _context.Visitors.Find(assignTagDto.VisitorId);
+
+                    if (visitor == null)
+                    {
+                        response.HasError = true;
+                        response.Description = $"Visitor with ID {assignTagDto.VisitorId} not found.";
+                        return response;
+                    }
+
+                    // Assign tag to the visitor
+                    visitor.TagNumber = tag.TagNumber;
+
+                    // Save changes
+                    _context.SaveChanges();
+
+                    // Complete the transaction
+                    scope.Complete();
+                    response.HasError = false;
+                    response.Description = $"TagNumber assigned to visitor with ID {assignTagDto.VisitorId} successfully.";
+
+                }
+                catch (Exception)
+                {
+                       // Rollback the transaction
+                       scope.Dispose();
                     response.HasError = true;
-                    response.Description = $"Visitor with ID {assignTagDto.VisitorId} not found.";
-                    return response;
+                    response.Description = $"An error occurred while assigning tag to visitor with ID {assignTagDto.VisitorId}.";
                 }
 
-                // Assign tag to the visitor
-                visitor.TagNumber = tag.TagNumber;
-
-                response.HasError = false;
-                response.Description = $"TagNumber assigned to visitor with ID {assignTagDto.VisitorId} successfully.";
-
-                return response;
+                    return response;
+                }
             }
             
 
