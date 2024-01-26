@@ -7,9 +7,7 @@ export enum ReasonForVisit {
 
 export interface Visitor {
     id: number;
-    firstName: string;
-    middleName: string;
-    lastName: string;
+    fullName: string;
     contactAddress: string;
     phoneNumber: string;
     reasonForVisit: number;

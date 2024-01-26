@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { Employee } from '../services/api/models/employee.model';
 import { ReasonForVisit } from '../services/api/models/visitor';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-visitor-form',
@@ -14,8 +15,11 @@ export class VisitorFormComponent implements OnInit {
   employees: Employee[] = [];
   takenPicture: string | null = null;
   formSubmitted = false;
+  isTakingPicture = false;
+  isRetakeMode = false;
 
-  constructor(private fb: FormBuilder, private visitorService: VisitorService) { }
+
+  constructor(private fb: FormBuilder, private visitorService: VisitorService, private router: Router) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -24,12 +28,11 @@ export class VisitorFormComponent implements OnInit {
 
   createForm(): void {
     this.visitorForm = this.fb.group({
-      firstName: ['', Validators.required],
-      middleName: [''],
-      lastName: ['', Validators.required],
+      fullName: ['', Validators.required],
       contactAddress: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       employeeNumber: [null, Validators.required],
+      personHereToSee: ['', Validators.required],
       reasonForVisit: [null, Validators.required],
       reasonForVisitDescription: [''],
       photo: [null, Validators.required],
@@ -44,7 +47,8 @@ export class VisitorFormComponent implements OnInit {
   getEmployees(): void {
     this.visitorService.getEmployees().subscribe(
       (data: Employee[]) => {
-        this.employees = data;
+        //Sort employees alphabetically
+        this.employees = data.sort((a, b) => a.firstName.localeCompare(b.firstName));
         console.log('Employees:', this.employees);
       },
       (error: any) => {
@@ -52,6 +56,15 @@ export class VisitorFormComponent implements OnInit {
       }
     );
   }  
+  
+
+  takeOrRetakePicture(): void {
+    if (this.isRetakeMode) {
+      this.retakePicture();
+    } else {
+      this.takePicture();
+    }
+  }
 
   takePicture(): void {
     // Access the device camera and trigger the picture taking process
@@ -85,6 +98,7 @@ export class VisitorFormComponent implements OnInit {
       .catch((error) => {
         console.error('Error accessing the camera:', error);
       });
+      this.isRetakeMode = true;
   }
 
   retakePicture(): void {
@@ -92,6 +106,14 @@ export class VisitorFormComponent implements OnInit {
     this.takenPicture = null;
     // Call the takePicture method to start the picture-taking process again
     this.takePicture();
+
+    this.isRetakeMode = false;
+  }
+
+  // Quit the form
+  quitForm(): void {
+    // Navigate to the home page
+    this.router.navigate(['/home']);
   }
   
 
