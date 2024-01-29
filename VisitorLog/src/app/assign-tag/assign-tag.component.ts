@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { TagService } from '../services/api/tags/tag.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { VisitorService } from '../services/api/visitors/visitor.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-assign-tag',
@@ -11,10 +13,13 @@ export class AssignTagComponent {
   tagAssignmentForm!: FormGroup;
   errorMessage : string | null = null;
   successMessage : string | null = null;
-  constructor(private fb: FormBuilder, private tagService: TagService) { }
+  visitors: any[] = [];
+
+  constructor(private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService) { }
 
   ngOnInit(): void {
     this.initForm();
+    this.loadVisitors();
   }
 
   initForm(): void {
@@ -48,5 +53,16 @@ export class AssignTagComponent {
         }
       );
     }
+  }
+
+  loadVisitors(): void {
+    this.visitorService.getVisitors().subscribe(
+      (data: any[]) => {
+        this.visitors = data;
+      },
+      (error: any) => {
+        console.error('Error fetching visitors', error);
+      }
+    );
   }
 }

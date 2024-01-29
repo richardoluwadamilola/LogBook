@@ -16,8 +16,7 @@ import { DatePipe } from '@angular/common';
 import { AssignTagComponent } from './assign-tag/assign-tag.component';
 import { HomeComponent } from './home/home.component';
 import { CheckoutVisitorComponent } from './checkout-visitor/checkout-visitor.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { DepartmentFormComponent } from './department-form/department-form.component';
 
 
 @NgModule({
@@ -33,21 +32,20 @@ import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
     AssignTagComponent,
     HomeComponent,
     CheckoutVisitorComponent,
-
-
+    DepartmentFormComponent,
   ],
   // ...
 
     imports: [
-      BrowserModule,
-      AppRoutingModule, 
       ReactiveFormsModule,
-      HttpClientModule,
       FormsModule,
-      MatAutocompleteModule,
-      MatFormFieldModule,
+      BrowserModule,
+      AppRoutingModule,
+      HttpClientModule,
+      
 
     ],
+
   providers: [DatePipe],
   bootstrap: [AppComponent]
 })

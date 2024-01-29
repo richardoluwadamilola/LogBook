@@ -9,6 +9,7 @@ import { VisitorManagementComponent } from './visitor-management/visitor-managem
 import { AssignTagComponent } from './assign-tag/assign-tag.component';
 import { HomeComponent } from './home/home.component';
 import { CheckoutVisitorComponent } from './checkout-visitor/checkout-visitor.component';
+import { DepartmentFormComponent } from './department-form/department-form.component';
 
 
 const routes: Routes = [
@@ -21,10 +22,12 @@ const routes: Routes = [
   { path: 'employee', component: EmployeeManagementComponent},
   { path: 'visitor', component: VisitorManagementComponent},
   { path: 'assign', component: AssignTagComponent},
-  { path: 'checkout', component: CheckoutVisitorComponent}
+  { path: 'checkout', component: CheckoutVisitorComponent},
+  {path: 'department', component: DepartmentFormComponent},
 
   
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

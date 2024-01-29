@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { DatePipe } from '@angular/common';
-import { ReasonForVisit } from '../services/api/models/visitor';
+import { ReasonForVisit, Visitor } from '../services/api/models/visitor';
 
 @Component({
   selector: 'app-visitor-management',
@@ -10,34 +10,54 @@ import { ReasonForVisit } from '../services/api/models/visitor';
   styleUrls: ['./visitor-management.component.css']
 })
 export class VisitorManagementComponent implements OnInit{
-  dateForm!: FormGroup;
+  searchForm!: FormGroup;
   visitors!: any[];
 
-  constructor(private fb: FormBuilder, private visitorService: VisitorService, private datePipe: DatePipe) {
-    this.dateForm = this.fb.group({
-      arrivalTime: [Date, Validators.required]
-    });
-   }
+  constructor(private fb: FormBuilder, private visitorService: VisitorService, private datePipe: DatePipe) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.createForm();
+  }
+
+  createForm(): void {
+    this.searchForm = this.fb.group({
+      arrivalTime: ['', Validators.required],
+      employeeNumber: ['', Validators.required],
+      tagNumber: ['', Validators.required],
+    });
+  }
 
   submitForm(): void {
-    if (this.dateForm.valid) {
-      const date = this.dateForm.value.arrivalTime;
-      console.log('Sending date to backend:', date);
-  
-      this.visitorService.getVisitorsByCheckInDate(date).subscribe(
-        (data: any) => {
-          console.log('Raw API Response:', data);  // Log the entire response
-          console.log('Visitors fetched successfully', data);
+    const formData = this.searchForm.value;
+    if (formData.arrivalTime) {
+      this.visitorService.getVisitorsByCheckInDate(formData.arrivalTime).subscribe(
+        (data: Visitor[]) => {
           this.visitors = data;
         },
         (error: any) => {
           console.error('Error fetching visitors', error);
         }
       );
-    }
+    } else if (formData.employeeNumber) {
+      this.visitorService.getVisitorsByEmployeeNumber(formData.employeeNumber).subscribe(
+        (data: Visitor[]) => {
+          this.visitors = data;
+        },
+        (error: any) => {
+          console.error('Error fetching visitors by Employee Number', error);
+        }
+      );
+  } else if (formData.tagNumber) {
+    this.visitorService.getVisitorbyTagNumber(formData.tagNumber).subscribe(
+      (data: Visitor) => {
+        this.visitors = data ? [data]: [];
+      },
+      (error: any) => {
+        console.error('Error fetching visitors by Tag Number', error);
+      }
+    );
   }
+}
   
   getReasonForVisit(reasonForVisitEnum: ReasonForVisit): string {
     return ReasonForVisit[reasonForVisitEnum];

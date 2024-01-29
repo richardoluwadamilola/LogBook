@@ -16,7 +16,9 @@
         <input type="text" id="lastName" formControlName="lastName" required>   
 
         <label for="department">Department:</label>
-        <input type="text" id="department" formControlName="department" required>
+    <select id="department" formControlName="department" required>
+      <option *ngFor="let department of departments" [value]="department.departmentName">{{ department.departmentName }}</option>
+    </select>
       
       <button type="submit">Add</button>
     </form>

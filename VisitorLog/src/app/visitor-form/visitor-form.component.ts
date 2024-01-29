@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { Employee } from '../services/api/models/employee.model';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './visitor-form.component.html',
   styleUrls: ['./visitor-form.component.css']
 })
-export class VisitorFormComponent implements OnInit {
+export class VisitorFormComponent implements OnInit, AfterViewInit {
   visitorForm!: FormGroup;
   employees: Employee[] = [];
   takenPicture: string | null = null;
@@ -24,6 +24,10 @@ export class VisitorFormComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this.getEmployees();
+  }
+
+  ngAfterViewInit(): void {
+    $('#employeeNumber').select();
   }
 
   createForm(): void {
@@ -116,8 +120,9 @@ export class VisitorFormComponent implements OnInit {
     this.router.navigate(['/home']);
   }
   
-
+  // Submit the form
   submitForm(): void {
+
     if (this.visitorForm.valid) {
       const formData = this.visitorForm.value;
       

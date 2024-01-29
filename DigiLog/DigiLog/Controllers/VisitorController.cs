@@ -37,6 +37,15 @@ namespace DigiLog.Controllers
             return Ok(new ServiceResponse<string> { Data = createdVisitor.Data, Description = "Visitor created successfully" });
         }
 
+        //GET api/<VisitorController>/GetVisitors
+        [HttpGet("GetVisitors")]
+        public ActionResult<List<VisitorDTO>> GetVisitors()
+        {
+            // Get all visitors.
+            var visitors = _visitorService.GetVisitors();
+            return Ok(visitors);
+        }
+
 
         // GET: api/Visitor/GetVisitorsByCheckInDate?date=2023-01-01
         [HttpGet("GetVisitorsByCheckInDate")]

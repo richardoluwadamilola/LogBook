@@ -1,0 +1,13 @@
+<body>
+    <div>
+        <h2>Create Departments</h2>
+        <form [formGroup]="departmentForm" (ngSubmit)="submitForm()">
+    
+            <label for="departmentname">Department Name:</label>
+            <input type="text" id="departmentName" formControlName="departmentName" required>
+          
+          <button type="submit">Add</button>
+        </form>
+      </div>
+    </body>
+      

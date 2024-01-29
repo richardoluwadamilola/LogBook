@@ -3,5 +3,5 @@ export class Employee {
     firstName: string = '';
     middleName: string = '';
     lastName: string = '';
-    department: string = '';
+    //department: string = '';
 }

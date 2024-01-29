@@ -46,12 +46,38 @@ namespace DigiLog.Services.Implementation
 
             };
 
+            //Add photo to the database.
+            _context.Photos.Add(photo);
+
             //Add visitor to the database.
             _context.Visitors.Add(visitor);
             //Save changes to the database.
             _context.SaveChanges();
 
             return new ServiceResponse<string>();
+        }
+
+        public List<VisitorDTO> GetVisitors()
+        {
+            return _context.Visitors
+                .Include(v => v.Photo)
+                .Select(visitor => new VisitorDTO
+                {
+                    FullName = visitor.FullName,
+                    ContactAddress = visitor.ContactAddress,
+                    PhoneNumber = visitor.PhoneNumber,
+                    EmployeeNumber = visitor.EmployeeNumber,
+                    ReasonForVisit = (int)visitor.ReasonForVisit,
+                    //ReasonForVisitEnum = visitor.ReasonForVisit,
+                    ReasonForVisitDescription = visitor.ReasonForVisitDescription,
+                    ArrivalTime = visitor.ArrivalTime,
+                    DepartureTime = visitor.DepartureTime,
+
+                    // Convert PhotoData to a base64-encoded string
+                    Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
+
+                })
+                .ToList();
         }
 
         public List<VisitorDTO> GetVisitorsByCheckInDate(DateTime date)

@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { Employee } from '../models/employee.model';
 import { Visitor } from '../models/visitor';
 import { DatePipe } from '@angular/common';
+import { Form } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,8 @@ export class VisitorService {
   constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
 
-  saveVisitorDetails(visitorData: any): Observable<any> {
+  saveVisitorDetails(visitorData: FormData): Observable<any> {
     console.log('Request Payload:', visitorData);
-    
     return this.http.post(this.apiUrl, visitorData).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Error saving visitor details', error);
@@ -31,7 +31,19 @@ export class VisitorService {
     return this.http.get<Employee[]>('https://localhost:7020/api/Employee');
   }
 
+  getVisitors(): Observable<Visitor[]> {
+    return this.http.get<Visitor[]>('https://localhost:7020/api/Visitor/GetVisitors');
+  }
+
   getVisitorsByCheckInDate(date: Date): Observable<Visitor[]> {
     return this.http.get<Visitor[]>(`https://localhost:7020/api/Visitor/GetVisitorsByCheckInDate?date=${date}`);
   }  
+
+  getVisitorsByEmployeeNumber(employeeNumber: string): Observable<Visitor[]> {
+    return this.http.get<Visitor[]>(`https://localhost:7020/api/Visitor/GetVisitorsByEmployeeNumber?employeeNumber=${employeeNumber}`);
+  }
+
+  getVisitorbyTagNumber(tagNumber: string): Observable<Visitor> {
+    return this.http.get<Visitor>(`https://localhost:7020/api/Visitor/GetVisitorByTagNumber?tagNumber=${tagNumber}`);
+  }
 }
