@@ -28,16 +28,17 @@ namespace DigiLog.Models
         public DateTime DepartureTime { get; set; }
         public DateTime DateCreated {  get; set; }
         public DateTime DateModified { get; set; }
+      
 
 
         //Foreign Relationships
         [ForeignKey("Employee")]
         [Required]
         public string EmployeeNumber { get; set; } = string.Empty;
-        public Employee? Employee { get; set; } 
-
+        public Employee? Employee { get; set; }
+        [ForeignKey("Tag")]
         public string TagNumber { get; set; } = string.Empty;
-        //public Tag? Tag { get; set; }
+        public Tag? Tag { get; set; }
     }
 
     public enum ReasonForVisit

@@ -106,6 +106,31 @@ namespace DigiLog.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("DigiLog.Models.User", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("DigiLog.Models.Visitor", b =>
                 {
                     b.Property<long>("Id")
@@ -150,11 +175,13 @@ namespace DigiLog.Migrations
 
                     b.Property<string>("TagNumber")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeNumber");
+
+                    b.HasIndex("TagNumber");
 
                     b.ToTable("Visitors");
                 });
@@ -189,7 +216,15 @@ namespace DigiLog.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DigiLog.Models.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("DigiLog.Models.Department", b =>

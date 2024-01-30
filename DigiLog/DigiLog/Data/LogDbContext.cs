@@ -14,6 +14,7 @@ namespace DigiLog.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

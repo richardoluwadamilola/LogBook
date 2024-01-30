@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from '../services/api/employees/employee.service';
 import { Department } from '../services/api/models/department.model';
 import { DepartmentService } from '../services/api/department/department.service';
+
+declare var $: any;
 
 @Component({
   selector: 'app-employee-management',
   templateUrl: './employee-management.component.html',
   styleUrls: ['./employee-management.component.css']
 })
-export class EmployeeManagementComponent implements OnInit{
+
+export class EmployeeManagementComponent implements OnInit, AfterViewInit{
   employeeForm!: FormGroup;
   departments: Department[] = [];
   
@@ -27,6 +30,10 @@ export class EmployeeManagementComponent implements OnInit{
 
     ngOnInit(): void {
       this.getDepartments();
+    }
+
+    ngAfterViewInit(): void {
+      $('#department').select();
     }
 
     getDepartments(): void {

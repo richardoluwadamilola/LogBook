@@ -94,7 +94,7 @@ namespace DigiLog.Services.Implementation
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
                     ReasonForVisit = (int)visitor.ReasonForVisit,
-                    //ReasonForVisitEnum = visitor.ReasonForVisit,
+                    ReasonForVisitEnum = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
                     DepartureTime = visitor.DepartureTime,
@@ -124,7 +124,7 @@ namespace DigiLog.Services.Implementation
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
                     ReasonForVisit = (int)visitor.ReasonForVisit,
-                    //ReasonForVisitEnum = visitor.ReasonForVisit,
+                    ReasonForVisitEnum = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
                     DepartureTime = visitor.DepartureTime,
@@ -153,7 +153,7 @@ namespace DigiLog.Services.Implementation
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
                     ReasonForVisit = (int)visitor.ReasonForVisit,
-                    //ReasonForVisitEnum = visitor.ReasonForVisit,
+                    ReasonForVisitEnum = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
                     DepartureTime = visitor.DepartureTime,
@@ -175,7 +175,7 @@ namespace DigiLog.Services.Implementation
             byte[] imageByte = Convert.FromBase64String(image);
             // Return the byte array
             return imageByte;
-            
+
         }
 
         public static string GetImageStringFromByte(byte[] image)

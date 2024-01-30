@@ -1,40 +1,26 @@
-<div>
-  <form [formGroup]="tagAssignmentForm" (ngSubmit)="assignTagToVisitor()">
-    <label for="tagNumber">Tag Number</label>
-    <input type="text" id="tagNumber" formControlName="tagNumber" required>
-    <button type="submit">Assign Tag</button>
-  </form>
-
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-  </div>
-
-  <div *ngIf="successMessage" class="success-message">
-    {{ successMessage }}
-  </div>
-
-  <h2>Visitor List</h2>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Visitor Id</th>
-        <th>Name</th>
-        <th>Contact Address</th>
-        <th>Phone Number</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let visitor of visitors; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ visitor.name }}</td>
-        <td>{{ visitor.contactAddress }}</td>
-        <td>{{ visitor.phoneNumber }}</td>
-        <td>
-          <button (click)="assignTagToVisitor()">Assign Tag</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<table class="table table-bordered table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th>Full Name</th>
+      <th>Contact Address</th>
+      <th>Phone Number</th>
+      <th>Reason for Visit</th>
+      <th>Person here to see</th>
+      <th>Arrival Time</th>
+      <th>Tag Assignment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let visitor of visitors">
+      <td>{{ visitor.fullName }}</td>
+      <td>{{ visitor.contactAddress }}</td>
+      <td>{{ visitor.phoneNumber }}</td>
+      <td>{{ getReasonLabel(visitor.reasonForVisit) }}</td>
+      <td>{{ getEmployeeName(visitor.employeeNumber) }}</td>
+      <td>{{ visitor.arrivalTime }}</td>
+      <td>
+        <button class="btn btn-primary" (click)="assignTagToVisitor()">Assign Tag</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

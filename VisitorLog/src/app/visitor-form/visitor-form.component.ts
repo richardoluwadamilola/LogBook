@@ -5,6 +5,8 @@ import { Employee } from '../services/api/models/employee.model';
 import { ReasonForVisit } from '../services/api/models/visitor';
 import { Router } from '@angular/router';
 
+declare var $: any;
+
 @Component({
   selector: 'app-visitor-form',
   templateUrl: './visitor-form.component.html',

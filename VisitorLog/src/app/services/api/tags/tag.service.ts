@@ -1,6 +1,7 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,7 @@ export class TagService {
     );
   }
 
+
   assignTagToVisitor(assignTagDto: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/assign`, assignTagDto).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -46,4 +48,3 @@ export class TagService {
     );
   }
 }
-

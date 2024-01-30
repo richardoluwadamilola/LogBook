@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TagService } from '../services/api/tags/tag.service';
+import { VisitorService } from '../services/api/visitors/visitor.service';
+import { ReasonForVisit } from '../services/api/models/visitor';
 
 @Component({
   selector: 'app-checkout-visitor',
@@ -8,47 +10,59 @@ import { TagService } from '../services/api/tags/tag.service';
   styleUrls: ['./checkout-visitor.component.css']
 })
 export class CheckoutVisitorComponent implements OnInit{
-  checkoutForm!: FormGroup;
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  visitors: any[] = [];
+  employees: any[] = [];
 
-  constructor(private fb: FormBuilder, private tagService: TagService) { }
+  constructor(private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService) { }
 
   ngOnInit(): void {
-    this.initform();
+    this.loadVisitors();
+    this.loadEmployees();
   }
 
-  initform(): void {
-    this.checkoutForm = this.fb.group({
-      tagNumber: ['', Validators.required],
-      visitorId: [0, Validators.required]
-    });
-  }
+  initform(): void {}
+  reasons = [
+    { label: 'Official', value: ReasonForVisit.Official },
+    { label: 'Personal', value: ReasonForVisit.Personal }
+  ];
 
   checkoutVisitor(): void {
-    if (this.checkoutForm.valid) {
-      const checkoutTagDto = this.checkoutForm.value;
-      this.tagService.checkOutVisitor(checkoutTagDto).subscribe(
-        (data: any) => {
-          console.log('Visitor checked out successfully', data);
+  }
 
-          if (data.error) {
-            this.errorMessage = data.description;
-            this.successMessage = null;
-            return;
-          } else {
-            this.successMessage = data.description;
-            this.errorMessage = null;
-            this.checkoutForm.reset();
-          }
-        },
-        (error: any) => {
-          console.error('Error checking out Visitor', error);
-          this.errorMessage = 'An unexpected error occurred';
-          this.successMessage = null;
-        }
-      );
-    }
+  // Method to get the reason for visit label based on the enum value
+  getReasonLabel(value: number): string {
+    // Implement the logic to map the enum value to the label
+    return value === 0 ? 'Official' : 'Personal'; // Adjust based on your actual enum values
+  }
+
+  // assign-tag.component.ts
+
+getEmployeeName(employeeNumber: string): string {
+  const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);
+  return employee ? `${employee.firstName} ${employee.middleName} ${employee.lastName}` : '';
+}
+
+
+  
+  loadVisitors(): void {
+    this.visitorService.getVisitors().subscribe(
+      (data: any[]) => this.visitors = data,
+      (error: any) => console.error('Error fetching visitors', error)
+    );
+  }
+
+  loadEmployees(): void {
+    // Call your service to get employee data
+    this.visitorService.getEmployees().subscribe(
+      (data: any[]) => {
+        this.employees = data;
+      },
+      (error: any) => {
+        console.error('Error fetching employees', error);
+      }
+    );
   }
 
 }

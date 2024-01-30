@@ -1,4 +1,5 @@
 using DigiLog.Data;
+using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
 using DigiLog.Services.Implementation;
 
@@ -42,6 +43,7 @@ builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IVisitorService, VisitorService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -56,7 +58,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
-//app.UseMiddleware<ApiExceptionMiddleware>();
+app.UseMiddleware<ApiExceptionMiddleware>();
 
 app.UseAuthorization();
 

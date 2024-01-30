@@ -24,7 +24,7 @@ namespace DigiLog.DTOs
         public string Photo { get; set; } = string.Empty;
         public DateTime ArrivalTime { get; internal set; } = DateTime.Now;
         public DateTime DepartureTime { get; internal set; }
-        //public ReasonForVisit ReasonForVisitEnum { get; set; }
+        public ReasonForVisit ReasonForVisitEnum { get; set; }
 
     }
 }

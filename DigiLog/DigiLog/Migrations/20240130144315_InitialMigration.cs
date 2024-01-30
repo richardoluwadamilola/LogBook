@@ -47,6 +47,25 @@ namespace DigiLog.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Username = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Password = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Role = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -108,6 +127,12 @@ namespace DigiLog.Migrations
                         principalTable: "Employees",
                         principalColumn: "EmployeeNumber",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Visitors_Tags_TagNumber",
+                        column: x => x.TagNumber,
+                        principalTable: "Tags",
+                        principalColumn: "TagNumber",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -147,6 +172,11 @@ namespace DigiLog.Migrations
                 name: "IX_Visitors_EmployeeNumber",
                 table: "Visitors",
                 column: "EmployeeNumber");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Visitors_TagNumber",
+                table: "Visitors",
+                column: "TagNumber");
         }
 
         /// <inheritdoc />
@@ -156,13 +186,16 @@ namespace DigiLog.Migrations
                 name: "Photos");
 
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Visitors");
 
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Departments");

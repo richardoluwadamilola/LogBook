@@ -63,63 +63,55 @@ namespace DigiLog.Services.Implementation
         {
             var response = new ServiceResponse<string>();
 
-            // Handle Concurrent handling of tag assignment
-            using (var scope = new TransactionScope())
+            try
             {
-                try
+                // Find an available tag number 
+                var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == assignTagDto.TagNumber);
+
+                if (tag == null)
                 {
-                    // Find an available tag number 
-                    var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == assignTagDto.TagNumber);
-
-                    if (tag == null)
-                    {
-                        response.HasError = true;
-                        response.Description = "TagNumber not found.";
-                        return response;
-                    }
-
-                    // Check if the tag is available
-                    if (!_context.Visitors.Any(v => v.TagNumber == assignTagDto.TagNumber))
-                    {
-                        response.HasError = true;
-                        response.Description = $"TagNumber {assignTagDto.TagNumber} is not available.";
-                        return response;
-                    }
-
-                    // Find the visitor
-                    var visitor = _context.Visitors.Find(assignTagDto.VisitorId);
-
-                    if (visitor == null)
-                    {
-                        response.HasError = true;
-                        response.Description = $"Visitor with ID {assignTagDto.VisitorId} not found.";
-                        return response;
-                    }
-
-                    // Assign tag to the visitor
-                    visitor.TagNumber = tag.TagNumber;
-
-                    // Save changes
-                    _context.SaveChanges();
-
-                    // Complete the transaction
-                    scope.Complete();
-                    response.HasError = false;
-                    response.Description = $"TagNumber assigned to visitor with ID {assignTagDto.VisitorId} successfully.";
-
-                }
-                catch (Exception)
-                {
-                       // Rollback the transaction
-                       scope.Dispose();
                     response.HasError = true;
-                    response.Description = $"An error occurred while assigning tag to visitor with ID {assignTagDto.VisitorId}.";
-                }
-
+                    response.Description = "TagNumber not found.";
                     return response;
                 }
+
+                // Check if the tag is available
+                if (_context.Visitors.Any(v => v.TagNumber == assignTagDto.TagNumber))
+                {
+                    response.HasError = true;
+                    response.Description = $"TagNumber {assignTagDto.TagNumber} is not available.";
+                    return response;
+                }
+
+                // Find the visitor
+                var visitor = _context.Visitors.Find(assignTagDto.VisitorId);
+
+                if (visitor == null)
+                {
+                    response.HasError = true;
+                    response.Description = $"Visitor with ID {assignTagDto.VisitorId} not found.";
+                    return response;
+                }
+
+                // Assign tag to the visitor
+                visitor.TagNumber = tag.TagNumber;
+
+                // Save changes
+                _context.SaveChanges();
+
+                response.HasError = false;
+                response.Description = $"TagNumber assigned to visitor with ID {assignTagDto.VisitorId} successfully.";
             }
-            
+            catch (Exception)
+            {
+                response.HasError = true;
+                response.Description = $"An error occurred while assigning tag to visitor with ID {assignTagDto.VisitorId}.";
+            }
+
+            return response;
+        }
+
+
 
         // Check out a visitor based on the provided CheckOutTagDto.
         public ServiceResponse<string> CheckOutVisitor(CheckOutTagDto checkOutTagDto)
