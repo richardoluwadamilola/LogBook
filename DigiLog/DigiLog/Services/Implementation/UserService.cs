@@ -95,7 +95,7 @@ namespace DigiLog.Services.Implementation
 
         public ServiceResponse<string> DeleteUser(string username)
         {
-            var user = _context.Users.First(u => u.Username == username);
+            var user = _context.Users.Find(username);
 
             if (user == null)
             {
