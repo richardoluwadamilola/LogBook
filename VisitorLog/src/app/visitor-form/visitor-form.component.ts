@@ -15,10 +15,10 @@ declare var $: any;
 export class VisitorFormComponent implements OnInit, AfterViewInit {
   visitorForm!: FormGroup;
   employees: Employee[] = [];
-  takenPicture: string | null = null;
+  //takenPicture: string | null = null;
   formSubmitted = false;
-  isTakingPicture = false;
-  isRetakeMode = false;
+  // isTakingPicture = false;
+  // isRetakeMode = false;
 
 
   constructor(private fb: FormBuilder, private visitorService: VisitorService, private router: Router) { }
@@ -38,7 +38,7 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       contactAddress: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       employeeNumber: [null, Validators.required],
-      personHereToSee: ['', Validators.required],
+      //personHereToSee: ['', Validators.required],
       reasonForVisit: [null, Validators.required],
       reasonForVisitDescription: [''],
       photo: [null, Validators.required],
@@ -62,69 +62,22 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       }
     );
   }  
-  
-
-  takeOrRetakePicture(): void {
-    if (this.isRetakeMode) {
-      this.retakePicture();
-    } else {
-      this.takePicture();
-    }
-  }
-
-  takePicture(): void {
-    // Access the device camera and trigger the picture taking process
-    const videoOptions = { facingMode: 'user', width: 320, height: 240 };
-    navigator.mediaDevices.getUserMedia({ video: videoOptions })
-      .then((stream) => {
-        const video = document.createElement('video');
-        document.body.appendChild(video);
-        video.srcObject = stream;
-        video.play();
-
-        // Capture a frame as an image
-        setTimeout(() => {
-          const canvas = document.createElement('canvas');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          const context = canvas.getContext('2d');
-          context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-          // Convert the canvas image to a data URL
-          this.takenPicture = canvas.toDataURL('image/png');
-
-          // Set the captured photo in the form control
-          this.visitorForm.get('photo')?.setValue(this.takenPicture);
-
-          // Stop the camera stream and remove the video element
-          stream.getTracks().forEach(track => track.stop());
-          document.body.removeChild(video);
-        }, 1000); // Adjust the timeout based on your needs
-      })
-      .catch((error) => {
-        console.error('Error accessing the camera:', error);
-      });
-      this.isRetakeMode = true;
-  }
-
-  retakePicture(): void {
-    // Reset the takenPicture variable to allow retaking a new picture
-    this.takenPicture = null;
-    // Call the takePicture method to start the picture-taking process again
-    this.takePicture();
-
-    this.isRetakeMode = false;
-  }
 
   // Quit the form
   quitForm(): void {
     // Navigate to the home page
     this.router.navigate(['/home']);
   }
+
+  handlePhotoCapture(photoData: string): void {
+    this.visitorForm.patchValue({
+      photo: photoData,
+    });
+  }
   
   // Submit the form
   submitForm(): void {
-
+    console.log('Form data:', this.visitorForm.value);
     if (this.visitorForm.valid) {
       const formData = this.visitorForm.value;
       
@@ -157,12 +110,6 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
           // Set the formSubmitted flag to true
           this.formSubmitted = true;
           
-          // Delay the form reset for 5 seconds (adjust the time based on your preference)
-          setTimeout(() => {
-            this.formSubmitted = false;
-            this.visitorForm.reset();
-            this.takenPicture = null;
-          }, 5000);
         }
       },
       (error: any) => {

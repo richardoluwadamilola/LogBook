@@ -13,6 +13,7 @@ import { DepartmentFormComponent } from './department-form/department-form.compo
 import { LoginComponent } from './login/login.component';
 import { authGuard } from './Auth/auth.guard';
 import { SuperadminComponent } from './superadmin/superadmin.component';
+import { CameraComponent } from './camera/camera.component';
 
 
 const routes: Routes = [
@@ -28,7 +29,7 @@ const routes: Routes = [
   { path: 'visitor', component: VisitorManagementComponent},
   { path: 'assign', component: AssignTagComponent},
   { path: 'checkout', component: CheckoutVisitorComponent},
-  {path: 'department', component: DepartmentFormComponent},
+  { path: 'department', component: DepartmentFormComponent},
 
   
 ];

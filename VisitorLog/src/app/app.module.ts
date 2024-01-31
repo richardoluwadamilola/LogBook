@@ -19,6 +19,8 @@ import { CheckoutVisitorComponent } from './checkout-visitor/checkout-visitor.co
 import { DepartmentFormComponent } from './department-form/department-form.component';
 import { LoginComponent } from './login/login.component';
 import { SuperadminComponent } from './superadmin/superadmin.component';
+import { CameraComponent } from './camera/camera.component';
+import { WebcamModule } from 'ngx-webcam';
 
 
 @NgModule({
@@ -37,6 +39,7 @@ import { SuperadminComponent } from './superadmin/superadmin.component';
     DepartmentFormComponent,
     LoginComponent,
     SuperadminComponent,
+    CameraComponent,
   ],
   // ...
 
@@ -46,6 +49,7 @@ import { SuperadminComponent } from './superadmin/superadmin.component';
       BrowserModule,
       AppRoutingModule,
       HttpClientModule,
+      WebcamModule,
       
 
     ],

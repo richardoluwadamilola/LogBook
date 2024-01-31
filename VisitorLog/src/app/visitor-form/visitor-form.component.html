@@ -30,11 +30,7 @@
 
       <button type="button" (click)="quitForm()">Quit</button>
 
-      <button type="button" (click)="takeOrRetakePicture()">{{ isRetakeMode ? 'Retake Picture' : 'Take Picture'
-        }}</button>
-
-      <!-- Display the taken picture -->
-      <img *ngIf="takenPicture" [src]="takenPicture" alt="Visitor Picture">
+      <app-camera (photoCaptured)="handlePhotoCapture($event)"></app-camera>
 
       <button type="submit">Submit</button>
       <div *ngIf="formSubmitted">

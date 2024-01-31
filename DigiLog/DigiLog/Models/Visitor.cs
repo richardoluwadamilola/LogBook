@@ -37,7 +37,7 @@ namespace DigiLog.Models
         public string EmployeeNumber { get; set; } = string.Empty;
         public Employee? Employee { get; set; }
         [ForeignKey("Tag")]
-        public string TagNumber { get; set; } = string.Empty;
+        public string? TagNumber { get; set; }
         public Tag? Tag { get; set; }
     }
 
