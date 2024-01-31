@@ -16,13 +16,13 @@ namespace DigiLog.Services.Implementation
             _context = context;
         }
 
-        public ServiceResponse<string> CreateUser(UserDTO UserDto)
+        public ServiceResponse<string> CreateUser(RegisterUserDTO registerUserDto)
         {
             var user = new User
             {
-                Username = UserDto.Username,
-                Password = UserDto.Password,
-                Role = UserDto.Role,
+                Username = registerUserDto.Username,
+                Password = registerUserDto.Password,
+                Role = registerUserDto.Role,
                 //DateCreated = DateTime.Now,
             };
 
@@ -33,7 +33,7 @@ namespace DigiLog.Services.Implementation
 
         public ServiceResponse<string> Login (UserLoginDTO userLoginDTO)
         {
-            var user = _context.Users.Find(userLoginDTO.Username);
+            var user = _context.Users.FirstOrDefault(u => u.Username == userLoginDTO.Username);
 
             if (user == null)
             {
@@ -95,7 +95,7 @@ namespace DigiLog.Services.Implementation
 
         public ServiceResponse<string> DeleteUser(string username)
         {
-            var user = _context.Users.Find(username);
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
 
             if (user == null)
             {
@@ -112,6 +112,6 @@ namespace DigiLog.Services.Implementation
             return new ServiceResponse<string>();
         }
 
-        
+
     }
 }

@@ -21,12 +21,12 @@ namespace DigiLog.Controllers.Admin
 
         [HttpPost("create-user")]
         //[Authorize(Roles = "Admin")]
-        public IActionResult CreateUser([FromBody] UserDTO UserDto)
+        public IActionResult CreateUser([FromBody] RegisterUserDTO registerUserDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(UserDto);
+                return BadRequest(registerUserDto);
 
-            var createdUser = _userService.CreateUser(UserDto);
+            var createdUser = _userService.CreateUser(registerUserDto);
             return Ok(createdUser);
         }
 
@@ -50,12 +50,26 @@ namespace DigiLog.Controllers.Admin
             return Ok(response);
         }
 
-        [HttpDelete]
+        [HttpDelete("delete-user")]
         //[Authorize (Roles = "Admin")]
-        public IActionResult DeleteUser(string username)
+        public IActionResult DeleteUser([FromBody] UserDTO userDTO)
         {
-            var response = _userService.DeleteUser(username);
-            return Ok(response);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Call the service to delete the user
+            var response = _userService.DeleteUser(userDTO.Username);
+
+            if (response.HasError)
+            {
+                // Return appropriate status code and response in case of an error
+                return NotFound(new { Message = response.Description });
+            }
+
+            // Return success response
+            return Ok(new { Message = "User deleted successfully." });
         }
     }
 }

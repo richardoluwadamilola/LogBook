@@ -5,7 +5,7 @@ namespace DigiLog.Services.Abstraction
 {
     public interface IUserService
     {
-        ServiceResponse<string> CreateUser(UserDTO userDto);
+        ServiceResponse<string> CreateUser(RegisterUserDTO registerUserDto);
         ServiceResponse<string> Login(UserLoginDTO userLoginDTO);
         ServiceResponse<string> ChangePassword(ChangePasswordDTO changePasswordDTO);
         ServiceResponse<string> Logout();

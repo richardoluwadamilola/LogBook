@@ -17,6 +17,8 @@ import { AssignTagComponent } from './assign-tag/assign-tag.component';
 import { HomeComponent } from './home/home.component';
 import { CheckoutVisitorComponent } from './checkout-visitor/checkout-visitor.component';
 import { DepartmentFormComponent } from './department-form/department-form.component';
+import { LoginComponent } from './login/login.component';
+import { SuperadminComponent } from './superadmin/superadmin.component';
 
 
 @NgModule({
@@ -33,6 +35,8 @@ import { DepartmentFormComponent } from './department-form/department-form.compo
     HomeComponent,
     CheckoutVisitorComponent,
     DepartmentFormComponent,
+    LoginComponent,
+    SuperadminComponent,
   ],
   // ...
 
