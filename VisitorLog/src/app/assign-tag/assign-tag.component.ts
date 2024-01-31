@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TagService } from '../services/api/tags/tag.service';
 import { VisitorService } from '../services/api/visitors/visitor.service';
-import { ReasonForVisit } from '../services/api/models/visitor';
+import { ReasonForVisit, Visitor } from '../services/api/models/visitor';
 
 @Component({
   selector: 'app-assign-tag',
@@ -38,7 +38,38 @@ export class AssignTagComponent implements OnInit {
     { label: 'Personal', value: ReasonForVisit.Personal }
   ];
 
-assignTagToVisitor(): void {}
+// assign-tag.component.ts
+
+assignTagToVisitor(visitorId: number): void {
+  const assignTagDto = { VisitorId: visitorId };
+
+  this.tagService.assignTagToVisitor(assignTagDto).subscribe(
+    (response: any) => {
+      if (!response.hasError) {
+        console.log('Tag assigned successfully:', response);
+        alert('Tag assigned successfully');
+        this.errorMessage = null;
+        // You may want to reload the visitors after successful tag assignment
+        this.loadVisitors();
+      } else {
+        if (response.description === 'No available tags found.') {
+          // Alert when no tags are available
+          alert('No available tags. Please try again later.');
+        }
+
+        console.error('Error assigning tag:', response.description);
+        this.errorMessage = response.description || 'Error assigning tag';
+        this.successMessage = null;
+      }
+    },
+    (error: any) => {
+      console.error('Error assigning tag:', error);
+      this.errorMessage = 'Error assigning tag';
+      this.successMessage = null;
+    }
+  );
+}
+
 
   // Method to get the reason for visit label based on the enum value
   getReasonLabel(value: number): string {
@@ -55,12 +86,13 @@ getEmployeeName(employeeNumber: string): string {
 
 
   
-  loadVisitors(): void {
-    this.visitorService.getVisitors().subscribe(
-      (data: any[]) => this.visitors = data,
-      (error: any) => console.error('Error fetching visitors', error)
-    );
-  }
+  // assign-tag.component.ts
+loadVisitors(): void {
+  this.visitorService.getVisitors().subscribe(
+    (data: Visitor[]) => this.visitors = data,
+    (error: any) => console.error('Error fetching visitors', error)
+  );
+}
 
   loadEmployees(): void {
     // Call your service to get employee data

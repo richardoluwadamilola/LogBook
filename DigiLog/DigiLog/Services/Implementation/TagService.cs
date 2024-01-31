@@ -33,133 +33,95 @@ namespace DigiLog.Services.Implementation
             return new ServiceResponse<string>();
         }
 
-        // Check if a tag is available.
-        public ServiceResponse<bool> IsTagAvailable(string tagNumber)
-        {
-            var response = new ServiceResponse<bool>();
 
-            // Check if the tag exists
-            var tag = _context.Tags.Find(tagNumber);
-
-            if (tag == null)
-            {
-                response.HasError = true;
-                response.Description = $"Tag {tagNumber} not found.";
-                return response;
-            }
-
-            // Check if the tag is available
-            var isAvailable = !_context.Visitors.Any(v => v.TagNumber == tagNumber);
-
-            response.HasError = false;
-            response.Data = isAvailable;
-            response.Description = $"Tag {tagNumber} is {(isAvailable ? "available" : "not available")}.";
-
-            return response;
-        }
 
         // Assign a tag to a visitor based on the provided AssignTagDto.
         public ServiceResponse<string> AssignTagToVisitor(AssignTagDto assignTagDto)
         {
-            var response = new ServiceResponse<string>();
+            var visitor = _context.Visitors.FirstOrDefault(v => v.Id == assignTagDto.VisitorId);
 
-            try
+            if (visitor == null)
             {
-                // Find an available tag number 
-                var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == assignTagDto.TagNumber);
-
-                if (tag == null)
+                return new ServiceResponse<string>
                 {
-                    response.HasError = true;
-                    response.Description = "TagNumber not found.";
-                    return response;
-                }
-
-                // Check if the tag is available
-                if (_context.Visitors.Any(v => v.TagNumber == assignTagDto.TagNumber))
-                {
-                    response.HasError = true;
-                    response.Description = $"TagNumber {assignTagDto.TagNumber} is not available.";
-                    return response;
-                }
-
-                // Find the visitor
-                var visitor = _context.Visitors.Find(assignTagDto.VisitorId);
-
-                if (visitor == null)
-                {
-                    response.HasError = true;
-                    response.Description = $"Visitor with ID {assignTagDto.VisitorId} not found.";
-                    return response;
-                }
-
-                // Assign tag to the visitor
-                visitor.TagNumber = tag.TagNumber;
-
-                // Save changes
-                _context.SaveChanges();
-
-                response.HasError = false;
-                response.Description = $"TagNumber assigned to visitor with ID {assignTagDto.VisitorId} successfully.";
-            }
-            catch (Exception)
-            {
-                response.HasError = true;
-                response.Description = $"An error occurred while assigning tag to visitor with ID {assignTagDto.VisitorId}.";
+                    HasError = true,
+                    Description = $"Visitor with ID {assignTagDto.VisitorId} not found.",
+                };
             }
 
-            return response;
+            // Find an available tag.
+            var availableTag = _context.Tags.FirstOrDefault(t => t.IsAvaliable);
+
+            if (availableTag == null)
+            {
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = "No available tags found.",
+                };
+            }
+
+            // Assign the tag to the visitor
+            visitor.TagNumber = availableTag.TagNumber;
+            availableTag.IsAvaliable = false;
+
+            _context.SaveChanges();
+
+            return new ServiceResponse<string>();
         }
+
 
 
 
         // Check out a visitor based on the provided CheckOutTagDto.
         public ServiceResponse<string> CheckOutVisitor(CheckOutTagDto checkOutTagDto)
         {
-            var response = new ServiceResponse<string>();
-
-            // Find the visitor using the visitorId
             var visitor = _context.Visitors.FirstOrDefault(v => v.Id == checkOutTagDto.VisitorId);
 
             if (visitor == null)
             {
-                response.HasError = true;
-                response.Description = $"No visitor found with ID {checkOutTagDto.VisitorId}.";
-                return response;
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = $"Visitor with ID {checkOutTagDto.VisitorId} not found.",
+                };
             }
 
-            // Check if visitor has a tag
-            // Check if the visitor has been assigned a tag
+            // Check if the visitor has a tag
             if (string.IsNullOrEmpty(visitor.TagNumber))
             {
-                response.HasError = true;
-                response.Description = $"Visitor with ID {checkOutTagDto.VisitorId} has not been assigned a tag.";
-                return response;
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = $"Visitor with ID {checkOutTagDto.VisitorId} does not have a tag.",
+                };
             }
 
-
-            // Check if the visitor is already checked out
-            if (visitor.DepartureTime > DateTime.MinValue)
+            // Check if the visitor has already checked out
+            if (visitor.DepartureTime != DateTime.MinValue)
             {
-                response.HasError = true;
-                response.Description = $"Visitor with ID {checkOutTagDto.VisitorId} is already checked out.";
-                return response;
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = $"Visitor with ID {checkOutTagDto.VisitorId} has already checked out.",
+                };
             }
 
-            // Set departure time to the current time
+            // Check out the visitor
             visitor.DepartureTime = DateTime.Now;
 
-            // Reassign tag if found
-            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == checkOutTagDto.TagNumber);
+            // Make the tag available
+            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == visitor.TagNumber);
+            if (tag != null)
+            {
+                tag.IsAvaliable = true;
+            }
 
-           
             _context.SaveChanges();
 
-            response.HasError = false;
-            response.Description = $"Visitor with ID {checkOutTagDto.VisitorId} checked out successfully.";
-
-            return response;
+            return new ServiceResponse<string>();
         }
+
 
         // Get a list of TagDTOs representing the available tags.
         public List<TagDTO> GetTags()

@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent},
   { path: 'visitor-form', component: VisitorFormComponent},
   {path: 'superadmin', component: SuperadminComponent},
-  {path: 'login', component: LoginComponent},
+  { path: 'login', component: LoginComponent},
   { path: 'admin', component: AdminComponent, canActivate: [authGuard]},
   { path: 'entry', component: EntryComponent, canActivate: [authGuard]},
   { path: 'tag', component: TagManagementComponent},

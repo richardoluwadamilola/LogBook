@@ -27,9 +27,9 @@ export class LoginComponent {
       this.authService.login(username, password).subscribe(
         (data: any) => {
           console.log('Login successful', data);
-          alert('Login successful');
+          //alert('Login successful');
 
-          
+          this.router.navigateByUrl('/admin');
           
         },
         (error: any) => {

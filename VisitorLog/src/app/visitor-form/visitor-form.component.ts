@@ -109,6 +109,7 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
           console.log('Visitor details saved successfully');
           // Set the formSubmitted flag to true
           this.formSubmitted = true;
+          this.visitorForm.reset();
           
         }
       },

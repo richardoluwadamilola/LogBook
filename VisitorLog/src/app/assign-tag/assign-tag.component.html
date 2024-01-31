@@ -12,6 +12,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let visitor of visitors">
+      <td>{{ visitor.id}}</td>
       <td>{{ visitor.fullName }}</td>
       <td>{{ visitor.contactAddress }}</td>
       <td>{{ visitor.phoneNumber }}</td>
@@ -19,7 +20,7 @@
       <td>{{ getEmployeeName(visitor.employeeNumber) }}</td>
       <td>{{ visitor.arrivalTime }}</td>
       <td>
-        <button class="btn btn-primary" (click)="assignTagToVisitor()">Assign Tag</button>
+        <button class="btn btn-primary" (click)="assignTagToVisitor(visitor.id)">Assign Tag</button>
       </td>
     </tr>
   </tbody>

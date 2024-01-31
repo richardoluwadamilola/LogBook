@@ -5,7 +5,7 @@ namespace DigiLog.DTOs
 {
     public class VisitorDTO
     {
-        public long Id;
+        public long Id {  get; set; }
         [Required]
         [Display(Name = "Full Name")]
         public string FullName { get; set; } = string.Empty;

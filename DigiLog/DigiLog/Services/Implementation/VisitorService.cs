@@ -63,6 +63,7 @@ namespace DigiLog.Services.Implementation
                 .Include(v => v.Photo)
                 .Select(visitor => new VisitorDTO
                 {
+                    Id = visitor.Id,
                     FullName = visitor.FullName,
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
