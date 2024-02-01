@@ -38,8 +38,7 @@ export class AssignTagComponent implements OnInit {
     { label: 'Personal', value: ReasonForVisit.Personal }
   ];
 
-// assign-tag.component.ts
-
+//assign tag
 assignTagToVisitor(visitorId: number): void {
   const assignTagDto = { VisitorId: visitorId };
 

@@ -29,7 +29,12 @@ export class LoginComponent {
           console.log('Login successful', data);
           //alert('Login successful');
 
-          this.router.navigateByUrl('/admin');
+          if (this.router.url === '/admin') {
+            this.router.navigateByUrl('/admin');
+          }
+          else if (this.router.url === '/entry') {
+            this.router.navigateByUrl('/entry');
+          }
           
         },
         (error: any) => {

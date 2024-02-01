@@ -32,10 +32,7 @@
 
       <app-camera (photoCaptured)="handlePhotoCapture($event)"></app-camera>
 
-      <button type="submit">Submit</button>
-      <div *ngIf="formSubmitted">
-        <h3>Your details have been successfully submitted. Please proceed to get a tag.</h3>
-      </div>
+      <button type="submit" *ngIf="!formSubmitted && visitorForm.valid">Submit</button>
     </form>
   </div>
 </body>

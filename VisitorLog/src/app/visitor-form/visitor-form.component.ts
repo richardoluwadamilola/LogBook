@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { Employee } from '../services/api/models/employee.model';
 import { ReasonForVisit } from '../services/api/models/visitor';
 import { Router } from '@angular/router';
+import { CameraComponent } from '../camera/camera.component';
 
 declare var $: any;
 
@@ -13,6 +14,7 @@ declare var $: any;
   styleUrls: ['./visitor-form.component.css']
 })
 export class VisitorFormComponent implements OnInit, AfterViewInit {
+  @ViewChild(CameraComponent) cameraComponent!: CameraComponent;
   visitorForm!: FormGroup;
   employees: Employee[] = [];
   //takenPicture: string | null = null;
@@ -107,10 +109,17 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
           console.error('Error saving visitor details:', response.description);
         } else {
           console.log('Visitor details saved successfully');
+          alert('Visitor details saved successfully, please proceed to get a tag.');
           // Set the formSubmitted flag to true
           this.formSubmitted = true;
-          this.visitorForm.reset();
-          
+          // Reset the form and the camera component after a short delay
+          setTimeout(() => {
+            this.formSubmitted = false;
+            this.visitorForm.reset();
+            if (this.cameraComponent) {
+              this.cameraComponent.resetCamera();
+            }
+          }, 5000); 
         }
       },
       (error: any) => {

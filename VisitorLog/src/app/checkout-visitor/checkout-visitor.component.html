@@ -19,7 +19,7 @@
       <td>{{ getEmployeeName(visitor.employeeNumber) }}</td>
       <td>{{ visitor.arrivalTime }}</td>
       <td>
-        <button class="btn btn-primary" (click)="checkoutVisitor()">Check Out</button>
+        <button class="btn btn-primary" (click)="checkoutVisitor(visitor.id)">Check Out</button>
       </td>
     </tr>
   </tbody>

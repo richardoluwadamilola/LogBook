@@ -19,6 +19,11 @@ export class CameraComponent {
     this.trigger.next();
   }
 
+  public resetCamera(): void {
+    // Reset the camera state
+    this.webcamImage = undefined;
+  }
+
   public handleImage(webcamImage: WebcamImage): void {
     this.webcamImage = webcamImage;
     if (webcamImage) {

@@ -28,16 +28,35 @@ export class CheckoutVisitorComponent implements OnInit{
     { label: 'Personal', value: ReasonForVisit.Personal }
   ];
 
-  checkoutVisitor(): void {
-  }
-
   // Method to get the reason for visit label based on the enum value
   getReasonLabel(value: number): string {
     // Implement the logic to map the enum value to the label
     return value === 0 ? 'Official' : 'Personal'; // Adjust based on your actual enum values
   }
 
-  // assign-tag.component.ts
+  // Check out visitor
+  checkoutVisitor(visitorId: number): void {
+    this.tagService.checkOutVisitor(visitorId).subscribe(
+      (response: any) => {
+        if (!response.hasError) {
+          console.log('Visitor checked out successfully:', response);
+          alert('Visitor checked out successfully');
+          this.errorMessage = null;
+          // You may want to reload the visitors after successful checkout
+          this.loadVisitors();
+        } else {
+          console.error('Error checking out visitor:', response.description);
+          this.errorMessage = response.description || 'Error checking out visitor';
+          this.successMessage = null;
+        }
+      },
+      (error: any) => {
+        console.error('Error checking out visitor:', error);
+        this.errorMessage = error || 'Error checking out visitor';
+        this.successMessage = null;
+      }
+    );
+  }
 
 getEmployeeName(employeeNumber: string): string {
   const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);
