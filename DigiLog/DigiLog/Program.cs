@@ -1,11 +1,16 @@
+using DigiLog;
 using DigiLog.Data;
 using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
 using DigiLog.Services.Implementation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 
 //using DigiLog.Models.ResponseModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 IConfiguration configuration = new ConfigurationBuilder()
     .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -14,6 +19,27 @@ IConfiguration configuration = new ConfigurationBuilder()
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure AppSettings
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
+// Configure JWT authentication
+var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
+appSettings.GenerateRandomKey(); // Ensure the key is generated dynamically
+var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            // Other options...
+        };
+    });
 
 // Add services to the container.
 

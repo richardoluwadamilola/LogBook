@@ -34,11 +34,22 @@ namespace DigiLog.Controllers.Admin
         public IActionResult Login([FromBody] UserLoginDTO userLoginDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(userLoginDto);
+            {
+                return BadRequest(ModelState);
+            }
 
             var response = _userService.Login(userLoginDto);
-            return Ok(response);
+
+            if (response.HasError)
+            {
+                // Handle login failure
+                return Unauthorized(new { error = response.Description });
+            }
+
+            // Login successful, return the JWT token
+            return Ok(new { token = response.Data });
         }
+
 
         [HttpPost("change-password")]
         public IActionResult ChangePassword([FromBody] ChangePasswordDTO changePasswordDto)

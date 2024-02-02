@@ -29,14 +29,19 @@ export class LoginComponent {
           console.log('Login successful', data);
           //alert('Login successful');
 
-          if (this.router.url === '/admin') {
+          // Check the role from the received token or user data
+          const role = ''; 
+
+           // Check the role from the received token or user data
+          if (role !== '' && role === 'admin' && this.router.url === '/admin') {
             this.router.navigateByUrl('/admin');
-          }
-          else if (this.router.url === '/entry') {
+          } else if (role !== '' && role === 'entry' && this.router.url === '/entry') {
             this.router.navigateByUrl('/entry');
+          } else {
+            console.error('Invalid role or route', data);
+            alert('Error logging in');
           }
-          
-        },
+         },
         (error: any) => {
           console.error('Error logging in', error);
           alert('Error logging in');

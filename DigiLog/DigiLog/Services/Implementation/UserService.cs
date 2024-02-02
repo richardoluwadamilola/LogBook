@@ -3,17 +3,44 @@ using DigiLog.DTOs;
 using DigiLog.Models;
 using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Policy;
+using System.Text;
 
 namespace DigiLog.Services.Implementation
 {
     public class UserService : IUserService
     {
         private readonly LogDbContext _context;
+        private readonly AppSettings _appSettings;
 
-        public UserService(LogDbContext context)
+        public UserService(LogDbContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
+            _appSettings = appSettings.Value;
+            _appSettings.GenerateRandomKey();
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+           var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Role, user.Role),
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
 
         public ServiceResponse<string> CreateUser(RegisterUserDTO registerUserDto)
@@ -53,9 +80,12 @@ namespace DigiLog.Services.Implementation
                 };
             }
 
+            var token = GenerateJwtToken(user);
+
+
             return new ServiceResponse<string>
             {
-                Data = user.Role,
+                Data = token,
             };
         }
 

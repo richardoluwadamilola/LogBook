@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
   private apiUrl = 'https://localhost:7020/api/User';
+  private tokenKey = 'authToken';
 
   constructor(private http: HttpClient) { }
 
@@ -18,6 +19,21 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, loginData);
   }
 
+  // Store the token in local storage
+  setAuthToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
+  }
+
+  // Get the stored token
+  getAuthToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  // Clear the stored token
+  clearAuthToken(): void {
+    localStorage.removeItem(this.tokenKey);
+  }
+
   changePassword(changePasswordDto: any): any {
     return this.http.put(`${this.apiUrl}/change-password`, changePasswordDto);
   }
@@ -27,7 +43,6 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const username = localStorage.getItem('username');
-    return !!username;
+    return !!this.getAuthToken();
   }
 }
