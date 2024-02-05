@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DigiLog.Models
 {
@@ -11,11 +12,15 @@ namespace DigiLog.Models
         [Required]
         [MaxLength(20)]
         public string Password { get; set; } = string.Empty;
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
+
+
         [Required]
-        public string Role { get; set; } = string.Empty;
+        [ForeignKey("Department")]
+        public long DepartmentId { get; set; }
+        public Department Department { get; set; }
 
-        //public DateTime DateCreated { get; set; }
-        //public DateTime DateModified { get; set; }
-
+        
     }
 }

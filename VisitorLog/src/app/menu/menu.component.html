@@ -3,13 +3,18 @@
         <li class="nav-item">
             <a class="nav-link" routerLink="./home">Home</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isloggedIn">
+            <a class="nav-link" routerLink="./login">Login</a>
+        <li class="nav-item" *ngIf="department =='Administration'">
             <a class="nav-link" routerLink="./superadmin">SuperAdmin</a>
-        <li class="nav-item">
+        <li class="nav-item " *ngIf="department=='Administration'">
             <a class="nav-link" routerLink="./admin">Admin</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="department=='Reception'">
             <a class="nav-link" routerLink="./entry">Reception</a>
+        </li>
+        <li class="nav-item" *ngIf="isloggedIn">
+            <a class="nav-link" (click)="logout()">Logout</a>
         </li>
     </ul>
 </div>

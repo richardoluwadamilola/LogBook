@@ -3,6 +3,7 @@ using DigiLog.DTOs;
 using DigiLog.Models;
 using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -33,9 +34,9 @@ namespace DigiLog.Services.Implementation
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.Role, user.Department.DepartmentName),
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -45,12 +46,26 @@ namespace DigiLog.Services.Implementation
 
         public ServiceResponse<string> CreateUser(RegisterUserDTO registerUserDto)
         {
+            // Check if the department exists.
+            var department = _context.Departments
+                .FirstOrDefault(d => d.DepartmentName.ToLower() == registerUserDto.Department.ToLower());
+
+            // If the department does not exist, return an error response.
+            if (department == null)
+            {
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = "Department does not exist. Please select a valid department.",
+                };
+            }
             var user = new User
             {
                 Username = registerUserDto.Username,
                 Password = registerUserDto.Password,
-                Role = registerUserDto.Role,
-                //DateCreated = DateTime.Now,
+                DepartmentId = department.DepartmentId,
+                Department = department,
+                DateCreated = DateTime.Now,
             };
 
             _context.Users.Add(user);
@@ -58,13 +73,15 @@ namespace DigiLog.Services.Implementation
             return new ServiceResponse<string>();
         }
 
-        public ServiceResponse<string> Login (UserLoginDTO userLoginDTO)
+        public ServiceResponse<UserResponseDTO> Login (UserLoginDTO userLoginDTO)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Username == userLoginDTO.Username);
+            var user = _context.Users
+                .Include(u => u.Department)
+                .FirstOrDefault(u => u.Username == userLoginDTO.Username);
 
             if (user == null)
             {
-                return new ServiceResponse<string>
+                return new ServiceResponse<UserResponseDTO>
                 {
                     HasError = true,
                     Description = $"User with username {userLoginDTO.Username} not found.",
@@ -73,7 +90,7 @@ namespace DigiLog.Services.Implementation
 
             if (user.Password != userLoginDTO.Password)
             {
-                return new ServiceResponse<string>
+                return new ServiceResponse<UserResponseDTO>
                 {
                     HasError = true,
                     Description = $"Incorrect password.",
@@ -83,9 +100,9 @@ namespace DigiLog.Services.Implementation
             var token = GenerateJwtToken(user);
 
 
-            return new ServiceResponse<string>
+            return new ServiceResponse<UserResponseDTO>
             {
-                Data = token,
+                Data = new UserResponseDTO { Token = token, Username = user.Username, Department = user.Department.DepartmentName}
             };
         }
 

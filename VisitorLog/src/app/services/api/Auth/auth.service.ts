@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 export class AuthService {
   private apiUrl = 'https://localhost:7020/api/User';
   private tokenKey = 'authToken';
+  private departmentKey = 'department';
 
   constructor(private http: HttpClient) { }
 
@@ -24,14 +25,22 @@ export class AuthService {
     localStorage.setItem(this.tokenKey, token);
   }
 
+  setDepartment(department: string): void {
+    localStorage.setItem(this.departmentKey, department);
+  }
+
   // Get the stored token
   getAuthToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
+  getDepartment(): string | null {
+    return localStorage.getItem(this.departmentKey);
+  }
+
   // Clear the stored token
   clearAuthToken(): void {
-    localStorage.removeItem(this.tokenKey);
+    localStorage.clear();
   }
 
   changePassword(changePasswordDto: any): any {

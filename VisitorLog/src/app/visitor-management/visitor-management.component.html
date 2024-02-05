@@ -1,35 +1,71 @@
-<div>
-    <h2>Search Visitors</h2>
-<form [formGroup]="searchForm" (ngSubmit)="submitForm()" class="search-form">
-  <div class="search-field">
-    <label for="arrivalTime">Check-In Date:</label>
-    <input type="date" id="arrivalTime" formControlName="arrivalTime">
-  </div>
-
-  <div class="search-field">
-    <label for="employeeNumber">Employee Number:</label>
-    <input type="text" id="employeeNumber" formControlName="employeeNumber">
-  </div>
-
-  <div class="search-field">
-    <label for="tagNumber">Tag Number:</label>
-    <input type="text" id="tagNumber" formControlName="tagNumber">
-  </div>
-
-  <button type="submit">Search Visitors</button>
-</form>
-
-  
-    <div *ngIf="visitors && visitors.length > 0">
-      <table>
-        <!-- Table headers -->
-  
-        <tbody>
-          <tr *ngFor="let visitor of visitors; let i = index">
-            <!-- Table data -->
-          </tr>
-        </tbody>
-      </table>
+<div class="container-fluid bg-light" style="min-height: 100vh">
+  <div class="row py-5">
+    <div class="col-md-8 mx-auto text-center">
+      <h2 class="display-4 fw-bold text-primary">Search Visitors</h2>
+      <p class="lead mb-4">Find visitors by arrival date, employee number, or tag number.</p>
     </div>
   </div>
-  
+
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <form [formGroup]="searchForm" (ngSubmit)="submitForm()" class="search-form border p-4 rounded shadow-sm">
+        <div class="row row-cols-lg-3 gx-4 gy-3">
+          <div class="col">
+            <div class="form-group">
+              <label for="arrivalTime" class="form-label">Check-In Date:</label>
+              <input type="date" id="arrivalTime" formControlName="arrivalTime" class="form-control">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="employeeNumber" class="form-label">Employee Number:</label>
+              <input type="text" id="employeeNumber" formControlName="employeeNumber" class="form-control">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="tagNumber" class="form-label">Tag Number:</label>
+              <input type="text" id="tagNumber" formControlName="tagNumber" class="form-control">
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Get Visitors</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="row mt-5 justify-content-center">
+    <div class="col-md-10">
+      <div *ngIf="visitors">
+        <table class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Phone Number</th>
+              <th scope="col">Contact Address</th>
+              <th scope="col">Person here to see</th>
+              <th scope="col">Reason for Visit</th>
+              <th scope="col">Arrival Time</th>
+              <th scope="col">Departure Time</th>
+              <th scope="col">Reason for Visit Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let visitor of visitors; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ visitor.fullName }}</td>
+              <td>{{ visitor.phoneNumber }}</td>
+              <td>{{ visitor.contactAddress }}</td>
+              <td>{{ visitor.employeeNumber }}</td>
+              <td>{{ getReasonForVisit(visitor.reasonForVisitEnum) }}</td>
+              <td>{{ visitor.arrivalTime }}</td>
+              <td>{{ visitor.departureTime }}</td>
+              <td>{{ visitor.reasonForVisitDescription }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

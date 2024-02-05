@@ -27,19 +27,22 @@ export class LoginComponent {
       this.authService.login(username, password).subscribe(
         (data: any) => {
           console.log('Login successful', data);
-          //alert('Login successful');
+          alert('Login successful');
 
-          // Check the role from the received token or user data
-          const role = ''; 
+          // Store the token in local storage
+          this.authService.setAuthToken(data.token);
 
-           // Check the role from the received token or user data
-          if (role !== '' && role === 'admin' && this.router.url === '/admin') {
-            this.router.navigateByUrl('/admin');
-          } else if (role !== '' && role === 'entry' && this.router.url === '/entry') {
-            this.router.navigateByUrl('/entry');
-          } else {
-            console.error('Invalid role or route', data);
-            alert('Error logging in');
+          //Set the department in local storage
+          this.authService.setDepartment(data.department);
+
+           // Check the department and navigate to the appropriate page
+          if (data.department == 'Reception') {
+            //this.router.navigate(['/entry']);
+            window.location.assign('/entry');
+          }
+          else if (data.department == 'Administration') {
+            //this.router.navigate(['/admin']);
+            window.location.assign('/admin');
           }
          },
         (error: any) => {

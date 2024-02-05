@@ -28,14 +28,16 @@ export class VisitorManagementComponent implements OnInit{
   }
 
   submitForm(): void {
+    console.log('Form Submitted:', this.searchForm.value);
     const formData = this.searchForm.value;
+  
     if (formData.arrivalTime) {
       this.visitorService.getVisitorsByCheckInDate(formData.arrivalTime).subscribe(
         (data: Visitor[]) => {
           this.visitors = data;
         },
         (error: any) => {
-          console.error('Error fetching visitors', error);
+          console.error('Error fetching visitors by Check-In Date', error);
         }
       );
     } else if (formData.employeeNumber) {
@@ -47,17 +49,24 @@ export class VisitorManagementComponent implements OnInit{
           console.error('Error fetching visitors by Employee Number', error);
         }
       );
-  } else if (formData.tagNumber) {
-    this.visitorService.getVisitorbyTagNumber(formData.tagNumber).subscribe(
-      (data: Visitor) => {
-        this.visitors = data ? [data]: [];
-      },
-      (error: any) => {
-        console.error('Error fetching visitors by Tag Number', error);
-      }
-    );
+    } else if (formData.tagNumber) {
+      this.visitorService.getVisitorbyTagNumber(formData.tagNumber).subscribe(
+        (data: Visitor) => { 
+          if (Array.isArray(data)) {
+            // Handle the case where the API returns an array for tagNumber search
+            this.visitors = data;
+          } else {
+            // Handle the case where the API returns a single object for tagNumber search
+            this.visitors = data ? [data] : [];
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching visitor by Tag Number', error);
+        }
+      );
+    }
   }
-}
+  
   
   getReasonForVisit(reasonForVisitEnum: ReasonForVisit): string {
     return ReasonForVisit[reasonForVisitEnum];

@@ -44,6 +44,6 @@ export class VisitorService {
   }
 
   getVisitorbyTagNumber(tagNumber: string): Observable<Visitor> {
-    return this.http.get<Visitor>(`https://localhost:7020/api/Visitor/GetVisitorByTagNumber?tagNumber=${tagNumber}`);
+    return this.http.get<Visitor>(`https://localhost:7020/api/Visitor/GetVisitorsByTagNumber?tagNumber=${tagNumber}`);
   }
 }

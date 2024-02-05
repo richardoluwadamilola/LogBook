@@ -47,7 +47,7 @@ namespace DigiLog.Controllers.Admin
             }
 
             // Login successful, return the JWT token
-            return Ok(new { token = response.Data });
+            return Ok(response.Data );
         }
 
 
