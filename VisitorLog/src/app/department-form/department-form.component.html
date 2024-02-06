@@ -8,6 +8,17 @@
           
           <button type="submit">Add</button>
         </form>
+
+        <div *ngIf="departments.length > 0">
+        <h3>All Departments</h3>
+        <ul>
+            <li *ngFor="let department of departments">{{ department.departmentName}}
+            <span (click)="deleteDepartment(department.departmentId)">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            </span>
+            </li>
+        </ul>
+        </div>
       </div>
     </body>
       

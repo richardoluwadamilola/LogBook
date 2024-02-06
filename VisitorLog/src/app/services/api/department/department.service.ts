@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, tap } from 'rxjs';
+import { Department } from '../models/department.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,10 @@ export class DepartmentService {
   constructor(private http: HttpClient) { }
 
   getDepartments(): any {
-    return this.http.get(this.apiUrl);
+    return this.http.get<Department[]>(this.apiUrl);
   }
 
-  saveDepartmentDetails(departmentData: any): any {
+  saveDepartment(departmentData: any): any {
     return this.http.post(this.apiUrl, departmentData)
       .pipe(
         tap((response: any) => console.log('Save Department Response:', response)),
@@ -24,7 +25,27 @@ export class DepartmentService {
         })
       );
   }
-  
 
+  updateDepartmentDetails(departmentData: any): any {
+    return this.http.put(this.apiUrl, departmentData)
+      .pipe(
+        tap((response: any) => console.log('Update Department Response:', response)),
+        catchError((error: any) => {
+          console.error('Error updating department details', error);
+          throw error;
+        })
+      );
+  }
+
+  deleteDepartment(departmentId: number): any {
+    return this.http.delete(`${this.apiUrl}/${departmentId}`)
+      .pipe(
+        tap((response: any) => console.log('Delete Department Response:', response)),
+        catchError((error: any) => {
+          console.error('Error deleting department', error);
+          throw error;
+        })
+      );
+  }
   
 }
