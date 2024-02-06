@@ -5,6 +5,7 @@
       [width]="600"
       [trigger]="trigger"
       (imageCapture)="handleImage($event)"
+      *ngIf="!webcamImage"
     ></webcam>
   
     <div *ngIf="webcamImage" class="image-preview">
