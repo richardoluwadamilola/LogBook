@@ -11,11 +11,12 @@ import { TagService } from '../services/api/tags/tag.service';
   templateUrl: './tag-management.component.html',
   styleUrls: ['./tag-management.component.css']
 })
-export class TagManagementComponent implements OnInit{
+export class TagManagementComponent implements OnInit {
   tagForm: FormGroup;
   tags: Tag[] = [];
+  tagNumber!: string;
 
-  constructor(private fb: FormBuilder, private tagService: TagService ) { 
+  constructor(private fb: FormBuilder, private tagService: TagService) {
     this.tagForm = this.fb.group({
       tagNumber: ['', Validators.required],
       isAvailable: [true, Validators.required]
@@ -52,6 +53,18 @@ export class TagManagementComponent implements OnInit{
       },
       (error: any) => {
         console.error('Error getting tags', error);
+      }
+    );
+  }
+
+  deleteTag(tagNumber: string): void {
+    this.tagService.deleteTag(tagNumber).subscribe(
+      (data: any) => {
+        console.log('Tag deleted successfully', data);
+        this.getTags();
+      },
+      (error: any) => {
+        console.error('Error deleting tag', error);
       }
     );
   }

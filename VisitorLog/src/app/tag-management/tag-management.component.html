@@ -12,7 +12,11 @@
     <div *ngIf="tags.length > 0">
     <h3>All Tags</h3>
     <ul>
-        <li *ngFor="let tag of tags">{{tag.tagNumber }}</li>
+        <li *ngFor="let tag of tags">{{tag.tagNumber }}
+        <span (click)="deleteTag(tag.tagNumber)">
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        </span>
+        </li>
     </ul>
     </div>
 
