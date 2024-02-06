@@ -23,5 +23,16 @@
 
       <button type="submit">Add</button>
     </form>
+
+    <div *ngIf="employees.length > 0">
+      <h3>All Employees</h3>
+      <ul>
+        <li *ngFor="let employee of employees">{{ employee.employeeNumber }} {{ employee.firstName }} {{ employee.middleName }} {{ employee.lastName }} 
+          <span (click)="deleteEmployee(employee.employeeNumber)">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </span>
+        </li>
+      </ul>
+    </div>
   </div>
 </body>

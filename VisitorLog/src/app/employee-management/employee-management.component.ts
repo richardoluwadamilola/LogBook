@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from '../services/api/employees/employee.service';
 import { Department } from '../services/api/models/department.model';
 import { DepartmentService } from '../services/api/department/department.service';
+import { Employee } from '../services/api/models/employee.model';
 
 declare var $: any;
 
@@ -15,6 +16,8 @@ declare var $: any;
 export class EmployeeManagementComponent implements OnInit, AfterViewInit{
   employeeForm!: FormGroup;
   departments: Department[] = [];
+  employees: Employee[] = [];
+  employeeNumber!: string;
   
   
   
@@ -30,6 +33,7 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit{
 
     ngOnInit(): void {
       this.getDepartments();
+      this.getEmployees();
     }
 
     ngAfterViewInit(): void {
@@ -58,6 +62,8 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit{
               console.log('Employee details saved successfully', data);
               alert('Employee saved successfully');
               this.employeeForm.reset();
+
+              this.getEmployees();
             },
             (error: any) => {
               console.error('Error saving employee details', error);
@@ -66,6 +72,31 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit{
 
         
       }
+    }
+
+    getEmployees(): void {
+      this.employeeService.getEmployees().subscribe(
+        (data: Employee[]) => {
+          this.employees = data;
+          console.log('Employees:', this.employees);
+        },
+        (error: any) => {
+          console.error('Error getting employees', error);
+        }
+      );
+    }
+
+    deleteEmployee(employeeNumber: string): void {
+      this.employeeService.deleteEmployee(employeeNumber).subscribe(
+        (data: any) => {
+          console.log('Employee deleted successfully', data);
+          alert('Employee deleted successfully');
+          this.getEmployees();
+        },
+        (error: any) => {
+          console.error('Error deleting employee', error);
+        }
+      );
     }
 
 }

@@ -56,7 +56,7 @@ namespace DigiLog.Services.Implementation
         }
 
         // Get an employee by their employee number.
-        public ServiceResponse<EmployeeDTO> GetEmployeeById(string employeeNumber)
+        public ServiceResponse<EmployeeDTO> GetEmployeeByEmployeeNumber(string employeeNumber)
         {
             // Get Employee by EmployeeNumber.
             var employee = _context.Employees
