@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TagService } from '../services/api/tags/tag.service';
 import { VisitorService } from '../services/api/visitors/visitor.service';
-import { ReasonForVisit } from '../services/api/models/visitor';
+import { ReasonForVisit, Visitor } from '../services/api/models/visitor';
 
 @Component({
   selector: 'app-checkout-visitor',
@@ -37,7 +37,7 @@ export class CheckoutVisitorComponent implements OnInit{
   // Check out visitor
   checkoutVisitor(visitorId: number): void {
     const checkoutTagDto = { VisitorId: visitorId };
-    
+
     this.tagService.checkOutVisitor(checkoutTagDto).subscribe(
       (response: any) => {
         if (!response.hasError) {
@@ -68,8 +68,12 @@ getEmployeeName(employeeNumber: string): string {
 
   
   loadVisitors(): void {
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10);
     this.visitorService.getVisitors().subscribe(
-      (data: any[]) => this.visitors = data,
+      (data: Visitor[]) => {
+        this.visitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
+      },
       (error: any) => console.error('Error fetching visitors', error)
     );
   }

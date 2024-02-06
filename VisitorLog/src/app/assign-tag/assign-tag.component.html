@@ -8,6 +8,7 @@
       <th>Reason for Visit</th>
       <th>Person here to see</th>
       <th>Arrival Time</th>
+      <th>Departure Time</th>
       <th>Tag Assignment</th>
     </tr>
   </thead>
@@ -20,6 +21,7 @@
       <td>{{ getReasonLabel(visitor.reasonForVisit) }}</td>
       <td>{{ getEmployeeName(visitor.employeeNumber) }}</td>
       <td>{{ visitor.arrivalTime }}</td>
+      <td>{{ visitor.departureTime }}</td>
       <td>
         <button class="btn btn-primary" (click)="assignTagToVisitor(visitor.id)">Assign Tag</button>
       </td>

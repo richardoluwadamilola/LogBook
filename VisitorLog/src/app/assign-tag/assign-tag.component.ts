@@ -87,8 +87,13 @@ getEmployeeName(employeeNumber: string): string {
   
   // assign-tag.component.ts
 loadVisitors(): void {
+  const currentDate = new Date();
+  const currentDateString = currentDate.toISOString().slice(0, 10);
+
   this.visitorService.getVisitors().subscribe(
-    (data: Visitor[]) => this.visitors = data,
+    (data: Visitor[]) => {
+      this.visitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
+    },
     (error: any) => console.error('Error fetching visitors', error)
   );
 }
