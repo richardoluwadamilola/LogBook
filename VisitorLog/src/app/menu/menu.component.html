@@ -13,7 +13,7 @@
         <li class="nav-item" *ngIf="department=='Reception'">
             <a class="nav-link" routerLink="./entry">Reception</a>
         </li>
-        <li class="nav-item" *ngIf="isloggedIn">
+        <li class="nav-item" *ngIf="isloggedIn" style="cursor: pointer;">
             <a class="nav-link" (click)="logout()">Logout</a>
         </li>
     </ul>

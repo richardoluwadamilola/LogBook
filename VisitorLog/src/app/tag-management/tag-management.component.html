@@ -1,24 +1,27 @@
 <body>
-<div>
-    <h2>Tag Management</h2>
-
-    <form [formGroup]="tagForm" (ngSubmit)="createTag()">
-        <label for="tagNumber">Tag Number:</label>
-        <input type="text" id="tagNumber" formControlName="tagNumber" required>
-
-        <button type="submit">Create Tag</button>
-    </form>
-
-    <div *ngIf="tags.length > 0">
-    <h3>All Tags</h3>
-    <ul>
-        <li *ngFor="let tag of tags">{{tag.tagNumber }}
-        <span (click)="deleteTag(tag.tagNumber)">
-        <i class="fa fa-trash" aria-hidden="true"></i>
-        </span>
-        </li>
-    </ul>
+    <div class="container">
+      <h2>Tag Management</h2>
+  
+      <form [formGroup]="tagForm" (ngSubmit)="createTag()" class="mb-3">
+        <div class="mb-3">
+          <label for="tagNumber" class="form-label">Tag Number:</label>
+          <input type="text" id="tagNumber" formControlName="tagNumber" class="form-control" required>
+        </div>
+  
+        <button type="submit" class="btn btn-primary">Create Tag</button>
+      </form>
+  
+      <div *ngIf="tags.length > 0">
+        <h3>All Tags</h3>
+        <ul class="list-group">
+          <li *ngFor="let tag of tags" class="list-group-item">{{tag.tagNumber }}
+            <span (click)="deleteTag(tag.tagNumber)" class="btn btn-danger btn-sm">
+              <i class="fa fa-trash" aria-hidden="true"></i> Delete
+            </span>
+          </li>
+        </ul>
+      </div>
+  
     </div>
-
-</div>
-</body>
+  </body>
+  

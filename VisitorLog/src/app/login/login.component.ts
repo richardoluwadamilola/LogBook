@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/api/Auth/auth.service';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   loginForm!: FormGroup;
+  
+  
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { 
     this.loginForm = this.fb.group({
@@ -17,6 +19,7 @@ export class LoginComponent {
       password: ['', Validators.required]
     });
   }
+
 
   login(): void {
     if (this.loginForm.valid) {
@@ -47,7 +50,7 @@ export class LoginComponent {
          },
         (error: any) => {
           console.error('Error logging in', error);
-          alert('Error logging in');
+          alert('Incorrect username or password');
         }
       );
     }

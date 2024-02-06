@@ -1,23 +1,27 @@
 <table class="table table-bordered table-hover">
   <thead class="thead-dark">
     <tr>
+      <th>Visitor ID</th>
       <th>Full Name</th>
       <th>Contact Address</th>
       <th>Phone Number</th>
       <th>Reason for Visit</th>
       <th>Person here to see</th>
       <th>Arrival Time</th>
+      <th>Departure Time</th>
       <th>Tag Assignment</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let visitor of visitors">
+      <td>{{ visitor.id }}</td>
       <td>{{ visitor.fullName }}</td>
       <td>{{ visitor.contactAddress }}</td>
       <td>{{ visitor.phoneNumber }}</td>
       <td>{{ getReasonLabel(visitor.reasonForVisit) }}</td>
       <td>{{ getEmployeeName(visitor.employeeNumber) }}</td>
       <td>{{ visitor.arrivalTime }}</td>
+      <td>{{ visitor.departureTime }}</td>
       <td>
         <button class="btn btn-primary" (click)="checkoutVisitor(visitor.id)">Check Out</button>
       </td>

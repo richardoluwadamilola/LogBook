@@ -1,24 +1,36 @@
 <body>
-    <div>
-        <h2>Create Departments</h2>
-        <form [formGroup]="departmentForm" (ngSubmit)="submitForm()">
-    
-            <label for="departmentname">Department Name:</label>
-            <input type="text" id="departmentName" formControlName="departmentName" required>
-          
-          <button type="submit">Add</button>
-        </form>
-
-        <div *ngIf="departments.length > 0">
-        <h3>All Departments</h3>
-        <ul>
-            <li *ngFor="let department of departments">{{ department.departmentName}}
-            <span (click)="deleteDepartment(department.departmentId)">
-            <i class="fa fa-trash" aria-hidden="true"></i>
-            </span>
-            </li>
-        </ul>
-        </div>
+  <div class="container">
+    <h2>Create Departments</h2>
+    <form [formGroup]="departmentForm" (ngSubmit)="submitForm()" class="mb-3">
+      <div class="mb-3">
+        <label for="departmentName" class="form-label">Department Name:</label>
+        <input type="text" id="departmentName" formControlName="departmentName" class="form-control" required>
       </div>
-    </body>
-      
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+    <div *ngIf="departments.length > 0">
+      <h3>All Departments</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>DepartmentId</th>
+            <th>DepartmentName</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let department of departments">
+            <td>{{ department.departmentId }}</td>
+            <td>{{ department.departmentName }}</td>
+            <td>
+              <button (click)="deleteDepartment(department.departmentId)" class="btn btn-danger btn-sm">
+                <i class="fa fa-trash" aria-hidden="true"></i> Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>

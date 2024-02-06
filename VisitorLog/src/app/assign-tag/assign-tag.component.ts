@@ -46,7 +46,7 @@ assignTagToVisitor(visitorId: number): void {
     (response: any) => {
       if (!response.hasError) {
         console.log('Tag assigned successfully:', response);
-        alert('Tag assigned successfully');
+        alert('Tag {{ tagNumber}} assigned successfully');
         this.errorMessage = null;
         // You may want to reload the visitors after successful tag assignment
         this.loadVisitors();

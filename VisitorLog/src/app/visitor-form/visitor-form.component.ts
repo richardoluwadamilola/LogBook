@@ -119,7 +119,7 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
             if (this.cameraComponent) {
               this.cameraComponent.resetCamera();
             }
-          }, 5000); 
+          }, 3000); 
         }
       },
       (error: any) => {

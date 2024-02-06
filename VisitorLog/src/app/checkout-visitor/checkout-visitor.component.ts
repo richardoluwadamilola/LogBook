@@ -36,7 +36,9 @@ export class CheckoutVisitorComponent implements OnInit{
 
   // Check out visitor
   checkoutVisitor(visitorId: number): void {
-    this.tagService.checkOutVisitor(visitorId).subscribe(
+    const checkoutTagDto = { VisitorId: visitorId };
+    
+    this.tagService.checkOutVisitor(checkoutTagDto).subscribe(
       (response: any) => {
         if (!response.hasError) {
           console.log('Visitor checked out successfully:', response);
