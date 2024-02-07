@@ -78,16 +78,7 @@ namespace DigiLog.Controllers
             return Ok(response);
         }
 
-        // DELETE api/<TagController>/5
-        [HttpDelete("{tagNumber}")]
-        public IActionResult DeleteTag(string tagNumber)
-        {
-            // Calls the tag service to delete a tag.
-            var response = _tagService.DeleteTag(tagNumber);
-
-            // Returns the service response.
-            return Ok(response);
-        }
+        
 
     }
 }

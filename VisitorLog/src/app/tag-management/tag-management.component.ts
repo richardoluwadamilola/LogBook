@@ -57,17 +57,6 @@ export class TagManagementComponent implements OnInit {
     );
   }
 
-  deleteTag(tagNumber: string): void {
-    this.tagService.deleteTag(tagNumber).subscribe(
-      (data: any) => {
-        console.log('Tag deleted successfully', data);
-        alert('Tag deleted successfully');
-        this.getTags();
-      },
-      (error: any) => {
-        console.error('Error deleting tag', error);
-      }
-    );
-  }
+  
 
 }

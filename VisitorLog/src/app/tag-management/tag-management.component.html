@@ -36,9 +36,6 @@
           <ul class="list-group">
             <li *ngFor="let tag of tags" class="list-group-item d-flex justify-content-between align-items-center">
               {{ tag.tagNumber }}
-              <span (click)="deleteTag(tag.tagNumber)" class="btn btn-danger btn-sm">
-                <i class="fa fa-trash" aria-hidden="true"></i> Delete
-              </span>
             </li>
           </ul>
         </div>      

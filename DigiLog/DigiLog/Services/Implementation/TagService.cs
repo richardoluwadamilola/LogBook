@@ -137,29 +137,6 @@ namespace DigiLog.Services.Implementation
                 .ToList();
         }
 
-        // Delete a tagNumber from the database.
-        public ServiceResponse<string> DeleteTag(string tagNumber)
-        {
-            var response = new ServiceResponse<string>();
-
-            // Find the tag
-            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == tagNumber);
-
-            if (tag == null)
-            {
-                response.HasError = true;
-                response.Description = $"Tag with ID {tagNumber} not found.";
-                return response;
-            }
-
-            // Remove the tag
-            _context.Tags.Remove(tag);
-            _context.SaveChanges();
-
-            response.HasError = false;
-            response.Description = $"Tag with ID {tagNumber} deleted successfully.";
-
-            return response;
-        }   
+       
     }
 }

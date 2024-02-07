@@ -48,12 +48,5 @@ export class TagService {
     );
   }
 
-  deleteTag(tagNumber: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${tagNumber}`).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error deleting tag', error);
-        return throwError(error);
-      })
-    );
-  }  
+  
 }
