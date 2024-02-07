@@ -67,7 +67,10 @@ namespace DigiLog.Services.Implementation
 
             _context.SaveChanges();
 
-            return new ServiceResponse<string>();
+            return new ServiceResponse<string>
+            {
+                Data = availableTag.TagNumber
+            };
         }
 
 

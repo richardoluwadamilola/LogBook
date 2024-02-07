@@ -15,7 +15,6 @@ import { VisitorManagementComponent } from './visitor-management/visitor-managem
 import { DatePipe } from '@angular/common';
 import { AssignTagComponent } from './assign-tag/assign-tag.component';
 import { HomeComponent } from './home/home.component';
-import { CheckoutVisitorComponent } from './checkout-visitor/checkout-visitor.component';
 import { DepartmentFormComponent } from './department-form/department-form.component';
 import { LoginComponent } from './login/login.component';
 import { SuperadminComponent } from './superadmin/superadmin.component';
@@ -35,7 +34,6 @@ import { WebcamModule } from 'ngx-webcam';
     VisitorManagementComponent,
     AssignTagComponent,
     HomeComponent,
-    CheckoutVisitorComponent,
     DepartmentFormComponent,
     LoginComponent,
     SuperadminComponent,

@@ -46,7 +46,7 @@ assignTagToVisitor(visitorId: number): void {
     (response: any) => {
       if (!response.hasError) {
         console.log('Tag assigned successfully:', response);
-        alert('Tag {{ tagNumber}} assigned successfully');
+        alert(`Tag ${response.data} assigned successfully`);
         this.errorMessage = null;
         // You may want to reload the visitors after successful tag assignment
         this.loadVisitors();
@@ -106,6 +106,32 @@ loadVisitors(): void {
       },
       (error: any) => {
         console.error('Error fetching employees', error);
+      }
+    );
+  }
+  // Check out visitor
+  checkoutVisitor(visitorId: number): void {
+    const checkoutTagDto = { VisitorId: visitorId };
+
+    this.tagService.checkOutVisitor(checkoutTagDto).subscribe(
+      (response: any) => {
+        if (!response.hasError) {
+          console.log('Visitor checked out successfully:', response);
+          alert('Visitor checked out successfully');
+          this.errorMessage = null;
+          // You may want to reload the visitors after successful checkout
+          this.loadVisitors();
+        } else {
+          console.error('Error checking out visitor:', response.description);
+          alert(`Visitor check out failed: ${response.description}`);
+          this.errorMessage = response.description || 'Error checking out visitor';
+          this.successMessage = null;
+        }
+      },
+      (error: any) => {
+        console.error('Error checking out visitor:', error);
+        this.errorMessage = error || 'Error checking out visitor';
+        this.successMessage = null;
       }
     );
   }

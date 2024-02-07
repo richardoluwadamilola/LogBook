@@ -10,6 +10,7 @@
       <th>Arrival Time</th>
       <th>Departure Time</th>
       <th>Tag Assignment</th>
+      <th>Check Out</th>
     </tr>
   </thead>
   <tbody>
@@ -24,6 +25,9 @@
       <td>{{ visitor.departureTime }}</td>
       <td>
         <button class="btn btn-primary" (click)="assignTagToVisitor(visitor.id)">Assign Tag</button>
+      </td>
+      <td>
+        <button class="btn btn-primary" (click)="checkoutVisitor(visitor.id)">Check Out</button>
       </td>
     </tr>
   </tbody>
