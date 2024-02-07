@@ -26,8 +26,8 @@ export class DepartmentService {
       );
   }
 
-  updateDepartmentDetails(departmentData: any): any {
-    return this.http.put(this.apiUrl, departmentData)
+  updateDepartmentDetails(departmentId: number, departmentData: any): any {
+    return this.http.put(`${this.apiUrl}/${departmentId}`, departmentData)
       .pipe(
         tap((response: any) => console.log('Update Department Response:', response)),
         catchError((error: any) => {
@@ -35,7 +35,7 @@ export class DepartmentService {
           throw error;
         })
       );
-  }
+  }  
 
   deleteDepartment(departmentId: number): any {
     return this.http.delete(`${this.apiUrl}/${departmentId}`)

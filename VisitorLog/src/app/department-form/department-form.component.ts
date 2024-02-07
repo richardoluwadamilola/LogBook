@@ -32,20 +32,31 @@ export class DepartmentFormComponent implements OnInit {
       departmentId: this.departmentId,
       departmentName: this.departmentForm.value.departmentName,
     }
-    if (this.departmentForm.valid) {
-      console.log('Department details:', this.departmentForm.value);
-
-      this.departmentService.saveDepartment(this.departmentForm.value).subscribe(
+    if (this.departmentId) {
+      // If departmentId exists, update the department
+      this.departmentService.updateDepartmentDetails(this.departmentId, department).subscribe(
+        (data: any) => {
+          console.log('Department details updated successfully', data);
+          alert('Department updated successfully');
+          this.departmentForm.reset();
+          //this.departmentId = null; // Reset departmentId after updating
+          this.getDepartments();
+        },
+        (error: any) => {
+          console.error('Error updating department details', error);
+        }
+      );
+    } else {
+      // If departmentId does not exist, create a new department
+      this.departmentService.saveDepartment(department).subscribe(
         (data: any) => {
           console.log('Department details saved successfully', data);
-          alert('Department details saved successfully');
+          alert('Department saved successfully');
           this.departmentForm.reset();
-
           this.getDepartments();
         },
         (error: any) => {
           console.error('Error saving department details', error);
-          console.error('Error Details:', error);
         }
       );
     }
@@ -74,6 +85,14 @@ export class DepartmentFormComponent implements OnInit {
         console.error('Error deleting department', error);
       }
     );
+  }
+
+  editDepartment(departmentId: number, departmentName: string): void {
+    this.departmentId = departmentId;
+    this.departmentName = departmentName;
+    this.departmentForm.patchValue({
+      departmentName: departmentName
+    });
   }
 
 }
