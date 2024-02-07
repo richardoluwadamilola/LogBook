@@ -23,8 +23,8 @@ export class EmployeeService {
     return this.http.get(this.apiUrl);
   }
 
-  updateEmployeeDetails(employeeData: any): Observable<any> {
-    return this.http.put(this.apiUrl, employeeData)
+  updateEmployeeDetails(employeeNumber: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${employeeNumber}`, employeeNumber)
     .pipe(
       tap((response: any) => console.log('Update Employee Response:', response)),
       catchError((error: any) => {
