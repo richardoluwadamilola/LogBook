@@ -1,41 +1,86 @@
 <body>
-  <div>
-    <h2>Employees</h2>
-    <p>Please enter in the following details</p>
-    <form [formGroup]="employeeForm" (ngSubmit)="submitForm()">
-      <label for="employeeNumber">Employee Number:</label>
-      <input type="text" id="employeeNumber" formControlName="employeeNumber" required>
-
-      <label for="firstName">First Name:</label>
-      <input type="text" id="firstName" formControlName="firstName" required>
-
-      <label for="middleName">Middle Name:</label>
-      <input type="text" id="middleName" formControlName="middleName">
-
-      <label for="lastName">Last Name:</label>
-      <input type="text" id="lastName" formControlName="lastName" required>
-
-      <label for="department">Department:</label>
-      <select id="department" formControlName="department" required>
-        <option *ngFor="let department of departments" [value]="department.departmentName">{{ department.departmentName
-          }}</option>
-      </select>
-
-      <button type="submit">Add</button>
-    </form>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="./tag">Tag</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./department">Department</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./employee">Employee</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./visitor">Visitors</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <h2>Employees</h2>
+      <p>Please enter the following details:</p>
+      <form [formGroup]="employeeForm" (ngSubmit)="submitForm()" class="mb-3">
+        <div class="mb-3">
+          <label for="employeeNumber" class="form-label">Employee Number:</label>
+          <input type="text" id="employeeNumber" formControlName="employeeNumber" class="form-control" required>
+        </div>
+    
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name:</label>
+          <input type="text" id="firstName" formControlName="firstName" class="form-control" required>
+        </div>
+    
+        <div class="mb-3">
+          <label for="middleName" class="form-label">Middle Name:</label>
+          <input type="text" id="middleName" formControlName="middleName" class="form-control">
+        </div>
+    
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name:</label>
+          <input type="text" id="lastName" formControlName="lastName" class="form-control" required>
+        </div>
+    
+        <div class="mb-3">
+          <label for="department" class="form-label">Department:</label>
+          <select id="department" formControlName="department" class="form-select" required>
+            <option *ngFor="let department of departments" [value]="department.departmentName">{{ department.departmentName }}</option>
+          </select>
+        </div>
+    
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
 
     <div *ngIf="employees.length > 0">
       <h3>All Employees</h3>
-      <ul>
-        <li *ngFor="let employee of employees">{{ employee.employeeNumber }} {{ employee.firstName }} {{ employee.middleName }} {{ employee.lastName }} 
-          <span (click)="deleteEmployee(employee.employeeNumber)">
-            <i class="fa fa-trash" aria-hidden="true"></i>
-          </span>
-          <span (click)="editEmployee(employee)">
-            <i class="fa fa-edit" aria-hidden="true"></i>
-          </span>
-        </li>
-      </ul>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Employee Number</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of employees">
+            <td>{{ employee.employeeNumber }}</td>
+            <td>{{ employee.firstName }}</td>
+            <td>{{ employee.middleName }}</td>
+            <td>{{ employee.lastName }}</td>
+            <td>
+              <span (click)="deleteEmployee(employee.employeeNumber)" style="cursor: pointer;">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </span>
+              <span (click)="editEmployee(employee)" style="cursor: pointer;">
+                <i class="fa fa-edit" aria-hidden="true"></i>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    
   </div>
 </body>

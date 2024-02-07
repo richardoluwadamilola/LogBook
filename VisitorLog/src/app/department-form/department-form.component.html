@@ -1,4 +1,22 @@
 <body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="./tag">Tag</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./department">Department</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./employee">Employee</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./visitor">Visitors</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
   <div class="container">
     <h2>Create Departments</h2>
     <form [formGroup]="departmentForm" (ngSubmit)="submitForm()" class="mb-3">
