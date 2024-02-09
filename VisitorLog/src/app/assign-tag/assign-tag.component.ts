@@ -1,17 +1,19 @@
 // assign-tag.component.ts
 
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TagService } from '../services/api/tags/tag.service';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { ReasonForVisit, Visitor } from '../services/api/models/visitor';
+import { AuthService } from '../services/api/Auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assign-tag',
   templateUrl: './assign-tag.component.html',
   styleUrls: ['./assign-tag.component.css']
 })
-export class AssignTagComponent implements OnInit {
+export class AssignTagComponent implements OnInit, OnDestroy {
   
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -20,7 +22,10 @@ export class AssignTagComponent implements OnInit {
   filteredVisitors: Visitor[] = [];
   searchForm!: FormGroup;
 
-  constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService ) {}
+  private inactivityTimeout: any;
+  private readonly inactivityPeriod = 300000; // 5 minutes
+
+  constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private  authService: AuthService, private router: Router ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -29,6 +34,12 @@ export class AssignTagComponent implements OnInit {
     this.searchForm = this.fb.group({
       searchTerm: ['', Validators.required]
     });
+    this.initInactivityTimer();
+    console.log('Auto logout timer started')
+  }
+
+  ngOnDestroy(): void {
+    console.log('Auto logout timer stopped');
   }
 
   initForm(): void {
@@ -145,6 +156,37 @@ loadVisitors(): void {
     } else {
       this.filteredVisitors = this.visitors;
     }
+  }
+
+  @HostListener('window:mousemove') refreshUserState() {
+    console.log('Mousemove detected');
+    this.resetInactivityTimer();
+  }
+
+  @HostListener('window:keypress') refreshUserStateOnKeypress() {
+    console.log('Keypress detected');
+    this.resetInactivityTimer();
+  }
+
+  initInactivityTimer(): void {
+    this.inactivityTimeout = setTimeout(() => {
+      console.log('User inactive for 5 minutes');
+      // Perform logout action here
+      this.logout();
+    }, this.inactivityPeriod);
+  }
+  
+  resetInactivityTimer(): void {
+    clearTimeout(this.inactivityTimeout);
+    this.initInactivityTimer();
+  }
+  
+
+  logout(): void {
+    // Implement your logout logic here
+    this.authService.clearAuthToken();
+    this.router.navigateByUrl('/login');
+    console.log('User logged out due to inactivity');
   }
   
 }
