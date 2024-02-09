@@ -53,24 +53,14 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
   submitForm(): void {
     if (this.employeeForm.valid) {
       console.log('Employee details:', this.employeeForm.value);
-
+  
       const employeeData = this.employeeForm.value;
-
-      if (employeeData.employeeNumber) {
-        // If employee number exists, call the update API
-        this.employeeService.updateEmployeeDetails(employeeData).subscribe(
-          (data: any) => {
-            console.log('Employee details updated successfully', data);
-            alert('Employee updated successfully');
-            this.employeeForm.reset();
-            this.getEmployees(); // Assuming this method retrieves the updated employee list
-          },
-          (error: any) => {
-            console.error('Error updating employee details', error);
-          }
-        );
-      } else {
-        // If employee number does not exist, it's a new employee, call the save API
+  
+      // Check if the employee number exists
+      const existingEmployee = this.employees.find(e => e.employeeNumber === employeeData.employeeNumber);
+  
+      if (!existingEmployee) {
+        // If employeeNumber doesn't exist, it's a new employee, call the save API
         this.employeeService.saveEmployeeDetails(employeeData).subscribe(
           (data: any) => {
             console.log('Employee details saved successfully', data);
@@ -82,9 +72,22 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
             console.error('Error saving employee details', error);
           }
         );
+      } else {
+        // If employeeNumber exists, it's an update operation
+        this.employeeService.updateEmployeeDetails(employeeData).subscribe(
+          (data: any) => {
+            console.log('Employee details updated successfully', data);
+            alert('Employee updated successfully');
+            this.employeeForm.reset();
+            this.getEmployees(); // Assuming this method retrieves the updated employee list
+          },
+          (error: any) => {
+            console.error('Error updating employee details', error);
+          }
+        );
       }
     }
-  }
+  }  
 
   getEmployees(): void {
     this.employeeService.getEmployees().subscribe(

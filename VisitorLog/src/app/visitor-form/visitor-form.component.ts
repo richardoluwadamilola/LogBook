@@ -132,5 +132,13 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
     console.error('Invalid form data');
   }
 }
+
+// Get the employee name initials
+getInitials(name: string): string {
+  if (!name) {
+    return '';
+  }
+  return name.charAt(0) + '.';
+}
 }
 
