@@ -119,6 +119,8 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
             if (this.cameraComponent) {
               this.cameraComponent.resetCamera();
             }
+            // Navigate to the home page
+            this.router.navigate(['/home']);
           }, 3000); 
         }
       },
