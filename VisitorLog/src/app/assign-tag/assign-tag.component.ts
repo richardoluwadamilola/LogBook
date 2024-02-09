@@ -214,5 +214,26 @@ loadVisitors(): void {
     this.router.navigateByUrl('/login');
     console.log('User logged out due to inactivity');
   }
+
+  // Calculate Duration
+  calculateDuration(arrivalTime: string, departureTime: string): string {
+    const arrival = new Date(arrivalTime);
+    const departure = departureTime ? new Date(departureTime) : new Date();
+    
+    // Check if departure time is not set (0001-01-01T00:00:00)
+    const isDepartureNotSet = departure.getFullYear() === 1 && departure.getMonth() === 0 && departure.getDate() === 1;
+  
+    if (isDepartureNotSet) {
+      // If departure time is not set, return "Not Departed Yet"
+      return "Not Departed Yet";
+    } else {
+      // If departure time is set, calculate duration
+      const duration = Math.abs(departure.getTime() - arrival.getTime());
+      const hours = Math.floor(duration / 3600000);
+      const minutes = Math.floor((duration % 3600000) / 60000);
+      return `${hours} hours, ${minutes} minutes`;
+    }
+  }
+  
   
 }

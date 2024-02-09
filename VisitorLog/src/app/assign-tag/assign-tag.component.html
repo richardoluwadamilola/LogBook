@@ -18,6 +18,7 @@
       <th>Person here to see</th>
       <th>Arrival Time</th>
       <th>Departure Time</th>
+      <th>Duration</th>
       <th>Tag Assignment</th>
       <th>Check Out</th>
     </tr>
@@ -32,6 +33,7 @@
       <td>{{ getEmployeeName(visitor.employeeNumber) }}</td>
       <td>{{ visitor.arrivalTime }}</td>
       <td>{{ visitor.departureTime }}</td>
+      <td>{{ calculateDuration(visitor.arrivalTime.toString(), visitor.departureTime.toString()) }}</td>
       <td>
         <div [formGroup]="tagAssignmentForm">
           <input type="text" class="form-control" formControlName="selectedTag" placeholder="Enter Tag Number">
