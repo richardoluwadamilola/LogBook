@@ -8,6 +8,7 @@
     {
         //Represents the data needed to assign tag to a visitor.
         public long VisitorId { get; set; }
+        public string TagNumber { get; set; } = string.Empty;
     }
 
     public class CheckOutTagDto

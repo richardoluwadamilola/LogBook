@@ -49,29 +49,30 @@ namespace DigiLog.Services.Implementation
                 };
             }
 
-            // Find an available tag.
-            var availableTag = _context.Tags.FirstOrDefault(t => t.IsAvaliable);
+            // Check if the tag exists and is available
+            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == assignTagDto.TagNumber && t.IsAvaliable);
 
-            if (availableTag == null)
+            if (tag == null)
             {
                 return new ServiceResponse<string>
                 {
                     HasError = true,
-                    Description = "No available tags found.",
+                    Description = $"Tag {assignTagDto.TagNumber} is not available.",
                 };
             }
 
             // Assign the tag to the visitor
-            visitor.TagNumber = availableTag.TagNumber;
-            availableTag.IsAvaliable = false;
+            visitor.TagNumber = tag.TagNumber;
+            tag.IsAvaliable = false;
 
             _context.SaveChanges();
 
             return new ServiceResponse<string>
             {
-                Data = availableTag.TagNumber
+                Data = tag.TagNumber
             };
         }
+
 
 
 

@@ -21,6 +21,8 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   employees: any[] = [];
   filteredVisitors: Visitor[] = [];
   searchForm!: FormGroup;
+  tagAssignmentForm!: FormGroup;
+  availableTags: any[] = [];
 
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
@@ -31,11 +33,20 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     this.initForm();
     this.loadVisitors();
     this.loadEmployees();
+    this.initTagAssignmentForm();
+    this.loadAvailableTags();
     this.searchForm = this.fb.group({
       searchTerm: ['', Validators.required]
     });
     this.initInactivityTimer();
     console.log('Auto logout timer started')
+  }
+
+  initTagAssignmentForm(): void {
+    this.tagAssignmentForm = this.fb.group({
+      selectedTag: ['', Validators.required]
+    });
+  
   }
 
   ngOnDestroy(): void {
@@ -50,36 +61,42 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     { label: 'Personal', value: ReasonForVisit.Personal }
   ];
 
-//assign tag
-assignTagToVisitor(visitorId: number): void {
-  const assignTagDto = { VisitorId: visitorId };
-
-  this.tagService.assignTagToVisitor(assignTagDto).subscribe(
-    (response: any) => {
-      if (!response.hasError) {
-        console.log('Tag assigned successfully:', response);
-        alert(`Tag ${response.data} assigned successfully`);
-        this.errorMessage = null;
-        // You may want to reload the visitors after successful tag assignment
-        this.loadVisitors();
-      } else {
-        if (response.description === 'No available tags found.') {
-          // Alert when no tags are available
-          alert('No available tags. Please try again later.');
+  assignTagToVisitor(visitorId: number, tagNumber: string): void {
+    if (!tagNumber) {
+      alert('Please enter a tag number.');
+      return;
+    }
+  
+    const assignTagDto = { VisitorId: visitorId, TagNumber: tagNumber };
+  
+    this.tagService.assignTagToVisitor(assignTagDto).subscribe(
+      (response: any) => {
+        if (!response.hasError) {
+          console.log('Tag assigned successfully:', response);
+          alert(`Tag ${response.data} assigned successfully`);
+          this.errorMessage = null;
+          // You may want to reload the visitors after successful tag assignment
+          this.loadVisitors();
+        } else {
+          if (response.description === 'No available tags found.') {
+            // Alert when no tags are available
+            alert('No available tags. Please try again later.');
+          }
+  
+          console.error('Error assigning tag:', response.description);
+          this.errorMessage = response.description || 'Error assigning tag';
+          this.successMessage = null;
         }
-
-        console.error('Error assigning tag:', response.description);
-        this.errorMessage = response.description || 'Error assigning tag';
+      },
+      (error: any) => {
+        console.error('Error assigning tag:', error);
+        this.errorMessage = 'Error assigning tag';
         this.successMessage = null;
       }
-    },
-    (error: any) => {
-      console.error('Error assigning tag:', error);
-      this.errorMessage = 'Error assigning tag';
-      this.successMessage = null;
-    }
-  );
-}
+    );
+  }
+  
+
 
 
   // Method to get the reason for visit label based on the enum value
@@ -95,7 +112,16 @@ getEmployeeName(employeeNumber: string): string {
   return employee ? `${employee.firstName} ${employee.middleName} ${employee.lastName}` : '';
 }
 
-
+loadAvailableTags(): void {
+  this.tagService.getTags().subscribe(
+    (data: any[]) => {
+      this.availableTags = data;
+    },
+    (error: any) => {
+      console.error('Error fetching available tags', error);
+    }
+  );
+}
   
   // assign-tag.component.ts
 loadVisitors(): void {
