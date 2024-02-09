@@ -17,17 +17,18 @@ export class AssignTagComponent implements OnInit {
   successMessage: string | null = null;
   visitors: any[] = [];
   employees: any[] = [];
+  filteredVisitors: Visitor[] = [];
+  searchForm!: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private tagService: TagService,
-    private visitorService: VisitorService
-  ) {}
+  constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService ) {}
 
   ngOnInit(): void {
     this.initForm();
     this.loadVisitors();
     this.loadEmployees();
+    this.searchForm = this.fb.group({
+      searchTerm: ['', Validators.required]
+    });
   }
 
   initForm(): void {
@@ -93,6 +94,7 @@ loadVisitors(): void {
   this.visitorService.getVisitors().subscribe(
     (data: Visitor[]) => {
       this.visitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
+      this.filteredVisitors = this.visitors;
     },
     (error: any) => console.error('Error fetching visitors', error)
   );
@@ -135,4 +137,14 @@ loadVisitors(): void {
       }
     );
   }
+
+  searchVisitors(): void {
+    const searchTerm = this.searchForm.get('searchTerm')?.value;
+    if (searchTerm) {
+      this.filteredVisitors = this.visitors.filter(visitor => visitor.fullName.toLowerCase().includes(searchTerm.toLowerCase()));
+    } else {
+      this.filteredVisitors = this.visitors;
+    }
+  }
+  
 }

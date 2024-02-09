@@ -1,3 +1,12 @@
+<div class="row mb-3" [formGroup]="searchForm">
+  <div class="col-md-6">
+    <input type="text" class="form-control" formControlName="searchTerm" placeholder="Search visitors" (keydown.enter)="searchVisitors()">
+  </div>
+  <div class="col-md-6">
+    <button class="btn btn-primary" (click)="searchVisitors()">Search</button>
+  </div>
+</div>
+
 <table class="table table-bordered table-hover">
   <thead class="thead-dark">
     <tr>
@@ -14,7 +23,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let visitor of visitors">
+    <tr *ngFor="let visitor of filteredVisitors">
       <td>{{ visitor.id}}</td>
       <td>{{ visitor.fullName }}</td>
       <td>{{ visitor.contactAddress }}</td>
