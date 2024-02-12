@@ -69,6 +69,7 @@
               <th scope="col">Arrival Time</th>
               <th scope="col">Departure Time</th>
               <th scope="col">Reason for Visit Description</th>
+              <th scope="col">Photo</th>
             </tr>
           </thead>
           <tbody>
@@ -82,6 +83,7 @@
               <td>{{ visitor.arrivalTime }}</td>
               <td>{{ visitor.departureTime }}</td>
               <td>{{ visitor.reasonForVisitDescription }}</td>
+              <td><img [src]="visitor.photo" alt="Visitor Photo" style="max-width: 100px;"></td>
               
             </tr>
           </tbody>

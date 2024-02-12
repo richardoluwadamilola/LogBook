@@ -11,7 +11,7 @@ export interface Visitor {
     contactAddress: string;
     phoneNumber: string;
     reasonForVisit: ReasonForVisit;
-    //reasonForVisitEnum: ReasonForVisit;
+    reasonForVisitEnum: ReasonForVisit;
     reasonForVisitDescription: string;
     photo: string;
     employeeNumber: string;
