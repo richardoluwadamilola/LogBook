@@ -20,6 +20,7 @@ import { LoginComponent } from './login/login.component';
 import { SuperadminComponent } from './superadmin/superadmin.component';
 import { CameraComponent } from './camera/camera.component';
 import { WebcamModule } from 'ngx-webcam';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { WebcamModule } from 'ngx-webcam';
     LoginComponent,
     SuperadminComponent,
     CameraComponent,
+    ChangePasswordComponent,
   ],
   // ...
 

@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   changePassword(changePasswordDto: any): any {
-    return this.http.put(`${this.apiUrl}/change-password`, changePasswordDto);
+    return this.http.post(`${this.apiUrl}/change-password`, changePasswordDto);
   }
 
   deleteUser(userDto: any): any {
@@ -54,4 +54,17 @@ export class AuthService {
   isAuthenticated(): boolean {
     return !!this.getAuthToken();
   }
+}
+
+export interface ServiceResponse<T> {
+  hasError: boolean;
+  description?: string;
+  data?: T;
+}
+
+export interface ChangePasswordDto {
+  username: string;
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
 }

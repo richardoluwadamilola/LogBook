@@ -128,6 +128,15 @@ namespace DigiLog.Services.Implementation
                 };
             }
 
+            if (changePasswordDto.NewPassword != changePasswordDto.ConfirmNewPassword)
+            {
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = "New password and confirm new password do not match.",
+                };
+            }
+
             user.Password = changePasswordDto.NewPassword;
             _context.SaveChanges();
 
