@@ -21,6 +21,7 @@
       <th>Phone Number</th>
       <th>Reason for Visit</th>
       <th>Person here to see</th>
+      <th>Photo</th>
       <th>Arrival Time</th>
       <th>Departure Time</th>
       <th>Duration</th>
@@ -36,6 +37,7 @@
       <td>{{ visitor.phoneNumber }}</td>
       <td>{{ visitor.reasonForVisit }}</td>
       <td>{{ visitor.employeeNumber }}</td>
+      <td><img [src]="visitor.photo" alt="Visitor Photo" style="max-width: 100px;"></td>
       <td>{{ visitor.arrivalTime }}</td>
       <td>{{ visitor.departureTime }}</td>
       <td>{{ calculateDuration(visitor.arrivalTime.toString(), visitor.departureTime.toString()) }}</td>
