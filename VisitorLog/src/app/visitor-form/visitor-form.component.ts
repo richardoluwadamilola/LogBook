@@ -17,10 +17,8 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   @ViewChild(CameraComponent) cameraComponent!: CameraComponent;
   visitorForm!: FormGroup;
   employees: Employee[] = [];
-  //takenPicture: string | null = null;
   formSubmitted = false;
-  // isTakingPicture = false;
-  // isRetakeMode = false;
+  
 
 
   constructor(private fb: FormBuilder, private visitorService: VisitorService, private router: Router) { }
@@ -40,7 +38,6 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       contactAddress: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       employeeNumber: [null, Validators.required],
-      //personHereToSee: ['', Validators.required],
       reasonForVisit: [null, Validators.required],
       reasonForVisitDescription: [''],
       photo: [null, Validators.required],

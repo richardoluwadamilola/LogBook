@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./assign-tag.component.css']
 })
 export class AssignTagComponent implements OnInit, OnDestroy {
+[x: string]: any;
   
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -64,6 +65,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     { label: 'Personal', value: ReasonForVisit.Personal }
   ];
 
+  
   assignTagToVisitor(visitorId: number, tagNumber: string): void {
     if (!tagNumber) {
       alert('Please enter a tag number.');

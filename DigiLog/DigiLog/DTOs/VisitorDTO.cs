@@ -18,7 +18,7 @@ namespace DigiLog.DTOs
         public string PhoneNumber { get; set; } = string.Empty;
         public string EmployeeNumber { get; set; } = string.Empty;
         [Display(Name = "Reason for Visit")]
-        public int ReasonForVisit { get; set; }
+        public string ReasonForVisit { get; set; }
         public string ReasonForVisitDescription { get; set; }
         [Display(Name = "Photo (Base64 Encoded)")]
         public string Photo { get; set; } = string.Empty;

@@ -10,8 +10,8 @@ export interface Visitor {
     fullName: string;
     contactAddress: string;
     phoneNumber: string;
-    reasonForVisit: number;
-    reasonForVisitEnum: ReasonForVisit;
+    reasonForVisit: ReasonForVisit;
+    //reasonForVisitEnum: ReasonForVisit;
     reasonForVisitDescription: string;
     photo: string;
     employeeNumber: string;
