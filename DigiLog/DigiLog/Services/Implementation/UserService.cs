@@ -137,7 +137,13 @@ namespace DigiLog.Services.Implementation
                 };
             }
 
+            //Update the password
             user.Password = changePasswordDto.NewPassword;
+
+            //Update the database
+            user.DateModified = DateTime.Now;
+
+            //Save changes to the database
             _context.SaveChanges();
 
 
