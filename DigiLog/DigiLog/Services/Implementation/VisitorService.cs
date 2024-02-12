@@ -61,13 +61,14 @@ namespace DigiLog.Services.Implementation
         {
             return _context.Visitors
                 .Include(v => v.Photo)
+                .Include(v => v.Employee)
                 .Select(visitor => new VisitorDTO
                 {
                     Id = visitor.Id,
                     FullName = visitor.FullName,
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
-                    EmployeeNumber = visitor.EmployeeNumber,
+                    EmployeeName = visitor.Employee.FirstName,
                     ReasonForVisit = visitor.ReasonForVisit.ToString(),
                     ReasonForVisitEnum = visitor.ReasonForVisit,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,

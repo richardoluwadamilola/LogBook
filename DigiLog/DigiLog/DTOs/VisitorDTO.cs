@@ -17,6 +17,7 @@ namespace DigiLog.DTOs
         [RegularExpression(@"^\+(?:[0-9] ?){6,14}[0-9]$", ErrorMessage = "Invalid Phone number format")]
         public string PhoneNumber { get; set; } = string.Empty;
         public string EmployeeNumber { get; set; } = string.Empty;
+        public string EmployeeName { get; set; } = string.Empty;
         [Display(Name = "Reason for Visit")]
         public string ReasonForVisit { get; set; }
         public string ReasonForVisitDescription { get; set; }
