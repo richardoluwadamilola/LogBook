@@ -7,6 +7,11 @@
   </div>
 </div>
 
+<div>
+  <p>Current Visitors in the Building: {{ currentVisitorsCount }}</p>
+</div>
+
+
 <table class="table table-bordered table-hover">
   <thead class="thead-dark">
     <tr>
@@ -25,12 +30,12 @@
   </thead>
   <tbody>
     <tr *ngFor="let visitor of filteredVisitors">
-      <td>{{ visitor.id}}</td>
+      <td>{{ visitor.id }}</td>
       <td>{{ visitor.fullName }}</td>
       <td>{{ visitor.contactAddress }}</td>
       <td>{{ visitor.phoneNumber }}</td>
-      <td>{{ getReasonLabel(visitor.reasonForVisit) }}</td>
-      <td>{{ getEmployeeName(visitor.employeeNumber) }}</td>
+      <td>{{ visitor.reasonForVisit }}</td>
+      <td>{{ visitor.employeeNumber }}</td>
       <td>{{ visitor.arrivalTime }}</td>
       <td>{{ visitor.departureTime }}</td>
       <td>{{ calculateDuration(visitor.arrivalTime.toString(), visitor.departureTime.toString()) }}</td>
@@ -39,7 +44,6 @@
           <input type="text" class="form-control" formControlName="selectedTag" placeholder="Enter Tag Number">
           <button class="btn btn-primary" (click)="assignTagToVisitor(visitor.id, tagAssignmentForm.get('selectedTag')?.value)">Assign Tag</button>
         </div>
-        
       </td>
       <td>
         <button class="btn btn-primary" (click)="checkoutVisitor(visitor.id)">Check Out</button>

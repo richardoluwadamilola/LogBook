@@ -1,5 +1,3 @@
-// assign-tag.component.ts
-
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TagService } from '../services/api/tags/tag.service';
@@ -23,11 +21,18 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   searchForm!: FormGroup;
   tagAssignmentForm!: FormGroup;
   availableTags: any[] = [];
+  currentVisitorsCount: number = 0;
 
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
 
-  constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private  authService: AuthService, private router: Router ) {}
+  constructor(
+    private fb: FormBuilder,
+    private tagService: TagService,
+    private visitorService: VisitorService,
+    private  authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -46,15 +51,13 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     this.tagAssignmentForm = this.fb.group({
       selectedTag: ['', Validators.required]
     });
-  
   }
 
   ngOnDestroy(): void {
     console.log('Auto logout timer stopped');
   }
 
-  initForm(): void {
-  }
+  initForm(): void {}
 
   reasons = [
     { label: 'Official', value: ReasonForVisit.Official },
@@ -95,47 +98,36 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
 
-
-
-  // Method to get the reason for visit label based on the enum value
-  getReasonLabel(value: number): string {
-    // Implement the logic to map the enum value to the label
-    return value === 0 ? 'Official' : 'Personal'; // Adjust based on your actual enum values
+  getEmployeeName(employeeNumber: string): string {
+    const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);
+    return employee ? `${employee.firstName} ${employee.middleName} ${employee.lastName}` : '';
   }
 
-  // assign-tag.component.ts
-
-getEmployeeName(employeeNumber: string): string {
-  const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);
-  return employee ? `${employee.firstName} ${employee.middleName} ${employee.lastName}` : '';
-}
-
-loadAvailableTags(): void {
-  this.tagService.getTags().subscribe(
-    (data: any[]) => {
-      this.availableTags = data;
-    },
-    (error: any) => {
-      console.error('Error fetching available tags', error);
-    }
-  );
-}
+  loadAvailableTags(): void {
+    this.tagService.getTags().subscribe(
+      (data: any[]) => {
+        this.availableTags = data;
+      },
+      (error: any) => {
+        console.error('Error fetching available tags', error);
+      }
+    );
+  }
   
-  // assign-tag.component.ts
-loadVisitors(): void {
-  const currentDate = new Date();
-  const currentDateString = currentDate.toISOString().slice(0, 10);
+  loadVisitors(): void {
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10);
 
-  this.visitorService.getVisitors().subscribe(
-    (data: Visitor[]) => {
-      this.visitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
-      this.filteredVisitors = this.visitors;
-    },
-    (error: any) => console.error('Error fetching visitors', error)
-  );
-}
+    this.visitorService.getVisitors().subscribe(
+      (data: Visitor[]) => {
+        this.visitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
+        this.filteredVisitors = this.visitors;
+        this.updateCurrentVisitorsCount(currentDate);
+      },
+      (error: any) => console.error('Error fetching visitors', error)
+    );
+  }
 
   loadEmployees(): void {
     // Call your service to get employee data
@@ -148,7 +140,7 @@ loadVisitors(): void {
       }
     );
   }
-  // Check out visitor
+
   checkoutVisitor(visitorId: number): void {
     const checkoutTagDto = { VisitorId: visitorId };
 
@@ -182,6 +174,7 @@ loadVisitors(): void {
     } else {
       this.filteredVisitors = this.visitors;
     }
+    this.updateCurrentVisitorsCount(new Date());
   }
 
   @HostListener('window:mousemove') refreshUserState() {
@@ -215,15 +208,11 @@ loadVisitors(): void {
     console.log('User logged out due to inactivity');
   }
 
-  // Calculate Duration
   calculateDuration(arrivalTime: string, departureTime: string): string {
     const arrival = new Date(arrivalTime);
-    const departure = departureTime ? new Date(departureTime) : new Date();
-    
-    // Check if departure time is not set (0001-01-01T00:00:00)
-    const isDepartureNotSet = departure.getFullYear() === 1 && departure.getMonth() === 0 && departure.getDate() === 1;
+    const departure = departureTime ? new Date(departureTime) : new Date('0001-01-01T00:00:00'); // Default to a valid date
   
-    if (isDepartureNotSet) {
+    if (departure.getFullYear() === 1 && departure.getMonth() === 0 && departure.getDate() === 1) {
       // If departure time is not set, return "Not Departed Yet"
       return "Not Departed Yet";
     } else {
@@ -235,5 +224,11 @@ loadVisitors(): void {
     }
   }
   
+
+  updateCurrentVisitorsCount(checkTime: Date): void {
+    this.currentVisitorsCount = this.filteredVisitors.filter(visitor => {
+      return !visitor.departureTime || new Date(visitor.departureTime).getTime() === new Date('0001-01-01T00:00:00').getTime();
+    }).length;
+  }
   
 }
