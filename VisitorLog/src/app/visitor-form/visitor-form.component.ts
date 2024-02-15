@@ -5,6 +5,7 @@ import { Employee } from '../services/api/models/employee.model';
 import { ReasonForVisit } from '../services/api/models/visitor';
 import { Router } from '@angular/router';
 import { CameraComponent } from '../camera/camera.component';
+import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
 
 declare var $: any;
 
@@ -18,6 +19,11 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   visitorForm!: FormGroup;
   employees: Employee[] = [];
   formSubmitted = false;
+  separateDialCode = false;
+	SearchCountryField = SearchCountryField;
+	CountryISO = CountryISO;
+  PhoneNumberFormat = PhoneNumberFormat;
+	preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
   
 
 
@@ -43,6 +49,10 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       photo: [null, Validators.required],
     });
   }
+
+  changePreferredCountries() {
+		this.preferredCountries = [CountryISO.India, CountryISO.Canada];
+	}
 
   reasons = [
     { label: 'Official', value: ReasonForVisit.Official },
