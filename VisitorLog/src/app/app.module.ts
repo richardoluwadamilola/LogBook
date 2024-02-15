@@ -21,8 +21,6 @@ import { SuperadminComponent } from './superadmin/superadmin.component';
 import { CameraComponent } from './camera/camera.component';
 import { WebcamModule } from 'ngx-webcam';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 
 
 @NgModule({
@@ -45,8 +43,6 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
   ],
   // ...
 
-    // ...
-
     imports: [
       ReactiveFormsModule,
       FormsModule,
@@ -54,8 +50,8 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
       AppRoutingModule,
       HttpClientModule,
       WebcamModule,
-      BrowserAnimationsModule,
-      NgxIntlTelInputModule
+      
+
     ],
 
   providers: [DatePipe],

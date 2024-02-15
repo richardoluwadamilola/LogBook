@@ -10,26 +10,7 @@
       <textarea id="contactAddress" formControlName="contactAddress" rows="3" cols="75" required></textarea>
 
       <label for="phoneNumber">Phone Number:</label>
-      <ngx-intl-tel-input
-        [cssClass]="'custom'"
-        [preferredCountries]="preferredCountries"
-        [enableAutoCountrySelect]="true"
-        [enablePlaceholder]="true"
-        [searchCountryFlag]="true"
-        [searchCountryField]="[
-          SearchCountryField.Iso2,
-          SearchCountryField.Name
-        ]"
-        [selectFirstCountry]="false"
-        [selectedCountryISO]="CountryISO.India"
-        [maxLength]="15"
-        [phoneValidation]="true"
-        [separateDialCode]="separateDialCode"
-        [numberFormat]="PhoneNumberFormat.National"
-        id="phoneNumber"
-        formControlName="phoneNumber"
-      >
-      </ngx-intl-tel-input>
+      <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder="Enter phone number" required>
 
       <label for="personheretosee">Person Here To See:</label>
       <select id="employeeNumber" formControlName="employeeNumber" required>
