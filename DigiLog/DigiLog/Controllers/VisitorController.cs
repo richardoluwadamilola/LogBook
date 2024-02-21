@@ -56,6 +56,16 @@ namespace DigiLog.Controllers
             return Ok(visitors);
         }
 
+        // GET: api/Visitor/GetVisitorsByDateRange?startDate=2023-01-01&endDate=2023-01-02
+        [HttpGet("GetVisitorsByDateRange")]
+        public ActionResult<List<VisitorDTO>> GetVisitorsByDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            // Get visitors by date range.
+            var visitors = _visitorService.GetVisitorsByDateRange(startDate, endDate);
+            return Ok(visitors);
+        }
+        
+
         // GET: api/Visitor/GetVisitorsByEmployeeNumber?employeeNumber=123456
         [HttpGet("GetVisitorsByEmployeeNumber")]
         public ActionResult<List<VisitorDTO>> GetVisitorsByEmployeeNumber([FromQuery] string employeeNumber)
@@ -71,6 +81,15 @@ namespace DigiLog.Controllers
         {
             // Get visitors by tag number.
             var visitors = _visitorService.GetVisitorsByTagNumber(tagNumber);
+            return Ok(visitors);
+        }
+
+        // GET: api/Visitor/GetVisitorByFullName?fullName=John Doe
+        [HttpGet("GetVisitorByFullName")]
+        public ActionResult<List<VisitorDTO>> GetVisitorByFullName([FromQuery] string fullName)
+        {
+            // Get visitors by full name.
+            var visitors = _visitorService.GetVisitorByFullName(fullName);
             return Ok(visitors);
         }
 

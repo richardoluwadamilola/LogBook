@@ -10,6 +10,9 @@ namespace DigiLog.Services.Abstraction
         List<VisitorDTO> GetVisitorsByCheckInDate(DateTime date);
         List<VisitorDTO> GetVisitorsByEmployeeNumber(string employeeNumber);
         List<VisitorDTO> GetVisitorsByTagNumber(string tagNumber);
-        
+        List<VisitorDTO> GetVisitorsByDateRange(DateTime startDate, DateTime endDate);
+        List<VisitorDTO> GetVisitorByFullName(string fullName);
+
+
     }
 }

@@ -19,5 +19,6 @@ export interface Visitor {
     employee: Employee;
     arrivalTime: Date;
     departureTime: Date;
+    tagAssignedDateTime: Date;
     
 }

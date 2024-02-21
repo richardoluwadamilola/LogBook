@@ -5,6 +5,8 @@ import { VisitorService } from '../services/api/visitors/visitor.service';
 import { ReasonForVisit, Visitor } from '../services/api/models/visitor';
 import { AuthService } from '../services/api/Auth/auth.service';
 import { Router } from '@angular/router';
+import * as bootstrap from 'bootstrap';
+
 
 @Component({
   selector: 'app-assign-tag',
@@ -79,6 +81,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
         if (!response.hasError) {
           console.log('Tag assigned successfully:', response);
           alert(`Tag ${response.data} assigned successfully`);
+         this.tagAssignmentForm.reset();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
           this.loadVisitors();
@@ -152,6 +155,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
         if (!response.hasError) {
           console.log('Visitor checked out successfully:', response);
           alert('Visitor checked out successfully');
+          this.tagAssignmentForm.reset();
           this.errorMessage = null;
           // You may want to reload the visitors after successful checkout
           this.loadVisitors();
@@ -230,8 +234,17 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   updateCurrentVisitorsCount(checkTime: Date): void {
     this.currentVisitorsCount = this.filteredVisitors.filter(visitor => {
-      return !visitor.departureTime || new Date(visitor.departureTime).getTime() === new Date('0001-01-01T00:00:00').getTime();
+        const tagAssignedDateTime = new Date(visitor.tagAssignedDateTime);
+        console.log('Tag Assigned Date Time:', tagAssignedDateTime);
     }).length;
+}
+  
+
+  openPhotoModal(photoUrl: string): void {
+    const modalPhoto = document.getElementById('modalPhoto') as HTMLImageElement;
+    modalPhoto.src = photoUrl;
+    const photoModal = new bootstrap.Modal(document.getElementById('photoModal') as HTMLElement);
+    photoModal.show();
   }
   
 }

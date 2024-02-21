@@ -25,6 +25,7 @@ namespace DigiLog.DTOs
         [Display(Name = "Photo (Base64 Encoded)")]
         public string Photo { get; set; } = string.Empty;
         public DateTime ArrivalTime { get; internal set; } = DateTime.Now;
+        public DateTime TagAssignedDateTime { get; internal set; }
         public DateTime DepartureTime { get; internal set; }
         public ReasonForVisit ReasonForVisitEnum { get; set; }
 

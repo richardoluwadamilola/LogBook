@@ -26,6 +26,7 @@ namespace DigiLog.Models
         public string ReasonForVisitDescription { get; set; }
         public Photo Photo { get; set; }
         public DateTime ArrivalTime { get; set; } = DateTime.Now;
+        public DateTime TagAssignedDateTime { get; set; }
         public DateTime DepartureTime { get; set; }
         public DateTime DateCreated {  get; set; }
         public DateTime DateModified { get; set; }

@@ -64,6 +64,7 @@ namespace DigiLog.Services.Implementation
             // Assign the tag to the visitor
             visitor.TagNumber = tag.TagNumber;
             tag.IsAvaliable = false;
+            visitor.TagAssignedDateTime = DateTime.Now;
 
             _context.SaveChanges();
 

@@ -54,3 +54,26 @@ button:hover {
     background-color: #d4edda;
     color: #28a745;
 }
+#photoModal {
+    max-width: 100vw;
+   align-self: center;
+}
+#photomodal1 {
+    max-width: 100vw;
+   align-self: center;
+}
+#photomodal2 {
+    max-width: 100vw;
+   align-self: center;
+}
+#modalPhoto{
+    max-width: fit-content;
+    
+}
+
+  
+  
+  
+  
+  
+  

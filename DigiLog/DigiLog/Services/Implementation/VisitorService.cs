@@ -111,6 +111,40 @@ namespace DigiLog.Services.Implementation
             return visitors;
         }
 
+        // Get Visitors by Date Range.
+        public List<VisitorDTO> GetVisitorsByDateRange(DateTime startDate, DateTime endDate)
+        {
+
+            // Convert startDate and endDate to dates only
+            startDate = startDate.Date;
+            endDate = endDate.Date.AddDays(1).AddTicks(-1); // End of the day
+
+            // Get Visitors by Date Range.
+            var visitors = _context.Visitors
+                .Include(v => v.Photo)
+                .Where(v => v.ArrivalTime >= startDate && v.ArrivalTime <= endDate)
+                .Select(visitor => new VisitorDTO
+                {
+                    Id = visitor.Id,
+                    FullName = visitor.FullName,
+                    ContactAddress = visitor.ContactAddress,
+                    PhoneNumber = visitor.PhoneNumber,
+                    EmployeeNumber = visitor.EmployeeNumber,
+                    ReasonForVisit = visitor.ReasonForVisit.ToString(),
+                    ReasonForVisitEnum = visitor.ReasonForVisit,
+                    ReasonForVisitDescription = visitor.ReasonForVisitDescription,
+                    ArrivalTime = visitor.ArrivalTime,
+                    DepartureTime = visitor.DepartureTime,
+
+                    // Convert PhotoData to a base64-encoded string
+                    Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
+
+                })
+            .ToList();
+
+            return visitors;
+        }
+
 
         // Get Visitors by Employee Number.
         public List<VisitorDTO> GetVisitorsByEmployeeNumber(string employeeNumber)
@@ -187,6 +221,34 @@ namespace DigiLog.Services.Implementation
             string imageString = Convert.ToBase64String(image);
             // Return the base64-encoded string with the image format prefix
             return "data:image/png;base64," + imageString;
+        }
+
+        public List<VisitorDTO> GetVisitorByFullName(string fullName)
+        {
+            //Get Visitors by Full Name.
+            var visitors = _context.Visitors
+                .Include(v => v.Photo)
+                .Where(v => v.FullName == fullName)
+                .Select(visitor => new VisitorDTO
+                {
+                    Id = visitor.Id,
+                    FullName = visitor.FullName,
+                    ContactAddress = visitor.ContactAddress,
+                    PhoneNumber = visitor.PhoneNumber,
+                    EmployeeNumber = visitor.EmployeeNumber,
+                    ReasonForVisit = visitor.ReasonForVisit.ToString(),
+                    ReasonForVisitEnum = visitor.ReasonForVisit,
+                    ReasonForVisitDescription = visitor.ReasonForVisitDescription,
+                    ArrivalTime = visitor.ArrivalTime,
+                    DepartureTime = visitor.DepartureTime,
+
+                    // Convert PhotoData to a base64-encoded string
+                    Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
+
+                })
+            .ToList();
+
+            return visitors;
         }
     }
 }

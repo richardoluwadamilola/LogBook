@@ -21,6 +21,7 @@ import { SuperadminComponent } from './superadmin/superadmin.component';
 import { CameraComponent } from './camera/camera.component';
 import { WebcamModule } from 'ngx-webcam';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { LightboxModule } from 'ngx-lightbox';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
       AppRoutingModule,
       HttpClientModule,
       WebcamModule,
+      LightboxModule
       
 
     ],

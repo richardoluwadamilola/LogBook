@@ -35,8 +35,16 @@ export class VisitorService {
     return this.http.get<Visitor[]>('https://localhost:7020/api/Visitor/GetVisitors');
   }
 
-  getVisitorsByCheckInDate(date: Date): Observable<Visitor[]> {
-    return this.http.get<Visitor[]>(`https://localhost:7020/api/Visitor/GetVisitorsByCheckInDate?date=${date}`);
+  getVisitorsByDateRange(startDate: Date, endDate: Date): Observable<Visitor[]> {
+    const params = {
+      startDate: this.datePipe.transform(startDate, 'yyyy-MM-dd') || '',
+      endDate: this.datePipe.transform(endDate, 'yyyy-MM-dd') || ''
+    };
+    return this.http.get<Visitor[]>(`${this.apiUrl}/GetVisitorsByDateRange`, { params });
+  }
+
+  getVisitorByFullName(fullName: string): Observable<Visitor[]> {
+    return this.http.get<Visitor[]>(this.apiUrl + '/GetVisitorByFullName?fullName=' + fullName);
   }  
 
   getVisitorsByEmployeeNumber(employeeNumber: string): Observable<Visitor[]> {

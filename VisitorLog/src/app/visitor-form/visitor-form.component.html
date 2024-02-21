@@ -16,7 +16,7 @@
       <select id="employeeNumber" formControlName="employeeNumber" required>
         <option disabled value="">Please select the person to see</option>
         <option *ngFor="let employee of employees" [value]="employee.employeeNumber">
-          {{ employee.firstName }} {{ getInitials(employee.middleName) }} {{ getInitials(employee.lastName) }}
+          {{ employee.lastName }} {{ getInitials(employee.firstName) }} {{ getInitials(employee.middleName) }}
         </option>
       </select>
 
