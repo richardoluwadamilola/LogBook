@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { DatePipe } from '@angular/common';
 import { ReasonForVisit, Visitor } from '../services/api/models/visitor';
+import { Employee } from '../services/api/models/employee.model';
 
 @Component({
   selector: 'app-visitor-management',
@@ -12,11 +13,13 @@ import { ReasonForVisit, Visitor } from '../services/api/models/visitor';
 export class VisitorManagementComponent implements OnInit{
   searchForm!: FormGroup;
   visitors!: any[];
+  employees: Employee[] = [];
 
   constructor(private fb: FormBuilder, private visitorService: VisitorService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     this.createForm();
+    this.loadEmployees();
   }
 
   createForm(): void {
@@ -25,6 +28,17 @@ export class VisitorManagementComponent implements OnInit{
       employeeNumber: ['', Validators.required],
       tagNumber: ['', Validators.required],
     });
+  }
+
+  loadEmployees(): void {
+    this.visitorService.getEmployees().subscribe(
+      (data: Employee[]) => {
+        this.employees = data;
+      },
+      (error: any) => {
+        console.error('Error fetching employees', error);
+      }
+    );
   }
 
   submitForm(): void {
@@ -71,4 +85,9 @@ export class VisitorManagementComponent implements OnInit{
   getReasonForVisit(reasonForVisitEnum: ReasonForVisit): string {
     return ReasonForVisit[reasonForVisitEnum];
   }
+
+  getEmployeeName(employeeNumber: string): string {
+    const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);
+    return employee ? `${employee.firstName} ${employee.lastName}` : '';
+  } 
 }

@@ -80,7 +80,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
           console.log('Tag assigned successfully:', response);
           alert(`Tag ${response.data} assigned successfully`);
           this.errorMessage = null;
-          // You may want to reload the visitors after successful tag assignment
+          this.successMessage = `Tag ${response.data} assigned successfully`;
           this.loadVisitors();
         } else {
           if (response.description === 'No available tags found.') {
@@ -124,6 +124,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     this.visitorService.getVisitors().subscribe(
       (data: Visitor[]) => {
         this.visitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
+        console.log('Visitors:', this.visitors);
         this.filteredVisitors = this.visitors;
         this.updateCurrentVisitorsCount(currentDate);
       },

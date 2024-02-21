@@ -14,7 +14,8 @@ namespace DigiLog.DTOs
         public string ContactAddress { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Phone Number")]
-        [RegularExpression(@"^\+(?:[0-9] ?){6,14}[0-9]$", ErrorMessage = "Invalid Phone number format")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^(?:\+?(\d{1,3}))?([0-9()\s-]+)$", ErrorMessage = "Invalid Phone number format")]
         public string PhoneNumber { get; set; } = string.Empty;
         public string EmployeeNumber { get; set; } = string.Empty;
         public string EmployeeName { get; set; } = string.Empty;

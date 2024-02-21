@@ -17,7 +17,8 @@ namespace DigiLog.Models
         public string ContactAddress { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Phone Number")]
-        [RegularExpression(@"^\+?[0-9()-\s]+$", ErrorMessage = "Invalid Phone number format")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^(?:\+?(\d{1,3}))?([0-9()\s-]+)$", ErrorMessage = "Invalid Phone number format")]
         public string PhoneNumber { get; set; } = string.Empty;
         [Required]
         [Display(Name = "Reason for Visit")]
