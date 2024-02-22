@@ -50,7 +50,7 @@ namespace DigiLog.Services.Implementation
             }
 
             // Check if the tag exists and is available
-            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == assignTagDto.TagNumber && t.IsAvaliable);
+            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == assignTagDto.TagNumber && t.IsAvailable);
 
             if (tag == null)
             {
@@ -63,7 +63,7 @@ namespace DigiLog.Services.Implementation
 
             // Assign the tag to the visitor
             visitor.TagNumber = tag.TagNumber;
-            tag.IsAvaliable = false;
+            tag.IsAvailable = false;
             visitor.TagAssignedDateTime = DateTime.Now;
 
             _context.SaveChanges();
@@ -119,7 +119,7 @@ namespace DigiLog.Services.Implementation
             var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == visitor.TagNumber);
             if (tag != null)
             {
-                tag.IsAvaliable = true;
+                tag.IsAvailable = true;
             }
 
             _context.SaveChanges();
@@ -134,11 +134,44 @@ namespace DigiLog.Services.Implementation
             return _context.Tags
                 .Select(tag => new TagDTO
                 {
-                    TagNumber = tag.TagNumber
+                    TagNumber = tag.TagNumber,
+                    IsDisabled = tag.IsDisabled
                 })
                 .ToList();
         }
 
-       
+        // Disable a tag based on the provided tag number.
+        public ServiceResponse<string> DisableTag(string tagNumber)
+        {
+            var tag = _context.Tags.FirstOrDefault(t => t.TagNumber == tagNumber);
+
+            if (tag == null)
+            {
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = $"Tag {tagNumber} not found.",
+                };
+            }
+
+            //Check if the tag is already disabled
+            if (tag.IsDisabled)
+            {
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = $"Tag {tagNumber} is already disabled.",
+                };
+            }
+            
+            // Disable the tag
+            tag.IsAvailable = false;
+            tag.IsDisabled = true;
+            _context.SaveChanges();
+
+            return new ServiceResponse<string>();
+        }
+
+
     }
 }

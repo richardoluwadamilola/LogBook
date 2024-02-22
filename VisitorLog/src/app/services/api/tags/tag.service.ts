@@ -48,5 +48,14 @@ export class TagService {
     );
   }
 
+  disableTag(tagNumber: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/disable`, { tagNumber }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error disabling tag', error);
+        return throwError(error);
+      })
+    );
+  }  
+
   
 }

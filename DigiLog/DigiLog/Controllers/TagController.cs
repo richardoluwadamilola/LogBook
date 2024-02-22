@@ -63,6 +63,25 @@ namespace DigiLog.Controllers
             return Ok(response);
         }
 
+        //PUT api/<TagController>/5
+        [HttpPut("disable")]
+        public IActionResult DisableTag([FromBody] TagDTO tagDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(tagDto);
+
+            // Calls the tag service to disable a tag.
+            var response = _tagService.DisableTag(tagDto.TagNumber);
+
+            if (response.HasError)
+            {
+                // Returns the service response.
+                return NotFound(response.Description);
+            }
+
+            // Returns the service response.
+            return Ok(response);
+        }
 
         // PUT api/<TagController>/5
         [HttpPut("checkout")]
@@ -77,8 +96,6 @@ namespace DigiLog.Controllers
             // Returns the service response.
             return Ok(response);
         }
-
-        
 
     }
 }

@@ -19,7 +19,8 @@ export class TagManagementComponent implements OnInit {
   constructor(private fb: FormBuilder, private tagService: TagService) {
     this.tagForm = this.fb.group({
       tagNumber: ['', Validators.required],
-      isAvailable: [true, Validators.required]
+      isAvailable: [true, Validators.required],
+      isDisabled: [false, Validators.required]
     });
   }
 
@@ -30,7 +31,8 @@ export class TagManagementComponent implements OnInit {
   createTag(): void {
     const tag: Tag = {
       tagNumber: this.tagForm.value.tagNumber,
-      isAvailable: this.tagForm.value.isAvailable
+      isAvailable: this.tagForm.value.isAvailable,
+      isDisabled: this.tagForm.value.isDisabled
     };
 
     this.tagService.createTag(tag).subscribe(
@@ -45,16 +47,33 @@ export class TagManagementComponent implements OnInit {
     );
   }
 
+  disableTag(tagNumber: string): void {
+    this.tagService.disableTag(tagNumber).subscribe(
+      (data: any) => {
+        console.log('Tag disabled successfully', data);
+        alert('Tag disabled successfully');
+        this.getTags();
+      },
+      (error: any) => {
+        console.error('Error disabling tag', error);
+      }
+    );
+  }
+
   getTags(): void {
     this.tagService.getTags().subscribe(
       (data: Tag[]) => {
         this.tags = data;
-        console.log('Tags:', this.tags);
+        console.log('Tags:', data);
       },
       (error: any) => {
         console.error('Error getting tags', error);
       }
     );
+  }
+
+  isDisabled(tag: Tag): boolean {
+    return tag.isDisabled;
   }
 
   

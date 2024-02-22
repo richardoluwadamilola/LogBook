@@ -8,7 +8,8 @@ namespace DigiLog.Models
         [Key]
         [Column(TypeName = "varchar(10)")]
         public string TagNumber { get; set; } = string.Empty;
-        public bool IsAvaliable { get; set; } = true;
+        public bool IsAvailable { get; set; } = true;
+        public bool IsDisabled { get; set; } = false;
         public DateTime DateCreated { get; set; }
 
 

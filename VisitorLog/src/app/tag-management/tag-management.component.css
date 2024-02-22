@@ -1,0 +1,6 @@
+.disabled-tag {
+    cursor: not-allowed;
+    pointer-events: none;
+    color: #c61f1f;
+    opacity: 0.5;
+}

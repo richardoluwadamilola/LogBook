@@ -81,6 +81,11 @@ export class AssignTagComponent implements OnInit, OnDestroy {
         if (!response.hasError) {
           console.log('Tag assigned successfully:', response);
           alert(`Tag ${response.data} assigned successfully`);
+          // Find the visitor in the visitors array and update the tagAssignedDateTime
+        const assignedVisitor = this.visitors.find(visitor => visitor.id === visitorId);
+        if (assignedVisitor) {
+          assignedVisitor.tagAssignedDateTime = new Date(); // Update with current date and time
+        }
          this.tagAssignmentForm.reset();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
@@ -235,9 +240,16 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   updateCurrentVisitorsCount(checkTime: Date): void {
     this.currentVisitorsCount = this.filteredVisitors.filter(visitor => {
         const tagAssignedDateTime = new Date(visitor.tagAssignedDateTime);
-        console.log('Tag Assigned Date Time:', tagAssignedDateTime);
+        const departureTime = new Date(visitor.departureTime);
+
+        // Check if the visitor has a valid tagAssignedDateTime and is still within the premises
+        const isVisitorInside = !isNaN(tagAssignedDateTime.getTime()) &&
+                                tagAssignedDateTime <= checkTime &&
+                                (isNaN(departureTime.getTime()) || departureTime >= checkTime);
+
+        return isVisitorInside;
     }).length;
-}
+} 
   
 
   openPhotoModal(photoUrl: string): void {
