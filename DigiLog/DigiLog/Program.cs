@@ -69,6 +69,7 @@ builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IVisitorService, VisitorService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IReasonForVisitService, ReasonForVisitService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();

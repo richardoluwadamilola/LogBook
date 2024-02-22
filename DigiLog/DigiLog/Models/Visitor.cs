@@ -20,9 +20,6 @@ namespace DigiLog.Models
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^(?:\+?(\d{1,3}))?([0-9()\s-]+)$", ErrorMessage = "Invalid Phone number format")]
         public string PhoneNumber { get; set; } = string.Empty;
-        [Required]
-        [Display(Name = "Reason for Visit")]
-        public ReasonForVisit ReasonForVisit { get; set; }
         public string ReasonForVisitDescription { get; set; }
         public Photo Photo { get; set; }
         public DateTime ArrivalTime { get; set; } = DateTime.Now;
@@ -41,13 +38,12 @@ namespace DigiLog.Models
         [ForeignKey("Tag")]
         public string? TagNumber { get; set; }
         public Tag? Tag { get; set; }
+
+        [ForeignKey("ReasonForVisit")]
+        [Required]
+        public long ReasonForVisitId { get; set; }
+        public ReasonForVisit ReasonForVisit { get; set; }
     }
 
-    public enum ReasonForVisit
-    {
-        [Display(Name = "Official Visit")]
-        Official,
-        [Display(Name = "Personal Visit")]
-        Personal
-    }
+    
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { DatePipe } from '@angular/common';
-import { ReasonForVisit, Visitor } from '../services/api/models/visitor';
+import { Visitor } from '../services/api/models/visitor';
 import { Employee } from '../services/api/models/employee.model';
 import * as bootstrap from 'bootstrap';
 
@@ -101,9 +101,9 @@ export class VisitorManagementComponent implements OnInit{
   }
   
   
-  getReasonForVisit(reasonForVisitEnum: ReasonForVisit): string {
-    return ReasonForVisit[reasonForVisitEnum];
-  }
+  // getReasonForVisit(reasonForVisitEnum: ReasonForVisit): string {
+  //   return ReasonForVisit[reasonForVisitEnum];
+  // }
 
   getEmployeeName(employeeNumber: string): string {
     const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);

@@ -24,6 +24,15 @@ namespace DigiLog.Services.Implementation
 
         public ServiceResponse<string> CreateVisitor(VisitorDTO visitorDto)
         {
+            var reasonForVisit = _context.ReasonForVisit.FirstOrDefault(r => r.Reason == visitorDto.ReasonForVisit);
+            if (reasonForVisit == null)
+            {
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = "Reason for visit not found",
+                };
+            }
 
             var photo = new Photo
             {
@@ -38,7 +47,7 @@ namespace DigiLog.Services.Implementation
                 ContactAddress = visitorDto.ContactAddress,
                 PhoneNumber = visitorDto.PhoneNumber,
                 EmployeeNumber = visitorDto.EmployeeNumber,
-                ReasonForVisit = Enum.Parse<ReasonForVisit>(visitorDto.ReasonForVisit),
+                ReasonForVisit = reasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
                 Photo = photo,
                 ArrivalTime = DateTime.Now,
@@ -62,6 +71,7 @@ namespace DigiLog.Services.Implementation
             return _context.Visitors
                 .Include(v => v.Photo)
                 .Include(v => v.Employee)
+                .Include(v => v.ReasonForVisit)
                 .Select(visitor => new VisitorDTO
                 {
                     Id = visitor.Id,
@@ -70,8 +80,7 @@ namespace DigiLog.Services.Implementation
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
-                    ReasonForVisit = visitor.ReasonForVisit.ToString(),
-                    ReasonForVisitEnum = visitor.ReasonForVisit,
+                    ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
                     DepartureTime = visitor.DepartureTime,
@@ -83,33 +92,7 @@ namespace DigiLog.Services.Implementation
                 .ToList();
         }
 
-        public List<VisitorDTO> GetVisitorsByCheckInDate(DateTime date)
-        {
-            //Get Visitors by check in date.
-           var visitors = _context.Visitors
-                .Include(v => v.Photo)
-                .Where(v => v.ArrivalTime.Date ==  date.Date)
-                .Select(visitor => new VisitorDTO
-                {
-                    Id = visitor.Id,
-                    FullName = visitor.FullName,
-                    ContactAddress = visitor.ContactAddress,
-                    PhoneNumber = visitor.PhoneNumber,
-                    EmployeeNumber = visitor.EmployeeNumber,
-                    ReasonForVisit = visitor.ReasonForVisit.ToString(),
-                    ReasonForVisitEnum = visitor.ReasonForVisit,
-                    ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    ArrivalTime = visitor.ArrivalTime,
-                    DepartureTime = visitor.DepartureTime,
-
-                    // Convert PhotoData to a base64-encoded string
-                    Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
-
-                })
-            .ToList();
-
-            return visitors;
-        }
+        
 
         // Get Visitors by Date Range.
         public List<VisitorDTO> GetVisitorsByDateRange(DateTime startDate, DateTime endDate)
@@ -122,6 +105,8 @@ namespace DigiLog.Services.Implementation
             // Get Visitors by Date Range.
             var visitors = _context.Visitors
                 .Include(v => v.Photo)
+                .Include(v => v.Employee)
+                .Include(v => v.ReasonForVisit)
                 .Where(v => v.ArrivalTime >= startDate && v.ArrivalTime <= endDate)
                 .Select(visitor => new VisitorDTO
                 {
@@ -130,8 +115,8 @@ namespace DigiLog.Services.Implementation
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
-                    ReasonForVisit = visitor.ReasonForVisit.ToString(),
-                    ReasonForVisitEnum = visitor.ReasonForVisit,
+                    EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
                     DepartureTime = visitor.DepartureTime,
@@ -152,6 +137,8 @@ namespace DigiLog.Services.Implementation
             //Get Visitors by Employee Number.
             var visitors = _context.Visitors
                 .Include(v => v.Photo)
+                .Include(v => v.Employee)
+                .Include(v => v.ReasonForVisit)
                 .Where(v => v.EmployeeNumber == employeeNumber)
                 .Select(visitor => new VisitorDTO
                 {
@@ -160,8 +147,8 @@ namespace DigiLog.Services.Implementation
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
-                    ReasonForVisit = visitor.ReasonForVisit.ToString(),
-                    ReasonForVisitEnum = visitor.ReasonForVisit,
+                    EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
                     DepartureTime = visitor.DepartureTime,
@@ -181,6 +168,8 @@ namespace DigiLog.Services.Implementation
             //Get Visitors by Tag Number.
             var visitors = _context.Visitors
                 .Include(v => v.Photo)
+                .Include(v => v.Employee)
+                .Include(v => v.ReasonForVisit)
                 .Where(v => v.TagNumber == tagNumber)
                 .Select(visitor => new VisitorDTO
                 {
@@ -189,8 +178,8 @@ namespace DigiLog.Services.Implementation
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
-                    ReasonForVisit = visitor.ReasonForVisit.ToString(),
-                    ReasonForVisitEnum = visitor.ReasonForVisit,
+                    EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
                     DepartureTime = visitor.DepartureTime,
@@ -228,6 +217,8 @@ namespace DigiLog.Services.Implementation
             //Get Visitors by Full Name.
             var visitors = _context.Visitors
                 .Include(v => v.Photo)
+                .Include(v => v.Employee)
+                .Include(v => v.ReasonForVisit)
                 .Where(v => v.FullName == fullName)
                 .Select(visitor => new VisitorDTO
                 {
@@ -236,8 +227,8 @@ namespace DigiLog.Services.Implementation
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
                     EmployeeNumber = visitor.EmployeeNumber,
-                    ReasonForVisit = visitor.ReasonForVisit.ToString(),
-                    ReasonForVisitEnum = visitor.ReasonForVisit,
+                    EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
                     DepartureTime = visitor.DepartureTime,

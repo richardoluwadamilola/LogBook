@@ -2,9 +2,11 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { Employee } from '../services/api/models/employee.model';
-import { ReasonForVisit } from '../services/api/models/visitor';
+//import { ReasonForVisit } from '../services/api/models/visitor';
 import { Router } from '@angular/router';
 import { CameraComponent } from '../camera/camera.component';
+import { ReasonforvisitService } from '../services/api/Reason/reasonforvisit.service';
+import { ReasonForVisit } from '../services/api/models/reason-for-visit';
 
 declare var $: any;
 
@@ -17,15 +19,17 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   @ViewChild(CameraComponent) cameraComponent!: CameraComponent;
   visitorForm!: FormGroup;
   employees: Employee[] = [];
+  reasonForVisit: ReasonForVisit[] = [];
   formSubmitted = false;
   
 
 
-  constructor(private fb: FormBuilder, private visitorService: VisitorService, private router: Router) { }
+  constructor(private fb: FormBuilder, private visitorService: VisitorService, private router: Router, private reasonForVisitService: ReasonforvisitService) { }
 
   ngOnInit(): void {
     this.createForm();
     this.getEmployees();
+    this.getReasonsForVisit();
   }
 
   ngAfterViewInit(): void {
@@ -44,10 +48,18 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  reasons = [
-    { label: 'Official', value: ReasonForVisit.Official },
-    { label: 'Personal', value: ReasonForVisit.Personal }
-  ];
+  getReasonsForVisit(): void {
+    this.reasonForVisitService.getReasonsForVisit().subscribe(
+      (data: any) => {
+        this.reasonForVisit = data;
+        console.log('Reasons for visit:', this.reasonForVisit);
+      },
+      (error: any) => {
+        console.error('Error getting reasons for visit', error);
+      }
+    );
+  }
+
 
   getEmployees(): void {
     this.visitorService.getEmployees().subscribe(
@@ -85,12 +97,22 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   
       // Log the employeeNumber separately
       console.log('Form Control Value (employeeNumber):', this.visitorForm.get('employeeNumber')?.value);
+
+      // Log the reasonForVisit separately
+      console.log('Form Control Value (reasonForVisit):', this.visitorForm.get('reasonForVisit')?.value);
   
       // Ensure employeeNumber is not null
       if (formData.employeeNumber !== null) {
         // You don't need to convert it to a number
       } else {
         console.error('Invalid employeeNumber:', formData.employeeNumber);
+        return;
+      }
+
+      if (formData.reasonForVisit !== null) {
+        // You don't need to convert it to a number
+      } else {
+        console.error('Invalid reasonForVisit:', formData.reasonForVisit);
         return;
       }
   

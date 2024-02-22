@@ -22,6 +22,7 @@ import { CameraComponent } from './camera/camera.component';
 import { WebcamModule } from 'ngx-webcam';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { LightboxModule } from 'ngx-lightbox';
+import { ReasonforvisitComponent } from './reasonforvisit/reasonforvisit.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { LightboxModule } from 'ngx-lightbox';
     SuperadminComponent,
     CameraComponent,
     ChangePasswordComponent,
+    ReasonforvisitComponent,
   ],
   // ...
 

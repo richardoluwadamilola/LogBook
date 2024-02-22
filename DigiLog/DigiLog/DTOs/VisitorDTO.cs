@@ -19,7 +19,6 @@ namespace DigiLog.DTOs
         public string PhoneNumber { get; set; } = string.Empty;
         public string EmployeeNumber { get; set; } = string.Empty;
         public string EmployeeName { get; set; } = string.Empty;
-        [Display(Name = "Reason for Visit")]
         public string ReasonForVisit { get; set; }
         public string ReasonForVisitDescription { get; set; }
         [Display(Name = "Photo (Base64 Encoded)")]
@@ -27,7 +26,6 @@ namespace DigiLog.DTOs
         public DateTime ArrivalTime { get; internal set; } = DateTime.Now;
         public DateTime TagAssignedDateTime { get; internal set; }
         public DateTime DepartureTime { get; internal set; }
-        public ReasonForVisit ReasonForVisitEnum { get; set; }
 
     }
 }

@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="./tag">Tag</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./department">Department</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./employee">Employee</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./visitor">Visitors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./reason">Reasons</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container mt-4">
+    <h2>Reason for Visit</h2>
+    <form [formGroup]="reasonForm" (ngSubmit)="submitForm()">
+      <div class="mb-3">
+        <label for="reason" class="form-label">Reason:</label>
+        <input type="text" id="reason" formControlName="reason" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Create Reason</button>
+    </form>
+  </div>
+
+  <div *ngIf="reasons.length > 0" class="container mt-4">
+    <h3>All Reasons</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Ids</th>
+          <th>Reason</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reason of reasons">
+          <td>{{ reason.id }}</td>
+          <td>{{ reason.reason }}</td>
+          <td></td>
+  

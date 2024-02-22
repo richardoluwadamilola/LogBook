@@ -2,7 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TagService } from '../services/api/tags/tag.service';
 import { VisitorService } from '../services/api/visitors/visitor.service';
-import { ReasonForVisit, Visitor } from '../services/api/models/visitor';
+import {  Visitor } from '../services/api/models/visitor';
 import { AuthService } from '../services/api/Auth/auth.service';
 import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
@@ -62,10 +62,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   initForm(): void {}
 
-  reasons = [
-    { label: 'Official', value: ReasonForVisit.Official },
-    { label: 'Personal', value: ReasonForVisit.Personal }
-  ];
+  
 
   
   assignTagToVisitor(visitorId: number, tagNumber: string): void {

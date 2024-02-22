@@ -15,14 +15,22 @@ namespace DigiLog.Data
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<ReasonForVisit> ReasonForVisit { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Visitor>()
-                .Property(v => v.ReasonForVisit)
-                .HasConversion<string>();
+            //Seed ReasonForVisit into the database.
+            modelBuilder.Entity<ReasonForVisit>().HasData(
+                new ReasonForVisit { Id = 1, Reason = "Official" },
+                new ReasonForVisit { Id = 2, Reason = "Personal" },
+                new ReasonForVisit { Id = 3, Reason = "Interview" },
+                new ReasonForVisit { Id = 4, Reason = "Delivery" }
+            );
 
         }
+
+
+
 
 
     }

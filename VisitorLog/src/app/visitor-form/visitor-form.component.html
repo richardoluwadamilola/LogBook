@@ -22,8 +22,10 @@
 
       <label for="reasonForVisit">Reason For Visit:</label>
       <select formControlName="reasonForVisit" required>
-        <option *ngFor="let reason of reasons" [value]="reason.value">{{ reason.label }}</option>
+        <option disabled value="">Please select a reason for visit</option>
+        <option *ngFor="let reason of reasonForVisit" [value]="reason.reason">{{ reason.reason }}</option>
       </select>
+
 
       <label for="reasonForVisitDescription">Reason For Visit Description:</label>
       <input type="text" id="reasonForVisitDescription" formControlName="reasonForVisitDescription">

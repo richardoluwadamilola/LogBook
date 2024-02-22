@@ -13,6 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { authGuard } from './Auth/auth.guard';
 import { SuperadminComponent } from './superadmin/superadmin.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ReasonforvisitComponent } from './reasonforvisit/reasonforvisit.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'employee', component: EmployeeManagementComponent},
   { path: 'visitor', component: VisitorManagementComponent},
   { path: 'department', component: DepartmentFormComponent},
+  { path: 'reason', component: ReasonforvisitComponent},
   { path: 'change-password', component: ChangePasswordComponent}
 
   

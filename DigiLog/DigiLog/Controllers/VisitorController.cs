@@ -46,16 +46,6 @@ namespace DigiLog.Controllers
             return Ok(visitors);
         }
 
-
-        // GET: api/Visitor/GetVisitorsByCheckInDate?date=2023-01-01
-        [HttpGet("GetVisitorsByCheckInDate")]
-        public ActionResult<List<VisitorDTO>> GetVisitorsByCheckInDate([FromQuery] DateTime date)
-        {
-            // Get visitors by check in date.
-            var visitors = _visitorService.GetVisitorsByCheckInDate(date);
-            return Ok(visitors);
-        }
-
         // GET: api/Visitor/GetVisitorsByDateRange?startDate=2023-01-01&endDate=2023-01-02
         [HttpGet("GetVisitorsByDateRange")]
         public ActionResult<List<VisitorDTO>> GetVisitorsByDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
@@ -64,7 +54,7 @@ namespace DigiLog.Controllers
             var visitors = _visitorService.GetVisitorsByDateRange(startDate, endDate);
             return Ok(visitors);
         }
-        
+
 
         // GET: api/Visitor/GetVisitorsByEmployeeNumber?employeeNumber=123456
         [HttpGet("GetVisitorsByEmployeeNumber")]
