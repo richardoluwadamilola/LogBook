@@ -12,6 +12,6 @@
       <img [src]="webcamImage.imageAsDataUrl" alt="Captured Image">
     </div>
   
-    <button type="button" (click)="triggerSnapshot()">Take Picture</button>
+    <button type="button" (click)="triggerSnapshot()">{{ webcamImage ? 'Retake Picture' : 'Take Picture'}}</button>
   </div>
   

@@ -158,6 +158,10 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   submitForm(): void {
     console.log('Form data:', this.visitorForm.value);
     if (this.visitorForm.valid) {
+      if (!this.employeeInDepartment()) {
+        alert('The person you are here to see is not in the selected department.');
+        return;
+      }
       const formData = this.visitorForm.value;
 
       // Log formData before modifying the employeeNumber
@@ -218,6 +222,23 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
     } else {
       console.error('Invalid form data');
     }
+  }
+
+  employeeInDepartment(): boolean {
+    const selectedEmployeeName = this.visitorForm.get('personHereToSee')?.value;
+    const selectedDepartmentName = this.visitorForm.get('department')?.value;
+
+    const employee = this.employees.find(emp => {
+      const fullName = `${emp.firstName} ${emp.middleName ? emp.middleName + ' ' : ''}${emp.lastName}`;
+      return fullName === selectedEmployeeName;
+    });
+
+    if (employee) {
+      const department = this.departments.find(dep => dep.departmentName === selectedDepartmentName);
+      return department !== undefined && department.departmentId === employee.departmentId;
+    }
+
+    return false;
   }
 
   // Get the employee name initials
