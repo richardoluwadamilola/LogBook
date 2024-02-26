@@ -6,6 +6,7 @@ import { Employee } from '../models/employee.model';
 import { Visitor } from '../models/visitor';
 import { DatePipe } from '@angular/common';
 import { Form } from '@angular/forms';
+import { Department } from '../models/department.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,10 @@ export class VisitorService {
 
   getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>('https://localhost:7020/api/Employee');
+  }
+
+  getDepartments(): Observable<Department[]> {
+    return this.http.get<Department[]>('https://localhost:7020/api/Department');
   }
 
   getVisitors(): Observable<Visitor[]> {

@@ -39,32 +39,62 @@ namespace DigiLog.Services.Implementation
                 PhotoData = GetByteFromImageString(visitorDto.Photo)
             };
 
+            var employee = _context.Employees
+                                  .Include(e => e.Department) // Eager loading of Department
+                                  .FirstOrDefault(e => e.EmployeeNumber == visitorDto.EmployeeNumber);
+            if (employee == null)
+            {
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = "Employee not found",
+                };
+            }
 
+            var department = _context.Departments.FirstOrDefault(d => d.DepartmentId == employee.DepartmentId);
+            if (department == null)
+            {
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = "Department not found",
+                };
+            }
+
+            // Concatenate first name, middle name, and last name of the employee
+            var employeeName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
+
+            // Create a Visitor object
             var visitor = new Visitor
             {
-                //Create Visitor.
                 FullName = visitorDto.FullName,
                 ContactAddress = visitorDto.ContactAddress,
                 PhoneNumber = visitorDto.PhoneNumber,
+                EmailAddress = visitorDto.EmailAddress,
                 EmployeeNumber = visitorDto.EmployeeNumber,
+                EmployeeName = employeeName,
+                DepartmentId = department.DepartmentId,
+                DepartmentName = department.DepartmentName,
                 ReasonForVisit = reasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
                 Photo = photo,
                 ArrivalTime = DateTime.Now,
                 DateCreated = DateTime.Now,
-
             };
 
-            //Add photo to the database.
+            // Add photo to the database
             _context.Photos.Add(photo);
 
-            //Add visitor to the database.
+            // Add visitor to the database
             _context.Visitors.Add(visitor);
-            //Save changes to the database.
+
+            // Save changes to the database
             _context.SaveChanges();
 
             return new ServiceResponse<string>();
         }
+
+
 
         public List<VisitorDTO> GetVisitors()
         {
@@ -78,6 +108,7 @@ namespace DigiLog.Services.Implementation
                     FullName = visitor.FullName,
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
+                    EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
@@ -114,6 +145,7 @@ namespace DigiLog.Services.Implementation
                     FullName = visitor.FullName,
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
+                    EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
@@ -146,6 +178,7 @@ namespace DigiLog.Services.Implementation
                     FullName = visitor.FullName,
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
+                    EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
@@ -177,6 +210,7 @@ namespace DigiLog.Services.Implementation
                     FullName = visitor.FullName,
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
+                    EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
@@ -226,6 +260,7 @@ namespace DigiLog.Services.Implementation
                     FullName = visitor.FullName,
                     ContactAddress = visitor.ContactAddress,
                     PhoneNumber = visitor.PhoneNumber,
+                    EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
                     ReasonForVisit = visitor.ReasonForVisit.Reason,

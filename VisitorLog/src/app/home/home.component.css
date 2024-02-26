@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 .container {
     margin: 0;
     height: 100vh; 
@@ -13,8 +17,20 @@
   .container h1, br {
     margin: 0;
     text-align: center;
-    margin-left: 650px;
+    margin-left: 200px;
     overflow: hidden;
+  }
+  
+  @media screen and (max-width: 600px) {
+    div {
+      max-width: 100%;
+    }
+  }
+  
+  @media screen and (max-width: 400px) {
+    button {
+      font-size: 14px;
+    }
   }
   
   

@@ -6,6 +6,7 @@ export interface Visitor {
     fullName: string;
     contactAddress: string;
     phoneNumber: string;
+    emailAddress: string;
     reasonForVisit: string;
     reasonForVisitDescription: string;
     photo: string;

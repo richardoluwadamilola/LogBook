@@ -79,3 +79,30 @@ div {
     }
   }
   
+  .input-container {
+    position: relative;
+  }
+  
+  .suggestions {
+    position: absolute;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 999;
+    width: 100%;
+  }
+  
+  .suggestions li {
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  .suggestions li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  

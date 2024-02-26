@@ -20,6 +20,10 @@ namespace DigiLog.Models
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^(?:\+?(\d{1,3}))?([0-9()\s-]+)$", ErrorMessage = "Invalid Phone number format")]
         public string PhoneNumber { get; set; } = string.Empty;
+        [Display(Name = "EmailAddress")]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        public string EmailAddress { get; set; } 
         public string ReasonForVisitDescription { get; set; }
         public Photo Photo { get; set; }
         public DateTime ArrivalTime { get; set; } = DateTime.Now;
@@ -43,6 +47,14 @@ namespace DigiLog.Models
         [Required]
         public long ReasonForVisitId { get; set; }
         public ReasonForVisit ReasonForVisit { get; set; }
+
+        public long DepartmentId { get; set; }
+        public Department? Department { get; set; }
+
+        public string EmployeeName { get; set; } = string.Empty;
+        public string DepartmentName { get; set; } = string.Empty;
+
+        
     }
 
     
