@@ -1,6 +1,7 @@
 <div class="row mb-3" [formGroup]="searchForm">
   <div class="col-md-6">
-    <input type="text" class="form-control" formControlName="searchTerm" placeholder="Search visitors" (keydown.enter)="searchVisitors()">
+    <input type="text" class="form-control" formControlName="searchTerm" placeholder="Search visitors"
+      (keydown.enter)="searchVisitors()">
   </div>
   <div class="col-md-6">
     <button class="btn btn-primary" (click)="searchVisitors()">Search</button>
@@ -11,46 +12,29 @@
   <p>Current Visitors in the Building: {{ currentVisitorsCount }}</p>
 </div>
 
-
-<table class="table table-bordered table-hover">
-  <thead class="thead-dark">
-    <tr>
-      <th>Visitor ID</th>
-      <th>Full Name</th>
-      <th>Contact Address</th>
-      <th>Phone Number</th>
-      <th>Reason for Visit</th>
-      <th>Person here to see</th>
-      <th>Photo</th>
-      <th>Arrival Time</th>
-      <th>Departure Time</th>
-      <th>Duration</th>
-      <th>Tag Assignment</th>
-      <th>Check Out</th>
-    </tr>
-  </thead>
+<h3 class="text-center">VISITORS</h3>
+<table class="m-1 table table-bordered custom-table" style="border: 1px #000 solid !important; border-right: 0px !important;">
   <tbody>
     <tr *ngFor="let visitor of filteredVisitors">
       <td>{{ visitor.id }}</td>
-      <td>{{ visitor.fullName }}</td>
-      <td>{{ visitor.contactAddress }}</td>
-      <td>{{ visitor.phoneNumber }}</td>
-      <td>{{ visitor.reasonForVisit }}</td>
-      <td>{{ visitor.employeeName }}</td>
-      <td>
-        <button class="btn btn-primary" (click)="openPhotoModal(visitor.photo)">View Photo</button>
+      <td style="width: 100px !important;"><img [src]="visitor.photo" alt="Visitor Photo" style="max-width: 300px;">
       </td>
-      <td>{{ visitor.arrivalTime }}</td>
-      <td>{{ visitor.departureTime }}</td>
-      <td>{{ calculateDuration(visitor.arrivalTime.toString(), visitor.departureTime.toString()) }}</td>
       <td>
-        <div [formGroup]="tagAssignmentForm">
+        <p><b>Full Name: </b>{{ visitor.fullName}}</p>
+        <p><b>contactAddress: </b>{{ visitor.contactAddress}}</p>
+        <p><b>PhoneNumber: </b>{{ visitor.phoneNumber}}</p>
+        <p><b>ReasonForVisit: </b>{{ visitor.reasonForVisit}}</p>
+        <p><b>ReasonForVisitDescription: </b>{{ visitor.reasonForVisitDescription}}</p>
+        <p><b>PersonHereToSee: </b> {{ visitor.employeeName}}</p>
+        <p><b>ArrivalTime: </b> {{ visitor.arrivalTime}}</p>
+        <p><b>DepartureTime: </b> {{ visitor.departureTime}}</p>
+        <p><b>Duration: </b> {{ calculateDuration(visitor.arrivalTime.toString(), visitor.departureTime.toString()) }}
+        </p>
+        <div [formGroup]="tagAssignmentForm" class="d-flex align-items-center">
           <input type="text" class="form-control" formControlName="selectedTag" placeholder="Enter Tag Number">
-          <button class="btn btn-primary" (click)="assignTagToVisitor(visitor.id, tagAssignmentForm.get('selectedTag')?.value)">Assign Tag</button>
+          <button class="btn btn-primary"
+            (click)="assignTagToVisitor(visitor.id, tagAssignmentForm.get('selectedTag')?.value)">Assign Tag</button>
         </div>
-      </td>
-      <td>
-        <button class="btn btn-primary" (click)="checkoutVisitor(visitor.id)">Check Out</button>
       </td>
     </tr>
   </tbody>
@@ -70,4 +54,3 @@
     </div>
   </div>
 </div>
-
