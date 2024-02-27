@@ -2,11 +2,12 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TagService } from '../services/api/tags/tag.service';
 import { VisitorService } from '../services/api/visitors/visitor.service';
-import {  Visitor } from '../services/api/models/visitor';
+import { Visitor } from '../services/api/models/visitor';
 import { AuthService } from '../services/api/Auth/auth.service';
 import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { Subscription, interval, switchMap } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -15,8 +16,8 @@ import { Subscription, interval, switchMap } from 'rxjs';
   styleUrls: ['./assign-tag.component.css']
 })
 export class AssignTagComponent implements OnInit, OnDestroy {
-[x: string]: any;
-  
+  [x: string]: any;
+
   errorMessage: string | null = null;
   successMessage: string | null = null;
   visitors: any[] = [];
@@ -27,19 +28,13 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   tagAssignmentForm!: FormGroup;
   availableTags: any[] = [];
   currentVisitorsCount: number = 0;
-  
-  
+
+
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
   private readonly reloadPeriod = 30000; // 30 seconds
 
-  constructor(
-    private fb: FormBuilder,
-    private tagService: TagService,
-    private visitorService: VisitorService,
-    private  authService: AuthService,
-    private router: Router
-  ) {}
+  constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -57,7 +52,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearTimeout(this.inactivityTimeout);
-   }
+  }
 
   initInactiviyTimer(): void {
     this.inactivityTimeout = setTimeout(() => {
@@ -82,34 +77,27 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     });
   }
 
- 
+  initForm(): void { }
 
-  
-
-  initForm(): void {}
-
-  
-
-  
   assignTagToVisitor(visitorId: number, tagNumber: string): void {
     if (!tagNumber) {
       alert('Please enter a tag number.');
       return;
     }
-  
+
     const assignTagDto = { VisitorId: visitorId, TagNumber: tagNumber };
-  
+
     this.tagService.assignTagToVisitor(assignTagDto).subscribe(
       (response: any) => {
         if (!response.hasError) {
           console.log('Tag assigned successfully:', response);
           alert(`Tag ${response.data} assigned successfully`);
           // Find the visitor in the visitors array and update the tagAssignedDateTime
-        const assignedVisitor = this.visitors.find(visitor => visitor.id === visitorId);
-        if (assignedVisitor) {
-          assignedVisitor.tagAssignedDateTime = new Date(); // Update with current date and time
-        }
-         this.tagAssignmentForm.reset();
+          const assignedVisitor = this.visitors.find(visitor => visitor.id === visitorId);
+          if (assignedVisitor) {
+            assignedVisitor.tagAssignedDateTime = new Date(); // Update with current date and time
+          }
+          this.tagAssignmentForm.reset();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
           this.loadVisitors();
@@ -118,7 +106,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
             // Alert when no tags are available
             alert('No available tags. Please try again later.');
           }
-  
+
           console.error('Error assigning tag:', response.description);
           this.errorMessage = response.description || 'Error assigning tag';
           this.successMessage = null;
@@ -147,7 +135,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
+
   loadVisitors(): void {
     const currentDate = new Date();
     const currentDateString = currentDate.toISOString().slice(0, 10);
@@ -241,12 +229,12 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       this.logout();
     }, this.inactivityPeriod);
   }
-  
+
   resetInactivityTimer(): void {
     clearTimeout(this.inactivityTimeout);
     this.initInactivityTimer();
   }
-  
+
 
   logout(): void {
     // Implement your logout logic here
@@ -258,7 +246,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   calculateDuration(arrivalTime: string, departureTime: string): string {
     const arrival = new Date(arrivalTime);
     const departure = departureTime ? new Date(departureTime) : new Date('0001-01-01T00:00:00'); // Default to a valid date
-  
+
     if (departure.getFullYear() === 1 && departure.getMonth() === 0 && departure.getDate() === 1) {
       // If departure time is not set, return "Not Departed Yet"
       return "Not Departed Yet";
@@ -270,14 +258,10 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       return `${hours} hours, ${minutes} minutes`;
     }
   }
-  
 
   updateCurrentVisitorsCount(currentDate: Date): void {
     this.currentVisitorsCount = this.visitors.filter(visitor => visitor.tagAssignedDateTime?.toString().startsWith(currentDate.toISOString().slice(0, 10))).length;
   }
-  
-  
-  
 
   openPhotoModal(photoUrl: string): void {
     const modalPhoto = document.getElementById('modalPhoto') as HTMLImageElement;
@@ -285,5 +269,5 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     const photoModal = new bootstrap.Modal(document.getElementById('photoModal') as HTMLElement);
     photoModal.show();
   }
-  
+
 }

@@ -94,8 +94,8 @@
               <td>{{ visitor.contactAddress }}</td>
               <td>{{ getEmployeeName(visitor.employeeNumber) }}</td>
               <td>{{ visitor.reasonForVisit }}</td>
-              <td>{{ visitor.arrivalTime }}</td>
-              <td>{{ visitor.departureTime }}</td>
+              <td>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</td>
+              <td>{{ visitor.departureTime | date: 'yyyy-MM-dd HH:mm' }}</td>
               <td>{{ visitor.reasonForVisitDescription }}</td>
               <td>
                 <img src="{{ visitor.photo }}"  (click)="openPhotoModal(visitor.photo)" alt="Visitor Photo" class="img-fluid" style="max-width: 200px;">
