@@ -17,7 +17,7 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
   departments: Department[] = [];
   employees: Employee[] = [];
   employeeNumber!: string;
-  departmentId!: number;
+  //departmentId!: number;
 
   constructor(private fb: FormBuilder, private employeeService: EmployeeService, private departmentService: DepartmentService) {
     this.employeeForm = this.fb.group({
@@ -26,7 +26,7 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
       middleName: [''],
       lastName: ['', Validators.required],
       department: ['', Validators.required],
-      departmentId: [null, Validators.required]
+      //departmentId: [null, Validators.required]
     });
   }
 
@@ -122,7 +122,8 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
       firstName: employee.firstName,
       middleName: employee.middleName,
       lastName: employee.lastName,
-      department: this.departments.find((d) => d.departmentId)?.departmentName,
+      department: employee.department,
+      departmentId: employee.departmentId,
     });
   }
 }

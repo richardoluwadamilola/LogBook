@@ -6,6 +6,7 @@ import {  Visitor } from '../services/api/models/visitor';
 import { AuthService } from '../services/api/Auth/auth.service';
 import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
+import { Subscription, interval, switchMap } from 'rxjs';
 
 
 @Component({
@@ -26,9 +27,11 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   tagAssignmentForm!: FormGroup;
   availableTags: any[] = [];
   currentVisitorsCount: number = 0;
-
+  
+  
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
+  private readonly reloadPeriod = 30000; // 30 seconds
 
   constructor(
     private fb: FormBuilder,
@@ -49,7 +52,28 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       searchTerm: ['', Validators.required]
     });
     this.initInactivityTimer();
-    console.log('Auto logout timer started')
+    this.initReloadTimer();
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this.inactivityTimeout);
+   }
+
+  initInactiviyTimer(): void {
+    this.inactivityTimeout = setTimeout(() => {
+      console.log('User inactive for 5 minutes');
+      this.logout();
+    }, this.inactivityPeriod);
+  }
+
+  reloadPage(): void {
+    location.reload();
+  }
+
+  initReloadTimer(): void {
+    setInterval(() => {
+      this['reloadPage']();
+    }, this.reloadPeriod);
   }
 
   initTagAssignmentForm(): void {
@@ -58,9 +82,9 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    console.log('Auto logout timer stopped');
-  }
+ 
+
+  
 
   initForm(): void {}
 
@@ -113,8 +137,6 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     return employee ? `${employee.firstName} ${employee.middleName} ${employee.lastName}` : '';
   }
 
-  
-  
   loadAvailableTags(): void {
     this.tagService.getTags().subscribe(
       (data: any[]) => {
@@ -250,19 +272,11 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   }
   
 
-  updateCurrentVisitorsCount(checkTime: Date): void {
-    this.currentVisitorsCount = this.filteredVisitors.filter(visitor => {
-        const tagAssignedDateTime = new Date(visitor.tagAssignedDateTime);
-        const departureTime = new Date(visitor.departureTime);
-
-        // Check if the visitor has a valid tagAssignedDateTime and is still within the premises
-        const isVisitorInside = !isNaN(tagAssignedDateTime.getTime()) &&
-                                tagAssignedDateTime <= checkTime &&
-                                (isNaN(departureTime.getTime()) || departureTime >= checkTime);
-
-        return isVisitorInside;
-    }).length;
-} 
+  updateCurrentVisitorsCount(currentDate: Date): void {
+    this.currentVisitorsCount = this.visitors.filter(visitor => visitor.tagAssignedDateTime?.toString().startsWith(currentDate.toISOString().slice(0, 10))).length;
+  }
+  
+  
   
 
   openPhotoModal(photoUrl: string): void {

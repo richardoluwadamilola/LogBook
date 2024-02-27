@@ -116,6 +116,7 @@ namespace DigiLog.Services.Implementation
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
+                    TagAssignedDateTime = visitor.TagAssignedDateTime,
                     DepartureTime = visitor.DepartureTime,
 
                     // Convert PhotoData to a base64-encoded string

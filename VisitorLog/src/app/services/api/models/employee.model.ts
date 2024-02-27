@@ -4,5 +4,6 @@ export class Employee {
     middleName: string = '';
     lastName: string = '';
     departmentId: number = 0;
+    department: string = '';
     
 }

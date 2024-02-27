@@ -15,8 +15,8 @@
 <h3 class="text-center">VISITORS</h3>
 <table class="m-1 table table-bordered custom-table" style="border: 1px #000 solid !important; border-right: 0px !important;">
   <tbody>
-    <tr *ngFor="let visitor of filteredVisitors">
-      <td>{{ visitor.id }}</td>
+    <tr *ngFor="let visitor of filteredVisitors.slice(0,4); let i = index">
+      <td>{{ i + 1 }}</td>
       <td style="width: 100px !important;"><img [src]="visitor.photo" alt="Visitor Photo" style="max-width: 300px;">
       </td>
       <td>
