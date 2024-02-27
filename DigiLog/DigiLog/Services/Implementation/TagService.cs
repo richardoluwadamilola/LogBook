@@ -92,16 +92,16 @@ namespace DigiLog.Services.Implementation
                 };
             }
 
-            // Check if the visitor has a tag
-            if (string.IsNullOrEmpty(visitor.TagNumber))
+            // Check if the visitor has a tag with the provided tag number
+            if (visitor.TagNumber != checkOutTagDto.TagNumber)
             {
                 return new ServiceResponse<string>
                 {
                     HasError = true,
-                    Description = $"Visitor with ID {checkOutTagDto.VisitorId} does not have a tag.",
+                    Description = $"Visitor with ID {checkOutTagDto.VisitorId} does not have tag {checkOutTagDto.TagNumber}.",
                 };
             }
-
+            
             // Check if the visitor has already checked out
             if (visitor.DepartureTime != DateTime.MinValue)
             {

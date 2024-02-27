@@ -16,5 +16,6 @@
     {
         //Represents the data needed to check out a visitor.
         public long VisitorId { get; set; }
+        public string TagNumber { get; set; } = string.Empty;
     }
 }

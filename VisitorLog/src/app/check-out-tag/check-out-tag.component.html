@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="./entry">AssignTag</a>
+          </li>
+          </ul>
+        </div>
+      </nav>
+  
+  <div class="row mb-3" [formGroup]="searchForm">
+    <div class="col-md-6">
+      <input type="text" class="form-control" formControlName="searchTerm" placeholder="Search visitors"
+        (keydown.enter)="searchVisitors()">
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-primary" (click)="searchVisitors()">Search</button>
+    </div>
+  </div>
+  
+  
+  <h3 class="text-center">VISITORS</h3>
+  <table class="m-1 table table-bordered custom-table" style="border: 1px #000 solid !important; border-right: 0px !important;">
+    <tbody>
+      <tr *ngFor="let visitor of filteredVisitors.slice(0,4); let i = index">
+        <td>{{ i + 1 }}</td>
+        <td style="width: 100px !important;"><img [src]="visitor.photo" alt="Visitor Photo" style="max-width: 300px;">
+        </td>
+        <td>
+          <p><b>Full Name: </b>{{ visitor.fullName}}</p>
+          <p><b>contactAddress: </b>{{ visitor.contactAddress}}</p>
+          <p><b>PhoneNumber: </b>{{ visitor.phoneNumber}}</p>
+          <p><b>ReasonForVisit: </b>{{ visitor.reasonForVisit}}</p>
+          <p><b>ReasonForVisitDescription: </b>{{ visitor.reasonForVisitDescription}}</p>
+          <p><b>PersonHereToSee: </b> {{ visitor.employeeName}}</p>
+          <p><b>Department: </b>{{ visitor.departmentName}}</p>
+          <p><b>ArrivalTime: </b>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</p>
+          <p><b>DepartureTime: </b> {{ visitor.departureTime | date: 'yyyy-MM-dd HH:mm' }}</p>
+          <!-- <p><b>Duration: </b> {{ calculateDuration(visitor.arrivalTime.toString(), visitor.departureTime.toString()) }}
+          </p> -->
+          <div [formGroup]="tagCheckoutForm" class="d-flex align-items-center">
+            <input type="text" class="form-control" formControlName="selectedTag" placeholder="Enter Tag Number">
+            <button class="btn btn-primary"
+              (click)="checkoutTagToVisitor(visitor.id, tagCheckoutForm.get('selectedTag')?.value)">CheckOut Tag</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" id="photomodal1"> <!-- Center the modal and increase size -->
+      <div class="modal-content" id="photomodal2">
+        <div class="modal-header">
+          <h5 class="modal-title" id="photoModalLabel">Visitor Photo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img id="modalPhoto" src="" alt="Visitor Photo" class="img-fluid"> <!-- Make the image responsive -->
+        </div>
+      </div>
+    </div>
+  </div>

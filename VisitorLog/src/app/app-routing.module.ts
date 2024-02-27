@@ -14,6 +14,7 @@ import { authGuard } from './Auth/auth.guard';
 import { SuperadminComponent } from './superadmin/superadmin.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ReasonforvisitComponent } from './reasonforvisit/reasonforvisit.component';
+import { CheckOutTagComponent } from './check-out-tag/check-out-tag.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'admin', component: AdminComponent, canActivate: [authGuard]},
   { path: 'entry', component: AssignTagComponent, canActivate: [authGuard]},
+  { path: 'checkout', component: CheckOutTagComponent},
   { path: 'tag', component: TagManagementComponent},
   { path: 'employee', component: EmployeeManagementComponent},
   { path: 'visitor', component: VisitorManagementComponent},

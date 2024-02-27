@@ -23,6 +23,7 @@ import { WebcamModule } from 'ngx-webcam';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { LightboxModule } from 'ngx-lightbox';
 import { ReasonforvisitComponent } from './reasonforvisit/reasonforvisit.component';
+import { CheckOutTagComponent } from './check-out-tag/check-out-tag.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { ReasonforvisitComponent } from './reasonforvisit/reasonforvisit.compone
     CameraComponent,
     ChangePasswordComponent,
     ReasonforvisitComponent,
+    CheckOutTagComponent,
   ],
   // ...
 
