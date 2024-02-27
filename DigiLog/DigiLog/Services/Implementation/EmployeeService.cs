@@ -80,6 +80,7 @@ namespace DigiLog.Services.Implementation
                     MiddleName = employee.MiddleName,
                     LastName = employee.LastName,
                     Department = employee.Department.DepartmentName,
+                    DepartmentId = employee.DepartmentId,
                 }
             };
         }
@@ -96,6 +97,7 @@ namespace DigiLog.Services.Implementation
                     MiddleName = e.MiddleName,
                     LastName = e.LastName,
                     Department = e.Department.DepartmentName,
+                    DepartmentId = e.DepartmentId,
                 })
                 .ToList();
         }
@@ -172,31 +174,6 @@ namespace DigiLog.Services.Implementation
             return new ServiceResponse<string>();
         }
 
-        // Search for employees based on a keyword.
-        //public List<EmployeeDTO> SearchEmployees(string keyword)
-        //{
-        //    // Allows keywords for searching employees regardless of the case used (lower/uppercase).
-        //    var query = _context.Employees;
-
-        //    // Convert the keyword to lowercase for case-insensitive comparison.
-        //    keyword = keyword.ToLower();
-
-        //    // Perform a search based on the provided keyword.
-        //    return query
-        //        .Where(e =>
-        //            EF.Functions.Like(e.FirstName.ToLower(), $"%{keyword}%") ||
-        //            EF.Functions.Like(e.MiddleName.ToLower(), $"%{keyword}%") ||
-        //            EF.Functions.Like(e.LastName.ToLower(), $"%{keyword}%") ||
-        //            EF.Functions.Like(e.Department.ToLower(), $"%{keyword}%"))
-        //        .Select(e => new EmployeeDTO
-        //        {
-        //            EmployeeNumber = e.EmployeeNumber,
-        //            FirstName = e.FirstName,
-        //            MiddleName = e.MiddleName,
-        //            LastName = e.LastName,
-        //            Department = e.Department,
-        //        })
-        //        .ToList();
-        //}
+        
     }
 }

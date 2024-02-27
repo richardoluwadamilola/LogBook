@@ -17,6 +17,7 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
   departments: Department[] = [];
   employees: Employee[] = [];
   employeeNumber!: string;
+  departmentId!: number;
 
   constructor(private fb: FormBuilder, private employeeService: EmployeeService, private departmentService: DepartmentService) {
     this.employeeForm = this.fb.group({
@@ -25,6 +26,7 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
       middleName: [''],
       lastName: ['', Validators.required],
       department: ['', Validators.required],
+      departmentId: [null, Validators.required]
     });
   }
 

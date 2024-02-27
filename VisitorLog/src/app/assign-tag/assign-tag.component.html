@@ -26,6 +26,7 @@
         <p><b>ReasonForVisit: </b>{{ visitor.reasonForVisit}}</p>
         <p><b>ReasonForVisitDescription: </b>{{ visitor.reasonForVisitDescription}}</p>
         <p><b>PersonHereToSee: </b> {{ visitor.employeeName}}</p>
+        <p><b>Department: </b>{{ visitor.departmentName}}</p>
         <p><b>ArrivalTime: </b> {{ visitor.arrivalTime}}</p>
         <p><b>DepartureTime: </b> {{ visitor.departureTime}}</p>
         <p><b>Duration: </b> {{ calculateDuration(visitor.arrivalTime.toString(), visitor.departureTime.toString()) }}

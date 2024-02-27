@@ -1,3 +1,4 @@
+import { Department } from "./department.model";
 import { Employee } from "./employee.model";
 
 
@@ -12,6 +13,8 @@ export interface Visitor {
     photo: string;
     employeeNumber: string;
     employeeName: string;
+    departmentName: string;
+    departmentId: number;
     employee: Employee;
     arrivalTime: Date;
     departureTime: Date;

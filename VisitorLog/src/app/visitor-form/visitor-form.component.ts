@@ -21,8 +21,8 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   @ViewChild(CameraComponent) cameraComponent!: CameraComponent;
   visitorForm!: FormGroup;
   employees: Employee[] = [];
-  filteredEmployees: Employee[] = [];
   departments: Department[] = [];
+  filteredEmployees: Employee[] = [];
   filteredDepartments: Department[] = [];
   reasonForVisit: ReasonForVisit[] = [];
   formSubmitted = false;
@@ -40,6 +40,7 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     $('#employeeNumber').select();
+    $('#departmentId').select();
   }
 
 
@@ -51,6 +52,8 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       emailAddress: [''],
       personHereToSee: ['', Validators.required],
       department: ['', Validators.required],
+      departmentId: [null, Validators.required],
+      //departmentName: ['', Validators.required],
       employeeNumber: [null, Validators.required],
       reasonForVisit: [null, Validators.required],
       reasonForVisitDescription: [''],
@@ -148,98 +151,70 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/home']);
   }
 
+  
+
   handlePhotoCapture(photoData: string): void {
     this.visitorForm.patchValue({
       photo: photoData,
     });
   }
 
-  // Submit the form
   submitForm(): void {
     console.log('Form data:', this.visitorForm.value);
+    //debugger;
     if (this.visitorForm.valid) {
-      if (!this.employeeInDepartment()) {
-        alert('The person you are here to see is not in the selected department.');
-        return;
-      }
       const formData = this.visitorForm.value;
-
-      // Log formData before modifying the employeeNumber
-      console.log('Original FormData:', formData);
-
-      // Log the employeeNumber separately
-      console.log('Form Control Value (employeeNumber):', this.visitorForm.get('employeeNumber')?.value);
-
-      // Log the reasonForVisit separately
-      console.log('Form Control Value (reasonForVisit):', this.visitorForm.get('reasonForVisit')?.value);
-
-      // Ensure employeeNumber is not null
-      if (formData.employeeNumber !== null) {
-        // You don't need to convert it to a number
-      } else {
-        console.error('Invalid employeeNumber:', formData.employeeNumber);
-        return;
-      }
-
-      if (formData.reasonForVisit !== null) {
-        // You don't need to convert it to a number
-      } else {
-        console.error('Invalid reasonForVisit:', formData.reasonForVisit);
-        return;
-      }
-
-      // Log formData after modifying the employeeNumber
-      console.log('Modified FormData:', formData);
-
-      // Call a service to save visitor details
-      this.visitorService.saveVisitorDetails(formData).subscribe(
-        (response: any) => {
-          console.log('Visitor details saved successfully', response);
-          // Check the response for success or error
-          if (response && response.hasError) {
-            console.error('Error saving visitor details:', response.description);
-          } else {
-            console.log('Visitor details saved successfully');
-            alert('Visitor details saved successfully, please proceed to get a tag.');
-            // Set the formSubmitted flag to true
-            this.formSubmitted = true;
-            // Reset the form and the camera component after a short delay
-            setTimeout(() => {
-              this.formSubmitted = false;
-              this.visitorForm.reset();
-              if (this.cameraComponent) {
-                this.cameraComponent.resetCamera();
-              }
-              // Navigate to the home page
-              this.router.navigate(['/home']);
-            }, 3000);
-          }
-        },
-        (error: any) => {
-          console.error('Error saving visitor details', error);
+      const selectedDepartmentId = formData.departmentId;
+      const employee = this.employees.find(emp => emp.employeeNumber === formData.employeeNumber);
+  
+      if (employee) {
+        const employeeDepartmentId = employee.departmentId;
+  
+        if (selectedDepartmentId !== employeeDepartmentId) {
+          console.error('Selected department does not match the employee\'s department');
+          alert('The person you are here to see is not in the department specified. Please confirm the department inputted.');
+          return; // Abort form submission
         }
-      );
+      }
+  
+      this.saveVisitorDetails(formData);
     } else {
       console.error('Invalid form data');
+      return; // Abort form submission
     }
   }
+  
 
-  employeeInDepartment(): boolean {
-    const selectedEmployeeName = this.visitorForm.get('personHereToSee')?.value;
-    const selectedDepartmentName = this.visitorForm.get('department')?.value;
-
-    const employee = this.employees.find(emp => {
-      const fullName = `${emp.firstName} ${emp.middleName ? emp.middleName + ' ' : ''}${emp.lastName}`;
-      return fullName === selectedEmployeeName;
-    });
-
-    if (employee) {
-      const department = this.departments.find(dep => dep.departmentName === selectedDepartmentName);
-      return department !== undefined && department.departmentId === employee.departmentId;
-    }
-
-    return false;
+  saveVisitorDetails(formData: any): void {
+    this.visitorService.saveVisitorDetails(formData).subscribe(
+      (response: any) => {
+        console.log('Visitor details saved successfully', response);
+        if (response && response.hasError) {
+          console.error('Error saving visitor details:', response.description);
+        } else {
+          console.log('Visitor details saved successfully');
+          alert('Visitor details saved successfully, please proceed to get a tag.');
+          this.formSubmitted = true;
+          setTimeout(() => {
+            this.formSubmitted = false;
+            this.visitorForm.reset();
+            if (this.cameraComponent) {
+              this.cameraComponent.resetCamera();
+            }
+            this.router.navigate(['/home']);
+          }, 3000);
+        }
+      },
+      (error: any) => {
+        console.error('Error saving visitor details', error);
+      }
+    );
   }
+  
+
+
+
+
 
   // Get the employee name initials
   getInitials(name: string): string {

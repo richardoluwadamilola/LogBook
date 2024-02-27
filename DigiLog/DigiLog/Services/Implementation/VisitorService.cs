@@ -102,6 +102,7 @@ namespace DigiLog.Services.Implementation
                 .Include(v => v.Photo)
                 .Include(v => v.Employee)
                 .Include(v => v.ReasonForVisit)
+                .Include(v => v.Department)
                 .Select(visitor => new VisitorDTO
                 {
                     Id = visitor.Id,
@@ -111,6 +112,7 @@ namespace DigiLog.Services.Implementation
                     EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    DepartmentName = visitor.Department.DepartmentName,
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
@@ -138,6 +140,7 @@ namespace DigiLog.Services.Implementation
                 .Include(v => v.Photo)
                 .Include(v => v.Employee)
                 .Include(v => v.ReasonForVisit)
+                .Include(v => v.Department)
                 .Where(v => v.ArrivalTime >= startDate && v.ArrivalTime <= endDate)
                 .Select(visitor => new VisitorDTO
                 {
@@ -148,6 +151,7 @@ namespace DigiLog.Services.Implementation
                     EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    DepartmentName = visitor.Department.DepartmentName,
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
@@ -171,6 +175,7 @@ namespace DigiLog.Services.Implementation
                 .Include(v => v.Photo)
                 .Include(v => v.Employee)
                 .Include(v => v.ReasonForVisit)
+                .Include(v => v.Department)
                 .Where(v => v.EmployeeNumber == employeeNumber)
                 .Select(visitor => new VisitorDTO
                 {
@@ -181,6 +186,7 @@ namespace DigiLog.Services.Implementation
                     EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    DepartmentName = visitor.Department.DepartmentName,
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
@@ -203,6 +209,7 @@ namespace DigiLog.Services.Implementation
                 .Include(v => v.Photo)
                 .Include(v => v.Employee)
                 .Include(v => v.ReasonForVisit)
+                .Include(v => v.Department)
                 .Where(v => v.TagNumber == tagNumber)
                 .Select(visitor => new VisitorDTO
                 {
@@ -213,6 +220,7 @@ namespace DigiLog.Services.Implementation
                     EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    DepartmentName = visitor.Department.DepartmentName,
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,
@@ -253,6 +261,7 @@ namespace DigiLog.Services.Implementation
                 .Include(v => v.Photo)
                 .Include(v => v.Employee)
                 .Include(v => v.ReasonForVisit)
+                .Include(v => v.Department)
                 .Where(v => v.FullName == fullName)
                 .Select(visitor => new VisitorDTO
                 {
@@ -263,6 +272,7 @@ namespace DigiLog.Services.Implementation
                     EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
                     EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    DepartmentName = visitor.Department.DepartmentName,
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
                     ReasonForVisitDescription = visitor.ReasonForVisitDescription,
                     ArrivalTime = visitor.ArrivalTime,

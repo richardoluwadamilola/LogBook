@@ -9,7 +9,6 @@ import { Subject } from 'rxjs';
 })
 export class CameraComponent {
   @ViewChild('webcam', { static: true }) webcamElement: ElementRef | undefined;
-
   @Output() photoCaptured: EventEmitter<string> = new EventEmitter<string>();
 
   public webcamImage: WebcamImage | undefined = undefined;
@@ -30,6 +29,8 @@ export class CameraComponent {
       this.photoCaptured.emit(webcamImage.imageAsBase64);
     }
   }
+
+  
 
   public ngOnInit(): void {
     WebcamUtil.getAvailableVideoInputs()

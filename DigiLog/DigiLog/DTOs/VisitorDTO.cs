@@ -19,7 +19,6 @@ namespace DigiLog.DTOs
         public string PhoneNumber { get; set; } = string.Empty;
         [Display(Name ="EmailAddress")]
         [DataType(DataType.EmailAddress)]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string EmailAddress { get; set; }
         public string EmployeeNumber { get; set; } = string.Empty;
         public string EmployeeName { get; set; } = string.Empty;

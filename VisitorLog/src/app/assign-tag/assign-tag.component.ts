@@ -20,6 +20,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   successMessage: string | null = null;
   visitors: any[] = [];
   employees: any[] = [];
+  departments: any[] = [];
   filteredVisitors: Visitor[] = [];
   searchForm!: FormGroup;
   tagAssignmentForm!: FormGroup;
@@ -41,6 +42,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     this.initForm();
     this.loadVisitors();
     this.loadEmployees();
+    this.loadDepartments();
     this.initTagAssignmentForm();
     this.loadAvailableTags();
     this.searchForm = this.fb.group({
@@ -111,6 +113,8 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     return employee ? `${employee.firstName} ${employee.middleName} ${employee.lastName}` : '';
   }
 
+  
+  
   loadAvailableTags(): void {
     this.tagService.getTags().subscribe(
       (data: any[]) => {
@@ -145,6 +149,18 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       },
       (error: any) => {
         console.error('Error fetching employees', error);
+      }
+    );
+  }
+
+  loadDepartments(): void {
+    // Call your service to get department data
+    this.visitorService.getDepartments().subscribe(
+      (data: any[]) => {
+        this.departments = data;
+      },
+      (error: any) => {
+        console.error('Error fetching departments', error);
       }
     );
   }

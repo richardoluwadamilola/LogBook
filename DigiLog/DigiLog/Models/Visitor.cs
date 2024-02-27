@@ -22,7 +22,6 @@ namespace DigiLog.Models
         public string PhoneNumber { get; set; } = string.Empty;
         [Display(Name = "EmailAddress")]
         [DataType(DataType.EmailAddress)]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string EmailAddress { get; set; } 
         public string ReasonForVisitDescription { get; set; }
         public Photo Photo { get; set; }
