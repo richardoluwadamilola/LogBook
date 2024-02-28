@@ -54,7 +54,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     clearTimeout(this.inactivityTimeout);
   }
 
-  initInactiviyTimer(): void {
+  initInactivityTimer(): void {
     this.inactivityTimeout = setTimeout(() => {
       console.log('User inactive for 5 minutes');
       this.logout();
@@ -175,33 +175,6 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     );
   }
 
-  checkoutVisitor(visitorId: number): void {
-    const checkoutTagDto = { VisitorId: visitorId };
-
-    this.tagService.checkOutVisitor(checkoutTagDto).subscribe(
-      (response: any) => {
-        if (!response.hasError) {
-          console.log('Visitor checked out successfully:', response);
-          alert('Visitor checked out successfully');
-          this.tagAssignmentForm.reset();
-          this.errorMessage = null;
-          // You may want to reload the visitors after successful checkout
-          this.loadVisitors();
-        } else {
-          console.error('Error checking out visitor:', response.description);
-          alert(`Visitor check out failed: ${response.description}`);
-          this.errorMessage = response.description || 'Error checking out visitor';
-          this.successMessage = null;
-        }
-      },
-      (error: any) => {
-        console.error('Error checking out visitor:', error);
-        this.errorMessage = error || 'Error checking out visitor';
-        this.successMessage = null;
-      }
-    );
-  }
-
   searchVisitors(): void {
     const searchTerm = this.searchForm.get('searchTerm')?.value;
     if (searchTerm) {
@@ -220,14 +193,6 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   @HostListener('window:keypress') refreshUserStateOnKeypress() {
     console.log('Keypress detected');
     this.resetInactivityTimer();
-  }
-
-  initInactivityTimer(): void {
-    this.inactivityTimeout = setTimeout(() => {
-      console.log('User inactive for 5 minutes');
-      // Perform logout action here
-      this.logout();
-    }, this.inactivityPeriod);
   }
 
   resetInactivityTimer(): void {

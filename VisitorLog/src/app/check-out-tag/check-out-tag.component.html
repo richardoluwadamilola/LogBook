@@ -36,12 +36,12 @@
           <p><b>Department: </b>{{ visitor.departmentName}}</p>
           <p><b>ArrivalTime: </b>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</p>
           <p><b>DepartureTime: </b> {{ visitor.departureTime | date: 'yyyy-MM-dd HH:mm' }}</p>
-          <!-- <p><b>Duration: </b> {{ calculateDuration(visitor.arrivalTime.toString(), visitor.departureTime.toString()) }}
-          </p> -->
+          <p><b>Duration: </b> {{ calculateDuration(visitor.arrivalTime.toString(), visitor.departureTime.toString()) }}
+          </p>
           <div [formGroup]="tagCheckoutForm" class="d-flex align-items-center">
             <input type="text" class="form-control" formControlName="selectedTag" placeholder="Enter Tag Number">
             <button class="btn btn-primary"
-              (click)="checkoutTagToVisitor(visitor.id, tagCheckoutForm.get('selectedTag')?.value)">CheckOut Tag</button>
+              (click)="checkoutVisitor(visitor.id, tagCheckoutForm.get('selectedTag')?.value)">CheckOut Tag</button>
           </div>
         </td>
       </tr>
