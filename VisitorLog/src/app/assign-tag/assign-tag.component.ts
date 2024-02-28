@@ -16,7 +16,6 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./assign-tag.component.css']
 })
 export class AssignTagComponent implements OnInit, OnDestroy {
-  [x: string]: any;
 
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -28,8 +27,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   tagAssignmentForm!: FormGroup;
   availableTags: any[] = [];
   currentVisitorsCount: number = 0;
-
-
+  
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
   private readonly reloadPeriod = 30000; // 30 seconds
@@ -92,21 +90,18 @@ export class AssignTagComponent implements OnInit, OnDestroy {
         if (!response.hasError) {
           console.log('Tag assigned successfully:', response);
           alert(`Tag ${response.data} assigned successfully`);
-          // Find the visitor in the visitors array and update the tagAssignedDateTime
-          const assignedVisitor = this.visitors.find(visitor => visitor.id === visitorId);
-          if (assignedVisitor) {
-            assignedVisitor.tagAssignedDateTime = new Date(); // Update with current date and time
-          }
+          
+          // Remove the assigned visitor from filteredVisitors
+          this.filteredVisitors = this.filteredVisitors.filter(visitor => visitor.id !== visitorId);
+          
+          // Reset form and messages
           this.tagAssignmentForm.reset();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
-          this.loadVisitors();
         } else {
           if (response.description === 'No available tags found.') {
-            // Alert when no tags are available
             alert('No available tags. Please try again later.');
           }
-
           console.error('Error assigning tag:', response.description);
           this.errorMessage = response.description || 'Error assigning tag';
           this.successMessage = null;

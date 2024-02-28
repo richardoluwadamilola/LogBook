@@ -15,26 +15,19 @@
       <label for="emailAddress">Email Address:</label>
       <input type="emailAddress" id="emailAddress" formControlName="emailAddress" placeholder="Enter email address">
 
-
       <label for="personHereToSee">Person Here To See:</label>
-      <div class="input-container">
-        <input type="text" id="personHereToSee" formControlName="personHereToSee" (input)="filterEmployees()" required>
-        <ul class="suggestions" *ngIf="visitorForm.get('personHereToSee')?.value">
-          <li *ngFor="let employee of filteredEmployees" (click)="selectEmployee(employee)">{{ employee.firstName }} {{
-            employee.middleName }} {{ employee.lastName }}</li>
-        </ul>
-      </div>
-
+      <input type="text" id="personHereToSee" formControlName="personHereToSee" (input)="filterEmployees()" required>
+      <ul class="suggestions" *ngIf="visitorForm.get('personHereToSee')?.value">
+        <li *ngFor="let employee of filteredEmployees" (click)="selectEmployee(employee)">{{ employee.firstName }} {{
+          employee.middleName }} {{ employee.lastName }}</li>
+      </ul>
 
       <label for="department">Department:</label>
-      <div class="input-container">
-        <input type="text" id="department" formControlName="department" (input)="filterDepartments()" required>
-        <ul class="suggestions" *ngIf="visitorForm.get('department')?.value">
-          <li *ngFor="let department of filteredDepartments" (click)="selectDepartment(department)">{{
-            department.departmentName }}</li>
-        </ul>
-      </div>
-
+      <input type="text" id="department" formControlName="department" (input)="filterDepartments()" required>
+      <ul class="suggestions" *ngIf="visitorForm.get('department')?.value">
+        <li *ngFor="let department of filteredDepartments" (click)="selectDepartment(department)">{{
+          department.departmentName }}</li>
+      </ul>
 
       <label for="reasonForVisit">Reason For Visit:</label>
       <select formControlName="reasonForVisit" required>
