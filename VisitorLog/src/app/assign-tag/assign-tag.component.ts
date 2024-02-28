@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./assign-tag.component.css']
 })
 export class AssignTagComponent implements OnInit, OnDestroy {
+  [x: string]: any;
 
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -28,6 +29,8 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   availableTags: any[] = [];
   currentVisitorsCount: number = 0;
   
+
+
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
   private readonly reloadPeriod = 30000; // 30 seconds
@@ -83,6 +86,19 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Check if the visitor has already been assigned a tag or has departed
+    const visitor = this.visitors.find(visitor => visitor.id === visitorId);
+    if (visitor) {
+      if (visitor.tagAssignedDateTime) {
+        alert('Tag has already been assigned to this visitor.');
+        return;
+      }
+      if (visitor.departureTime) {
+        alert('Cannot assign tag to a visitor who has already departed.');
+        return;
+      }
+    }
+
     const assignTagDto = { VisitorId: visitorId, TagNumber: tagNumber };
 
     this.tagService.assignTagToVisitor(assignTagDto).subscribe(
@@ -91,17 +107,28 @@ export class AssignTagComponent implements OnInit, OnDestroy {
           console.log('Tag assigned successfully:', response);
           alert(`Tag ${response.data} assigned successfully`);
           
-          // Remove the assigned visitor from filteredVisitors
-          this.filteredVisitors = this.filteredVisitors.filter(visitor => visitor.id !== visitorId);
-          
-          // Reset form and messages
+          // Find the visitor in the visitors array and update the tagAssignedDateTime
+          const assignedVisitor = this.visitors.find(visitor => visitor.id === visitorId);
+          if (assignedVisitor) {
+            assignedVisitor.tagAssignedDateTime = new Date(); // Update with current date and time
+          }
+
+          // Find the index of the visitor and move them to the bottom of the page
+          const visitorIndex = this.visitors.findIndex(visitor => visitor.id === visitorId);
+          if (visitorIndex !== -1) {
+            const [visitor] = this.visitors.splice(visitorIndex, 1);
+            this.visitors.push(visitor);
+          }
           this.tagAssignmentForm.reset();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
+          this.loadVisitors();
         } else {
           if (response.description === 'No available tags found.') {
+            // Alert when no tags are available
             alert('No available tags. Please try again later.');
           }
+
           console.error('Error assigning tag:', response.description);
           this.errorMessage = response.description || 'Error assigning tag';
           this.successMessage = null;
@@ -138,13 +165,19 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     this.visitorService.getVisitors().subscribe(
       (data: Visitor[]) => {
         this.visitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
+
+        // Sort visitors by arrival time in descending order (most recent first)
+        this.visitors.sort((a, b) => {
+          return new Date(b.arrivalTime!).getTime() - new Date(a.arrivalTime!).getTime();
+        });
+
         console.log('Visitors:', this.visitors);
         this.filteredVisitors = this.visitors;
         this.updateCurrentVisitorsCount(currentDate);
       },
       (error: any) => console.error('Error fetching visitors', error)
     );
-  }
+}
 
   loadEmployees(): void {
     // Call your service to get employee data
@@ -220,7 +253,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   }
 
   updateCurrentVisitorsCount(currentDate: Date): void {
-    this.currentVisitorsCount = this.visitors.filter(visitor => visitor.tagAssignedDateTime?.toString().startsWith(currentDate.toISOString().slice(0, 10))).length;
+    this.currentVisitorsCount = this.visitors.filter(visitor => visitor.tagAssignedDateTime && !visitor.departureTime).length;
   }
 
   openPhotoModal(photoUrl: string): void {

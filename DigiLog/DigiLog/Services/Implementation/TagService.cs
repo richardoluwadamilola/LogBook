@@ -61,6 +61,26 @@ namespace DigiLog.Services.Implementation
                 };
             }
 
+            // Check if the visitor has already been assigned a tag
+            if (visitor.TagNumber != null)
+            {
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = $"Visitor with ID {assignTagDto.VisitorId} has already been assigned a tag.",
+                };
+            }
+
+            // Check if visitor has not checked out
+            if (visitor.DepartureTime != DateTime.MinValue)
+            {
+                return new ServiceResponse<string>
+                {
+                    HasError = true,
+                    Description = $"Visitor with ID {assignTagDto.VisitorId} has already checked out.",
+                };
+            }
+
             // Assign the tag to the visitor
             visitor.TagNumber = tag.TagNumber;
             tag.IsAvailable = false;

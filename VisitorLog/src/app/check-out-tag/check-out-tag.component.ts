@@ -17,7 +17,7 @@ export class CheckOutTagComponent  implements OnInit {
   searchForm!: FormGroup;
   errorMessage: string | null = null;
   successMessage: string | null = null;
-  visitors: Visitor[] = [];
+  visitors: any[] = [];
   employees: any[] = [];
   departments: any[] = [];
   filteredVisitors: Visitor[] = [];
@@ -115,16 +115,21 @@ export class CheckOutTagComponent  implements OnInit {
   }
 
 
-  loadVisitors() {
+  loadVisitors(): void {
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10);
+
     this.visitorService.getVisitors().subscribe(
-      (data: any) => {
-        this.visitors = data;
+      (data: Visitor[]) => {
+        // Filter out visitors who have been assigned a tag but have not been checked out
+        this.visitors = data.filter(visitor => visitor.tagAssignedDateTime && !visitor.departureTime);
+        console.log('Visitors:', this.visitors);
+        this.filteredVisitors = this.visitors;
       },
-      (error: any) => {
-        console.error('Error fetching visitors', error);
-      }
+      (error: any) => console.error('Error fetching visitors', error)
     );
-  }
+}
+
   
   searchVisitors() {
     const searchTerm = this.searchForm.value.searchTerm;
@@ -134,40 +139,35 @@ export class CheckOutTagComponent  implements OnInit {
   }
 
   checkoutVisitor(visitorId: number, tagNumber: string) {
-  if (!tagNumber) {
-    alert('Please enter a tag number.');
-    return;
-  }
+    if (!tagNumber) {
+      alert('Please enter a tag number.');
+      return;
+    }
 
-  const checkoutTagDto = { VisitorId: visitorId, TagNumber: tagNumber };
-  this.tagService.checkOutVisitor(checkoutTagDto).subscribe(
-    (response: any) => {
-      if (!response.hasError) {
-        console.log('Visitor checked out successfully:', response);
-        alert('Visitor checked out successfully');
-
-        // Remove the checked-out visitor from the checkedInVisitors list
-        this.checkedInVisitors = this.checkedInVisitors.filter(visitor => visitor.id !== visitorId);
-
-        // Reset the tag checkout form
-        this.tagCheckoutForm.reset();
-
-        this.errorMessage = null;
-        this.successMessage = 'Visitor checked out successfully';
-      } else {
-        console.error('Error checking out visitor:', response.description);
-        alert(`Visitor check out failed: ${response.description}`);
-        this.errorMessage = response.description || 'Error checking out visitor';
+    const checkoutTagDto = { VisitorId: visitorId, TagNumber: tagNumber };
+    this.tagService.checkOutVisitor(checkoutTagDto).subscribe(
+      (response: any) => {
+        if (!response.hasError) {
+          console.log('Visitor checked out successfully:', response);
+          alert('Visitor checked out successfully');
+          this.errorMessage = null;
+          this.successMessage = 'Visitor checked out successfully';
+          this.loadVisitors();
+          this.tagCheckoutForm.reset();
+        } else {
+          console.error('Error checking out visitor:', response.description);
+          alert(`Visitor check out failed: ${response.description}`);
+          this.errorMessage = response.description || 'Error checking out visitor';
+          this.successMessage = null;
+        }
+      },
+      (error: any) => {
+        console.error('Error checking out visitor:', error);
+        this.errorMessage = error || 'Error checking out visitor';
         this.successMessage = null;
       }
-    },
-    (error: any) => {
-      console.error('Error checking out visitor:', error);
-      this.errorMessage = error || 'Error checking out visitor';
-      this.successMessage = null;
-    }
-  );
-}
+    );
+  }
 
   calculateDuration(arrivalTime: string, departureTime: string): string {
     const arrival = new Date(arrivalTime);
