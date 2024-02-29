@@ -33,7 +33,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
-  private readonly reloadPeriod = 30000; // 30 seconds
+  private readonly reloadPeriod = 30000; // 10 seconds
 
   constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe) { }
 
@@ -85,35 +85,23 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       alert('Please enter a tag number.');
       return;
     }
-
-    // Check if the visitor has already been assigned a tag or has departed
-    const visitor = this.visitors.find(visitor => visitor.id === visitorId);
-    if (visitor) {
-      if (visitor.tagAssignedDateTime) {
-        alert('Tag has already been assigned to this visitor.');
-        return;
-      }
-      if (visitor.departureTime) {
-        alert('Cannot assign tag to a visitor who has already departed.');
-        return;
-      }
-    }
-
+  
     const assignTagDto = { VisitorId: visitorId, TagNumber: tagNumber };
-
+  
     this.tagService.assignTagToVisitor(assignTagDto).subscribe(
       (response: any) => {
         if (!response.hasError) {
           console.log('Tag assigned successfully:', response);
           alert(`Tag ${response.data} assigned successfully`);
           
-          // Find the visitor in the visitors array and update the tagAssignedDateTime
+          // Update the visitor's tagAssignedDateTime locally
           const assignedVisitor = this.visitors.find(visitor => visitor.id === visitorId);
           if (assignedVisitor) {
             assignedVisitor.tagAssignedDateTime = new Date(); // Update with current date and time
+            assignedVisitor.tagNumber = tagNumber; // Update tagNumber for the visitor
           }
-
-          // Find the index of the visitor and move them to the bottom of the page
+  
+          // Move the visitor to the bottom of the list
           const visitorIndex = this.visitors.findIndex(visitor => visitor.id === visitorId);
           if (visitorIndex !== -1) {
             const [visitor] = this.visitors.splice(visitorIndex, 1);
@@ -124,23 +112,17 @@ export class AssignTagComponent implements OnInit, OnDestroy {
           this.successMessage = `Tag ${response.data} assigned successfully`;
           this.loadVisitors();
         } else {
-          if (response.description === 'No available tags found.') {
-            // Alert when no tags are available
-            alert('No available tags. Please try again later.');
-          }
-
+          alert(response.description || 'Error assigning tag');
           console.error('Error assigning tag:', response.description);
-          this.errorMessage = response.description || 'Error assigning tag';
-          this.successMessage = null;
         }
       },
       (error: any) => {
         console.error('Error assigning tag:', error);
-        this.errorMessage = 'Error assigning tag';
-        this.successMessage = null;
+        alert('Error assigning tag. Please try again later.');
       }
     );
   }
+  
 
   getEmployeeName(employeeNumber: string): string {
     const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);
@@ -253,7 +235,11 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   }
 
   updateCurrentVisitorsCount(currentDate: Date): void {
-    this.currentVisitorsCount = this.visitors.filter(visitor => visitor.tagAssignedDateTime && !visitor.departureTime).length;
+    const currentVisitors = this.visitors.filter(visitor => {
+      return visitor.tagAssignedDateTime !== '0001-01-01T00:00:00' && visitor.departureTime === '0001-01-01T00:00:00';
+    });
+    console.log("Current Visitors:", currentVisitors);
+    this.currentVisitorsCount = currentVisitors.length;
   }
 
   openPhotoModal(photoUrl: string): void {

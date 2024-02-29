@@ -41,7 +41,6 @@ export class CheckOutTagComponent  implements OnInit {
     });
     this.initInactivityTimer();
     this.initReloadTimer();
-    this.loadCheckedInVisitors();
   }
 
   ngOnDestroy(): void {
@@ -118,18 +117,37 @@ export class CheckOutTagComponent  implements OnInit {
   loadVisitors(): void {
     const currentDate = new Date();
     const currentDateString = currentDate.toISOString().slice(0, 10);
-
+  
     this.visitorService.getVisitors().subscribe(
       (data: Visitor[]) => {
-        // Filter out visitors who have been assigned a tag but have not been checked out
-        this.visitors = data.filter(visitor => visitor.tagAssignedDateTime && !visitor.departureTime);
+        // Filter out visitors who have been assigned a tag and are from the current day
+        this.visitors = data.filter(visitor => {
+          const tagAssignedDateTime = visitor.tagAssignedDateTime ? new Date(visitor.tagAssignedDateTime) : null;
+          const tagAssignedToday = tagAssignedDateTime && tagAssignedDateTime.toISOString().slice(0, 10) === currentDateString;
+          return tagAssignedToday;
+        });
+  
+        // Sort visitors based on departure status
+        this.visitors.sort((a, b) => {
+          if (a.departed && !b.departed) {
+            return 1; // a is departed, b is not, so a comes after b
+          } else if (!a.departed && b.departed) {
+            return -1; // a is not departed, b is, so a comes before b
+          } else {
+            return 0; // both either departed or not departed, maintain current order
+          }
+        });
+  
         console.log('Visitors:', this.visitors);
         this.filteredVisitors = this.visitors;
       },
       (error: any) => console.error('Error fetching visitors', error)
     );
-}
-
+  }
+  
+  
+  
+  
   
   searchVisitors() {
     const searchTerm = this.searchForm.value.searchTerm;
