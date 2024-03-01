@@ -46,26 +46,8 @@ namespace DigiLog.Controllers
             return Ok(visitors);
         }
 
-        // GET: api/Visitor/GetVisitorsByDateRange?startDate=2023-01-01&endDate=2023-01-02
-        [HttpGet("GetVisitorsByDateRange")]
-        public ActionResult<List<VisitorDTO>> GetVisitorsByDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
-        {
-            // Get visitors by date range.
-            var visitors = _visitorService.GetVisitorsByDateRange(startDate, endDate);
-            return Ok(visitors);
-        }
 
-
-        // GET: api/Visitor/GetVisitorsByEmployeeNumber?employeeNumber=123456
-        [HttpGet("GetVisitorsByEmployeeNumber")]
-        public ActionResult<List<VisitorDTO>> GetVisitorsByEmployeeNumber([FromQuery] string employeeNumber)
-        {
-            // Get visitors by employee number.
-            var visitors = _visitorService.GetVisitorsByEmployeeNumber(employeeNumber);
-            return Ok(visitors);
-        }
-
-        // GET: api/Visitor/GetVisitorsByTagNumber?tagNumber=123456
+        //// GET: api/Visitor/GetVisitorsByTagNumber?tagNumber=123456
         [HttpGet("GetVisitorsByTagNumber")]
         public ActionResult<List<VisitorDTO>> GetVisitorsByTagNumber([FromQuery] string tagNumber)
         {
@@ -74,12 +56,12 @@ namespace DigiLog.Controllers
             return Ok(visitors);
         }
 
-        // GET: api/Visitor/GetVisitorByFullName?fullName=John Doe
-        [HttpGet("GetVisitorByFullName")]
-        public ActionResult<List<VisitorDTO>> GetVisitorByFullName([FromQuery] string fullName)
+        // GET: api/Visitor/SearchVisitors?tagNumber=123456&employeeNumber=123456&fullName=John Doe&startDate=2023-01-01&endDate=2023-01-02
+        [HttpGet("SearchVisitors")]
+        public ActionResult<List<VisitorDTO>> SearchVisitors([FromQuery] SearchRequestDTO searchRequestDTO)
         {
-            // Get visitors by full name.
-            var visitors = _visitorService.GetVisitorByFullName(fullName);
+            // Search visitors.
+            var visitors = _visitorService.SearchVisitors(searchRequestDTO);
             return Ok(visitors);
         }
 

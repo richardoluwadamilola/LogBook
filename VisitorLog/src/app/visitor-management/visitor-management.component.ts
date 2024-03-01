@@ -47,63 +47,25 @@ export class VisitorManagementComponent implements OnInit{
   submitForm(): void {
     console.log('Form Submitted:', this.searchForm.value);
     const formData = this.searchForm.value;
+    const searchParams: any = {};
   
-    if (formData.startDate && formData.endDate) {
-      const startDate = this.searchForm.value.startDate;
-      const endDate = this.searchForm.value.endDate;
-      console.log('Start Date:', startDate);
-      console.log('End Date:', endDate);
-      this.visitorService.getVisitorsByDateRange(startDate, endDate).subscribe(
-        (data: Visitor[]) => {
-          this.visitors = data;
-          console.log('Visitors:', this.visitors);
-        },
-        (error: any) => {
-          console.error('Error fetching visitors by Date Range', error);
-          console.error('Error Details:', error.error);
-        }
-      );
-    } else if (formData.employeeNumber) {
-      this.visitorService.getVisitorsByEmployeeNumber(formData.employeeNumber).subscribe(
-        (data: Visitor[]) => {
-          this.visitors = data;
-        },
-        (error: any) => {
-          console.error('Error fetching visitors by Employee Number', error);
-        }
-      );
-    } else if (formData.fullName) {
-      this.visitorService.getVisitorByFullName(formData.fullName).subscribe(
-        (data: Visitor[]) => {
-          this.visitors = data;
-        },
-        (error: any) => {
-          console.error('Error fetching visitors by Full Name', error);
-        }
-      );
-    } 
-    else if (formData.tagNumber) {
-      this.visitorService.getVisitorbyTagNumber(formData.tagNumber).subscribe(
-        (data: Visitor) => { 
-          if (Array.isArray(data)) {
-            // Handle the case where the API returns an array for tagNumber search
-            this.visitors = data;
-          } else {
-            // Handle the case where the API returns a single object for tagNumber search
-            this.visitors = data ? [data] : [];
-          }
-        },
-        (error: any) => {
-          console.error('Error fetching visitor by Tag Number', error);
-        }
-      );
+    // Check each form field and add it to the searchParams object if it has a value
+    for (const key in formData) {
+      if (formData.hasOwnProperty(key) && formData[key] !== '') {
+        searchParams[key] = formData[key];
+      }
     }
+  
+    this.visitorService.searchVisitors(searchParams).subscribe(
+      (data: Visitor[]) => {
+        this.visitors = data;
+      },
+      (error: any) => {
+        console.error('Error fetching visitors', error);
+      }
+    );
   }
   
-  
-  // getReasonForVisit(reasonForVisitEnum: ReasonForVisit): string {
-  //   return ReasonForVisit[reasonForVisitEnum];
-  // }
 
   getEmployeeName(employeeNumber: string): string {
     const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);

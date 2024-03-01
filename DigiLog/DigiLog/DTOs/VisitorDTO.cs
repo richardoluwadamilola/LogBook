@@ -6,13 +6,10 @@ namespace DigiLog.DTOs
     public class VisitorDTO
     {
         public long Id {  get; set; }
-        [Required]
         [Display(Name = "Full Name")]
         public string FullName { get; set; } = string.Empty;
-        [Required]
         [Display(Name = "Contact Address")]
         public string ContactAddress { get; set; } = string.Empty;
-        [Required]
         [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^(?:\+?(\d{1,3}))?([0-9()\s-]+)$", ErrorMessage = "Invalid Phone number format")]
@@ -23,7 +20,7 @@ namespace DigiLog.DTOs
         public string EmployeeNumber { get; set; } = string.Empty;
         public string EmployeeName { get; set; } = string.Empty;
         public string DepartmentName { get; set; } = string.Empty;
-        public string TagNumber { get; set; }
+        public string TagNumber { get; set; } = string.Empty;
         public string ReasonForVisit { get; set; }
         public string ReasonForVisitDescription { get; set; }
         [Display(Name = "Photo (Base64 Encoded)")]

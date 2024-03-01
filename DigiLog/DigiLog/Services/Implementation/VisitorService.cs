@@ -79,6 +79,7 @@ namespace DigiLog.Services.Implementation
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
                 Photo = photo,
                 ArrivalTime = DateTime.Now,
+                DepartureTime = DateTime.MinValue,
                 DateCreated = DateTime.Now,
             };
 
@@ -128,85 +129,8 @@ namespace DigiLog.Services.Implementation
                 .ToList();
         }
 
-        
-
-        // Get Visitors by Date Range.
-        public List<VisitorDTO> GetVisitorsByDateRange(DateTime startDate, DateTime endDate)
-        {
-
-            // Convert startDate and endDate to dates only
-            startDate = startDate.Date;
-            endDate = endDate.Date.AddDays(1).AddTicks(-1); // End of the day
-
-            // Get Visitors by Date Range.
-            var visitors = _context.Visitors
-                .Include(v => v.Photo)
-                .Include(v => v.Employee)
-                .Include(v => v.ReasonForVisit)
-                .Include(v => v.Department)
-                .Include(v => v.Tag)
-                .Where(v => v.ArrivalTime >= startDate && v.ArrivalTime <= endDate)
-                .Select(visitor => new VisitorDTO
-                {
-                    Id = visitor.Id,
-                    FullName = visitor.FullName,
-                    ContactAddress = visitor.ContactAddress,
-                    PhoneNumber = visitor.PhoneNumber,
-                    EmailAddress = visitor.EmailAddress,
-                    EmployeeNumber = visitor.EmployeeNumber,
-                    EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
-                    DepartmentName = visitor.Department.DepartmentName,
-                    TagNumber = visitor.Tag.TagNumber,
-                    ReasonForVisit = visitor.ReasonForVisit.Reason,
-                    ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    ArrivalTime = visitor.ArrivalTime,
-                    DepartureTime = visitor.DepartureTime,
-
-                    // Convert PhotoData to a base64-encoded string
-                    Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
-
-                })
-            .ToList();
-
-            return visitors;
-        }
 
 
-        // Get Visitors by Employee Number.
-        public List<VisitorDTO> GetVisitorsByEmployeeNumber(string employeeNumber)
-        {
-            //Get Visitors by Employee Number.
-            var visitors = _context.Visitors
-                .Include(v => v.Photo)
-                .Include(v => v.Employee)
-                .Include(v => v.ReasonForVisit)
-                .Include(v => v.Department)
-                .Include(v => v.Tag)
-                .Where(v => v.EmployeeNumber == employeeNumber)
-                .Select(visitor => new VisitorDTO
-                {
-                    Id = visitor.Id,
-                    FullName = visitor.FullName,
-                    ContactAddress = visitor.ContactAddress,
-                    PhoneNumber = visitor.PhoneNumber,
-                    EmailAddress = visitor.EmailAddress,
-                    EmployeeNumber = visitor.EmployeeNumber,
-                    EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
-                    DepartmentName = visitor.Department.DepartmentName,
-                    TagNumber = visitor.Tag.TagNumber,
-                    ReasonForVisit = visitor.ReasonForVisit.Reason,
-                    ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    ArrivalTime = visitor.ArrivalTime,
-                    DepartureTime = visitor.DepartureTime,
-
-                    // Convert PhotoData to a base64-encoded string
-                    Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
-
-                })
-            .ToList();
-
-            return visitors;
-        }
 
         // Get Visitors by Tag Number.
         public List<VisitorDTO> GetVisitorsByTagNumber(string tagNumber)
@@ -218,7 +142,7 @@ namespace DigiLog.Services.Implementation
                 .Include(v => v.ReasonForVisit)
                 .Include(v => v.Department)
                 .Include(v => v.Tag)
-                .Where(v => v.TagNumber == tagNumber)
+                .Where(v => v.TagNumber == tagNumber && v.DepartureTime == DateTime.MinValue)
                 .Select(visitor => new VisitorDTO
                 {
                     Id = visitor.Id,
@@ -263,39 +187,61 @@ namespace DigiLog.Services.Implementation
             return "data:image/png;base64," + imageString;
         }
 
-        public List<VisitorDTO> GetVisitorByFullName(string fullName)
+        public List<VisitorDTO> SearchVisitors(SearchRequestDTO searchRequestDTO)
         {
-            //Get Visitors by Full Name.
-            var visitors = _context.Visitors
+            var query = _context.Visitors
+                
+                .AsQueryable();
+
+           if (!string.IsNullOrEmpty(searchRequestDTO.FullName))
+            {
+                query = query.Where(v => v.FullName == searchRequestDTO.FullName);
+            }
+
+           if (!string.IsNullOrEmpty(searchRequestDTO.EmployeeNumber))
+            {
+                query = query.Where(v => v.EmployeeNumber == searchRequestDTO.EmployeeNumber);
+            }
+
+           if (!string.IsNullOrEmpty(searchRequestDTO.TagNumber))
+            {
+                 query = query.Where(v => v.TagNumber == searchRequestDTO.TagNumber);
+            }
+
+           if (searchRequestDTO.StartDate != null && searchRequestDTO.EndDate != null)
+            {
+                query = query.Where(v => v.ArrivalTime >= searchRequestDTO.StartDate && v.ArrivalTime <= searchRequestDTO.EndDate);
+            }
+
+           query = query
                 .Include(v => v.Photo)
                 .Include(v => v.Employee)
                 .Include(v => v.ReasonForVisit)
                 .Include(v => v.Department)
-                .Include(v => v.Tag)
-                .Where(v => v.FullName == fullName)
-                .Select(visitor => new VisitorDTO
-                {
-                    Id = visitor.Id,
-                    FullName = visitor.FullName,
-                    ContactAddress = visitor.ContactAddress,
-                    PhoneNumber = visitor.PhoneNumber,
-                    EmailAddress = visitor.EmailAddress,
-                    EmployeeNumber = visitor.EmployeeNumber,
-                    EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
-                    DepartmentName = visitor.Department.DepartmentName,
-                    TagNumber = visitor.Tag.TagNumber,
-                    ReasonForVisit = visitor.ReasonForVisit.Reason,
-                    ReasonForVisitDescription = visitor.ReasonForVisitDescription,
-                    ArrivalTime = visitor.ArrivalTime,
-                    DepartureTime = visitor.DepartureTime,
+                .Include(v => v.Tag);
 
-                    // Convert PhotoData to a base64-encoded string
-                    Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
+            var visitors = query.Select(visitor => new VisitorDTO
+            {
+                Id = visitor.Id,
+                FullName = visitor.FullName,
+                ContactAddress = visitor.ContactAddress,
+                PhoneNumber = visitor.PhoneNumber,
+                EmailAddress = visitor.EmailAddress,
+                EmployeeNumber = visitor.EmployeeNumber,
+                EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                DepartmentName = visitor.Department.DepartmentName,
+                TagNumber = visitor.Tag.TagNumber,
+                ReasonForVisit = visitor.ReasonForVisit.Reason,
+                ReasonForVisitDescription = visitor.ReasonForVisitDescription,
+                ArrivalTime = visitor.ArrivalTime,
+                DepartureTime = visitor.DepartureTime,
 
-                })
-            .ToList();
+                // Convert PhotoData to a base64-encoded string
+                Photo = GetImageStringFromByte(visitor.Photo.PhotoData)
 
+            })
+                .ToList();
             return visitors;
-        }
+        }   
     }
 }

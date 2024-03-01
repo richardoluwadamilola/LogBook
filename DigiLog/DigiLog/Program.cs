@@ -4,10 +4,6 @@ using DigiLog.Models.ResponseModels;
 using DigiLog.Services.Abstraction;
 using DigiLog.Services.Implementation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
-
-
-//using DigiLog.Models.ResponseModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
