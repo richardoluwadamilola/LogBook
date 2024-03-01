@@ -20,13 +20,13 @@
       </td>
       <td>
         <p><b>Full Name: </b>{{ visitor.fullName}}</p>
-        <p><b>contactAddress: </b>{{ visitor.contactAddress}}</p>
-        <p><b>PhoneNumber: </b>{{ visitor.phoneNumber}}</p>
-        <p><b>ReasonForVisit: </b>{{ visitor.reasonForVisit}}</p>
-        <p><b>ReasonForVisitDescription: </b>{{ visitor.reasonForVisitDescription}}</p>
-        <p><b>PersonHereToSee: </b> {{ visitor.employeeName}}</p>
+        <p><b>Contact Address: </b>{{ visitor.contactAddress}}</p>
+        <p><b>Phone Number: </b>{{ visitor.phoneNumber}}</p>
+        <p><b>Reason For Visit: </b>{{ visitor.reasonForVisit}}</p>
+        <p><b>Reason For Visit Description: </b>{{ visitor.reasonForVisitDescription}}</p>
+        <p><b>Person Here To See: </b> {{ visitor.employeeName}}</p>
         <p><b>Department: </b>{{ visitor.departmentName}}</p>
-        <p><b>ArrivalTime: </b>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</p>
+        <p><b>Arrival Time: </b>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</p>
         <div [formGroup]="tagAssignmentForm" class="d-flex align-items-center">
           <input type="text" class="form-control" formControlName="selectedTag" placeholder="Enter Tag Number">
           <button class="btn btn-primary"

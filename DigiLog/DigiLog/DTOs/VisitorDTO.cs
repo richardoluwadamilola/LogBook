@@ -23,6 +23,7 @@ namespace DigiLog.DTOs
         public string EmployeeNumber { get; set; } = string.Empty;
         public string EmployeeName { get; set; } = string.Empty;
         public string DepartmentName { get; set; } = string.Empty;
+        public string TagNumber { get; set; }
         public string ReasonForVisit { get; set; }
         public string ReasonForVisitDescription { get; set; }
         [Display(Name = "Photo (Base64 Encoded)")]

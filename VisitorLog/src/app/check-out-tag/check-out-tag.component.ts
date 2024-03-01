@@ -7,6 +7,8 @@ import { AuthService } from '../services/api/Auth/auth.service';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { TagService } from '../services/api/tags/tag.service';
 import { FormBuilder } from '@angular/forms';
+import { Employee } from '../services/api/models/employee.model';
+import { Department } from '../services/api/models/department.model';
 
 @Component({
   selector: 'app-check-out-tag',
@@ -17,30 +19,34 @@ export class CheckOutTagComponent  implements OnInit {
   searchForm!: FormGroup;
   errorMessage: string | null = null;
   successMessage: string | null = null;
-  visitors: any[] = [];
-  employees: any[] = [];
-  departments: any[] = [];
+  visitors: Visitor[] = [];
+  employees: Employee[] = [];
+  departments: Department[] = [];
   filteredVisitors: Visitor[] = [];
-  tagCheckoutForm!: FormGroup;
   checkedInVisitors: Visitor[] = [];
 
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
-  private readonly reloadPeriod = 30000; // 30 seconds
+  //private readonly reloadPeriod = 30000; // 30 seconds
 
   constructor(private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe) { }
 
   ngOnInit(): void {
     this.initForm();
-    this.loadVisitors();
+    //this.loadVisitors();
     this.loadEmployees();
     this.loadDepartments();
     this.initCheckOutForm();
-    this.searchForm = this.fb.group({
-      searchTerm: ['', Validators.required]
-    });
+    this.createForm();
     this.initInactivityTimer();
-    this.initReloadTimer();
+    //this.initReloadTimer();
+  }
+
+  createForm(): void {
+    this.searchForm = this.fb.group({
+      tagNumber: ['', Validators.required]
+    });
+  
   }
 
   ngOnDestroy(): void {
@@ -54,37 +60,21 @@ export class CheckOutTagComponent  implements OnInit {
     }, this.inactivityPeriod);
   }
 
-  reloadPage(): void {
-    location.reload();
-  }
+  // reloadPage(): void {
+  //   location.reload();
+  // }
 
-  initReloadTimer(): void {
-    setInterval(() => {
-      this['reloadPage']();
-    }, this.reloadPeriod);
-  }
+  // initReloadTimer(): void {
+  //   setInterval(() => {
+  //     this['reloadPage']();
+  //   }, this.reloadPeriod);
+  // }
 
   
 
   initForm() {}
 
-  initCheckOutForm() {
-    this.tagCheckoutForm = this.fb.group({
-      selectedTag: ['', Validators.required],
-    });
-  }
-
-  loadCheckedInVisitors(): void {
-    // Load visitors who have been assigned a tag but have not been checked out yet
-    this.visitorService.getVisitors().subscribe(
-      (data: Visitor[]) => {
-        this.checkedInVisitors = data.filter(visitor => !!visitor.tagAssignedDateTime && !visitor.departureTime);
-      },
-      (error: any) => {
-        console.error('Error fetching checked-in visitors', error);
-      }
-    );
-  }
+  initCheckOutForm() {}
 
   loadDepartments() {
     this.visitorService.getDepartments().subscribe(
@@ -113,54 +103,32 @@ export class CheckOutTagComponent  implements OnInit {
     return employee ? `${employee.firstName} ${employee.middleName} ${employee.lastName}` : '';
   }
 
+  //filter visitor with tag number searched  for the current date
+  filterVisitorsByTagNumber(tagNumber: string): void {
+    this.visitors = this.visitors.filter(visitor => visitor.tagNumber === tagNumber);
+    
 
-  loadVisitors(): void {
-    const currentDate = new Date();
-    const currentDateString = currentDate.toISOString().slice(0, 10);
+  }
   
-    this.visitorService.getVisitors().subscribe(
-      (data: Visitor[]) => {
-        // Filter out visitors who have been assigned a tag and are from the current day
-        this.visitors = data.filter(visitor => {
-          const tagAssignedDateTime = visitor.tagAssignedDateTime ? new Date(visitor.tagAssignedDateTime) : null;
-          const tagAssignedToday = tagAssignedDateTime && tagAssignedDateTime.toISOString().slice(0, 10) === currentDateString;
-          return tagAssignedToday;
-        });
-  
-        // Sort visitors based on departure status
-        this.visitors.sort((a, b) => {
-          if (a.departed && !b.departed) {
-            return 1; // a is departed, b is not, so a comes after b
-          } else if (!a.departed && b.departed) {
-            return -1; // a is not departed, b is, so a comes before b
+  searchVisitor(): void {
+    const formData = this.searchForm.value;
+
+    if (formData.tagNumber) {
+      this.visitorService.getVisitorbyTagNumber(formData.tagNumber).subscribe(
+        (data: Visitor) => { 
+          if (Array.isArray(data)) {
+            // Handle the case where the API returns an array for tagNumber search
+            this.visitors = data;
           } else {
-            return 0; // both either departed or not departed, maintain current order
+            // Handle the case where the API returns a single object for tagNumber search
+            this.visitors = data ? [data] : [];
           }
-        });
-  
-        console.log('Visitors:', this.visitors);
-        this.filteredVisitors = this.visitors;
-      },
-      (error: any) => console.error('Error fetching visitors', error)
-    );
-  }
-  
-  
-  
-  
-  
-  searchVisitors() {
-    const searchTerm = this.searchForm.value.searchTerm;
-    this.filteredVisitors = this.visitors.filter((visitor) => {
-      return visitor.fullName.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-  }
-
-  checkoutVisitor(visitorId: number, tagNumber: string) {
-    if (!tagNumber) {
-      alert('Please enter a tag number.');
-      return;
+        }
+      );
     }
+  }
+  
+  checkoutVisitor(visitorId: number, tagNumber: string) {
 
     const checkoutTagDto = { VisitorId: visitorId, TagNumber: tagNumber };
     this.tagService.checkOutVisitor(checkoutTagDto).subscribe(
@@ -170,8 +138,7 @@ export class CheckOutTagComponent  implements OnInit {
           alert('Visitor checked out successfully');
           this.errorMessage = null;
           this.successMessage = 'Visitor checked out successfully';
-          this.loadVisitors();
-          this.tagCheckoutForm.reset();
+          //this.loadVisitors();
         } else {
           console.error('Error checking out visitor:', response.description);
           alert(`Visitor check out failed: ${response.description}`);
@@ -187,21 +154,21 @@ export class CheckOutTagComponent  implements OnInit {
     );
   }
 
-  calculateDuration(arrivalTime: string, departureTime: string): string {
-    const arrival = new Date(arrivalTime);
-    const departure = departureTime ? new Date(departureTime) : new Date('0001-01-01T00:00:00'); // Default to a valid date
+  // calculateDuration(arrivalTime: string, departureTime: string): string {
+  //   const arrival = new Date(arrivalTime);
+  //   const departure = departureTime ? new Date(departureTime) : new Date('0001-01-01T00:00:00'); // Default to a valid date
 
-    if (departure.getFullYear() === 1 && departure.getMonth() === 0 && departure.getDate() === 1) {
-      // If departure time is not set, return "Not Departed Yet"
-      return "Not Departed Yet";
-    } else {
-      // If departure time is set, calculate duration
-      const duration = Math.abs(departure.getTime() - arrival.getTime());
-      const hours = Math.floor(duration / 3600000);
-      const minutes = Math.floor((duration % 3600000) / 60000);
-      return `${hours} hours, ${minutes} minutes`;
-    }
-  }
+  //   if (departure.getFullYear() === 1 && departure.getMonth() === 0 && departure.getDate() === 1) {
+  //     // If departure time is not set, return "Not Departed Yet"
+  //     return "Not Departed Yet";
+  //   } else {
+  //     // If departure time is set, calculate duration
+  //     const duration = Math.abs(departure.getTime() - arrival.getTime());
+  //     const hours = Math.floor(duration / 3600000);
+  //     const minutes = Math.floor((duration % 3600000) / 60000);
+  //     return `${hours} hours, ${minutes} minutes`;
+  //   }
+  // }
 
   @HostListener('window:mousemove') refreshUserState() {
     console.log('Mousemove detected');

@@ -1,35 +1,35 @@
 <body>
   <div>
     <h2>Visitor Form</h2>
-    <p>Please fill in the following details</p>
+    <p>Please fill in the following details(Fields in astericks are compulsory).</p>
     <form [formGroup]="visitorForm" (ngSubmit)="submitForm()">
-      <label for="firstName">Full Name:</label>
+      <label for="firstName">**Full Name:</label>
       <input type="text" id="fullName" formControlName="fullName" required>
 
-      <label for="contactAddress">Contact Address:</label>
+      <label for="contactAddress">**Contact Address:</label>
       <textarea id="contactAddress" formControlName="contactAddress" rows="3" cols="75" required></textarea>
 
-      <label for="phoneNumber">Phone Number:</label>
+      <label for="phoneNumber">**Phone Number:</label>
       <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder="Enter phone number" required>
 
       <label for="emailAddress">Email Address:</label>
       <input type="emailAddress" id="emailAddress" formControlName="emailAddress" placeholder="Enter email address">
 
-      <label for="personHereToSee">Person Here To See:</label>
+      <label for="personHereToSee">**Person Here To See:</label>
       <input type="text" id="personHereToSee" formControlName="personHereToSee" (input)="filterEmployees()" required>
       <ul class="suggestions" *ngIf="visitorForm.get('personHereToSee')?.value">
         <li *ngFor="let employee of filteredEmployees" (click)="selectEmployee(employee)">{{ employee.firstName }} {{
           employee.middleName }} {{ employee.lastName }}</li>
       </ul>
 
-      <label for="department">Department:</label>
+      <label for="department">**Department:</label>
       <input type="text" id="department" formControlName="department" (input)="filterDepartments()" required>
       <ul class="suggestions" *ngIf="visitorForm.get('department')?.value">
         <li *ngFor="let department of filteredDepartments" (click)="selectDepartment(department)">{{
           department.departmentName }}</li>
       </ul>
 
-      <label for="reasonForVisit">Reason For Visit:</label>
+      <label for="reasonForVisit">**Reason For Visit:</label>
       <select formControlName="reasonForVisit" required>
         <option disabled value="">Please select a reason for visit</option>
         <option *ngFor="let reason of reasonForVisit" [value]="reason.reason">{{ reason.reason }}</option>

@@ -4,13 +4,13 @@
     </li>
 </ul>
 
-<div class="row mb-3" [formGroup]="searchForm">
+<div class="row mb-3" [formGroup]="searchForm" placeholder="Enter Tag Number">
     <div class="col-md-6">
-        <input type="text" class="form-control" formControlName="searchTerm" placeholder="Search visitors"
-            (keydown.enter)="searchVisitors()">
+        <input type="text" class="form-control" formControlName="tagNumber" placeholder="Search visitors"
+            (keydown.enter)="searchVisitor()">
     </div>
     <div class="col-md-6">
-        <button class="btn btn-primary" (click)="searchVisitors()">Search</button>
+        <button class="btn btn-primary" (click)="searchVisitor()">Search</button>
     </div>
 </div>
 
@@ -19,12 +19,13 @@
 <table class="m-1 table table-bordered custom-table"
     style="border: 1px #000 solid !important; border-right: 0px !important;">
     <tbody>
-        <tr *ngFor="let visitor of filteredVisitors.slice(0,4); let i = index">
-            <td>{{ i + 1 }}</td>
-            <td style="width: 100px !important;"><img [src]="visitor.photo" alt="Visitor Photo"
+        <tr *ngIf="visitors">
+            
+            <td *ngFor="let visitor of visitors" style="width: 100px !important;"><img [src]="visitor.photo" alt="Visitor Photo"
                     style="max-width: 300px;">
+                    <p><b>Full Name: </b>{{ visitor.fullName}}</p>
             </td>
-            <td>
+            <td *ngFor="let visitor of visitors">
                 <p><b>Full Name: </b>{{ visitor.fullName}}</p>
                 <p><b>contactAddress: </b>{{ visitor.contactAddress}}</p>
                 <p><b>PhoneNumber: </b>{{ visitor.phoneNumber}}</p>
@@ -33,17 +34,13 @@
                 <p><b>PersonHereToSee: </b> {{ visitor.employeeName}}</p>
                 <p><b>Department: </b>{{ visitor.departmentName}}</p>
                 <p><b>ArrivalTime: </b>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</p>
-                <p><b>DepartureTime: </b> {{ visitor.departureTime | date: 'yyyy-MM-dd HH:mm' }}</p>
-                <p><b>Duration: </b> {{ calculateDuration(visitor.arrivalTime.toString(),
+                <p><b>DepartureTime: </b> {{ visitor.departureTime| date: 'yyyy-MM-dd HH:mm' }}</p>
+                <!-- <p><b>Duration: </b> {{ calculateDuration(visitor.arrivalTime.toString(),
                     visitor.departureTime.toString()) }}
-                </p>
-                <div [formGroup]="tagCheckoutForm" class="d-flex align-items-center">
-                    <input type="text" class="form-control" formControlName="selectedTag"
-                        placeholder="Enter Tag Number">
+                </p> -->
                     <button class="btn btn-primary"
-                        (click)="checkoutVisitor(visitor.id, tagCheckoutForm.get('selectedTag')?.value)">CheckOut
+                        (click)="checkoutVisitor(visitor.id, visitor.tagNumber)">CheckOut
                         Tag</button>
-                </div>
             </td>
         </tr>
     </tbody>

@@ -15,6 +15,7 @@ export interface Visitor {
     employeeName: string;
     departmentName: string;
     departmentId: number;
+    tagNumber: string;
     employee: Employee;
     arrivalTime: Date;
     departureTime: Date;
