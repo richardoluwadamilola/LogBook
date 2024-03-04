@@ -1,16 +1,12 @@
 div {
-    max-width: 400px;
     margin: auto;
-    padding: 20px;
-    background-color: #f8f8f8;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    width: 50%;
 }
 
-form {
-    margin-bottom: 20px;
+#tagAssign {
+    margin: 0px;
 }
+
 
 label {
     display: block;
@@ -18,8 +14,7 @@ label {
 }
 
 input {
-    width: 50%;
-
+    width: 30%;
     box-sizing: border-box;
 }
 
@@ -70,9 +65,6 @@ button:hover {
     max-width: fit-content;
 
 }
-
-
-
 
 
 

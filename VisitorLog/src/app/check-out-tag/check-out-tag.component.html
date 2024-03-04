@@ -1,9 +1,3 @@
-<ul class="navbar-nav">
-    <li class="nav-item">
-        <a class="nav-link" href="./entry">AssignTag</a>
-    </li>
-</ul>
-
 <div class="row mb-3" [formGroup]="searchForm" placeholder="Enter Tag Number">
     <div class="col-md-6">
         <input type="text" class="form-control" formControlName="tagNumber" placeholder="Search visitors"
@@ -13,19 +7,15 @@
         <button class="btn btn-primary" (click)="searchVisitor()">Search</button>
     </div>
 </div>
-
-
 <h3 class="text-center">VISITORS</h3>
-<table class="m-1 table table-bordered custom-table"
+<table class="m-1 table table-bordered custom-table w-75 mx-auto"
     style="border: 1px #000 solid !important; border-right: 0px !important;">
     <tbody>
         <tr *ngIf="visitors">
-            
-            <td *ngFor="let visitor of visitors" style="width: 100px !important;"><img [src]="visitor.photo" alt="Visitor Photo"
-                    style="max-width: 300px;">
-                    <p><b>Full Name: </b>{{ visitor.fullName}}</p>
+            <td *ngFor="let visitor of visitors" style="width: 100px !important;"><img [src]="visitor.photo"
+                    alt="Visitor Photo" style="max-width: 300px;">
             </td>
-            <td *ngFor="let visitor of visitors">
+            <td *ngFor="let visitor of visitors" class="lh-1">
                 <p><b>Full Name: </b>{{ visitor.fullName}}</p>
                 <p><b>Contact Address: </b>{{ visitor.contactAddress}}</p>
                 <p><b>Phone Number: </b>{{ visitor.phoneNumber}}</p>
@@ -35,9 +25,8 @@
                 <p><b>Department: </b>{{ visitor.departmentName}}</p>
                 <p><b>Arrival Time: </b>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</p>
                 <p><b>Departure Time: </b> {{ visitor.departureTime| date: 'yyyy-MM-dd HH:mm' }}</p>
-                    <button class="btn btn-primary"
-                        (click)="checkoutVisitor(visitor.id, visitor.tagNumber)">CheckOut
-                        Tag</button>
+                <button class="btn btn-primary"
+                    (click)="checkoutVisitor(visitor.id, visitor.tagNumber)">CheckOut</button>
             </td>
         </tr>
     </tbody>

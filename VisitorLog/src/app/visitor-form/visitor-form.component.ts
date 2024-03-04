@@ -116,18 +116,8 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   }
   
   doesEmployeeMatchSearchTerm(employee: Employee, searchTerm: string): boolean {
-    const fullName = `${employee.firstName} ${employee.middleName || ''} ${employee.lastName}`.toLowerCase();
-  
-    for (let i = 0; i < searchTerm.length; i++) {
-      const char = searchTerm[i];
-      
-      // Check if the character is present in any part of the full name
-      if (!fullName.includes(char)) {
-        return false;
-      }
-    }
-  
-    return true;
+    const lastName = employee.lastName.toLowerCase();
+    return lastName.includes(searchTerm);
   }
 
   

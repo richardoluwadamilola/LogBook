@@ -138,7 +138,9 @@ export class CheckOutTagComponent  implements OnInit {
           alert('Visitor checked out successfully');
           this.errorMessage = null;
           this.successMessage = 'Visitor checked out successfully';
-          //this.loadVisitors();
+          this.searchForm.reset();
+          // navigate to the assign page.
+          this.router.navigateByUrl('/entry');
         } else {
           console.error('Error checking out visitor:', response.description);
           alert(`Visitor check out failed: ${response.description}`);

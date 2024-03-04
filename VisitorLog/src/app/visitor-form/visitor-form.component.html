@@ -18,8 +18,8 @@
       <label for="personHereToSee">**Person Here To See:</label>
       <input type="text" id="personHereToSee" formControlName="personHereToSee" (input)="filterEmployees()" required>
       <ul class="suggestions" *ngIf="visitorForm.get('personHereToSee')?.value">
-        <li *ngFor="let employee of filteredEmployees" (click)="selectEmployee(employee)">{{ employee.firstName }} {{
-          employee.middleName }} {{ employee.lastName }}</li>
+        <li *ngFor="let employee of filteredEmployees" (click)="selectEmployee(employee)">{{ employee.lastName }} {{
+          employee.middleName }} {{ employee.firstName }}</li>
       </ul>
 
       <label for="department">**Department:</label>
@@ -39,7 +39,6 @@
       <input type="text" id="reasonForVisitDescription" formControlName="reasonForVisitDescription">
 
       <app-camera (photoCaptured)="handlePhotoCapture($event)"></app-camera>
-
       
       <button type="submit" class="submit-button" *ngIf="!formSubmitted && visitorForm.valid">Submit</button>
       <button type="button" class="cancel-button" (click)="quitForm()">Cancel</button>

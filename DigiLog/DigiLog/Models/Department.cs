@@ -6,9 +6,7 @@ namespace DigiLog.Models
     public class Department
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long DepartmentId { get; set; }
-
         [Required]
         [Display(Name = "Department Name")]
         [Column(TypeName = "varchar(30)")]
