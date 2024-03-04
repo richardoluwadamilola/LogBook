@@ -40,9 +40,10 @@
 
       <app-camera (photoCaptured)="handlePhotoCapture($event)"></app-camera>
 
-      <button type="button" (click)="quitForm()">Cancel</button>
-
-      <button type="submit" *ngIf="!formSubmitted && visitorForm.valid">Submit</button>
+      
+      <button type="submit" class="submit-button" *ngIf="!formSubmitted && visitorForm.valid">Submit</button>
+      <button type="button" class="cancel-button" (click)="quitForm()">Cancel</button>
+      
     </form>
   </div>
 </body>
