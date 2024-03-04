@@ -27,17 +27,14 @@
             </td>
             <td *ngFor="let visitor of visitors">
                 <p><b>Full Name: </b>{{ visitor.fullName}}</p>
-                <p><b>contactAddress: </b>{{ visitor.contactAddress}}</p>
-                <p><b>PhoneNumber: </b>{{ visitor.phoneNumber}}</p>
-                <p><b>ReasonForVisit: </b>{{ visitor.reasonForVisit}}</p>
-                <p><b>ReasonForVisitDescription: </b>{{ visitor.reasonForVisitDescription}}</p>
-                <p><b>PersonHereToSee: </b> {{ visitor.employeeName}}</p>
+                <p><b>Contact Address: </b>{{ visitor.contactAddress}}</p>
+                <p><b>Phone Number: </b>{{ visitor.phoneNumber}}</p>
+                <p><b>Reason Fo rVisit: </b>{{ visitor.reasonForVisit}}</p>
+                <p><b>Reason For Visit Description: </b>{{ visitor.reasonForVisitDescription}}</p>
+                <p><b>Person Here To See: </b> {{ visitor.employeeName}}</p>
                 <p><b>Department: </b>{{ visitor.departmentName}}</p>
-                <p><b>ArrivalTime: </b>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</p>
-                <p><b>DepartureTime: </b> {{ visitor.departureTime| date: 'yyyy-MM-dd HH:mm' }}</p>
-                <!-- <p><b>Duration: </b> {{ calculateDuration(visitor.arrivalTime.toString(),
-                    visitor.departureTime.toString()) }}
-                </p> -->
+                <p><b>Arrival Time: </b>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</p>
+                <p><b>Departure Time: </b> {{ visitor.departureTime| date: 'yyyy-MM-dd HH:mm' }}</p>
                     <button class="btn btn-primary"
                         (click)="checkoutVisitor(visitor.id, visitor.tagNumber)">CheckOut
                         Tag</button>
