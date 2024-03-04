@@ -102,21 +102,35 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
     );
   }
 
-  
-
   // Filter employees
   filterEmployees(): void {
-    const searchTerm = this.visitorForm.get('personHereToSee')?.value.toLowerCase();
-    if (searchTerm.length >= 3) { // Check if at least 3 characters are entered
+    const searchTerm = this.visitorForm.get('personHereToSee')?.value.trim().toLowerCase();
+    
+    if (searchTerm.length >= 2) { // At least 2 characters for search
       this.filteredEmployees = this.employees.filter(employee =>
-        (employee.firstName.toLowerCase().includes(searchTerm) ||
-          employee.middleName?.toLowerCase().includes(searchTerm) ||
-          employee.lastName.toLowerCase().includes(searchTerm))
+        this.doesEmployeeMatchSearchTerm(employee, searchTerm)
       );
     } else {
       this.filteredEmployees = [];
     }
   }
+  
+  doesEmployeeMatchSearchTerm(employee: Employee, searchTerm: string): boolean {
+    const fullName = `${employee.firstName} ${employee.middleName || ''} ${employee.lastName}`.toLowerCase();
+  
+    for (let i = 0; i < searchTerm.length; i++) {
+      const char = searchTerm[i];
+      
+      // Check if the character is present in any part of the full name
+      if (!fullName.includes(char)) {
+        return false;
+      }
+    }
+  
+    return true;
+  }
+
+  
   selectEmployee(employee: Employee): void {
     this.visitorForm.patchValue({
       employeeNumber: employee.employeeNumber,
@@ -124,7 +138,6 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
     });
     this.filteredEmployees = []; // Clear suggestions
   }
-  
 
   // Filter departments
   filterDepartments(): void {
@@ -216,13 +229,13 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
 
 
 
-  // Get the employee name initials
-  getInitials(name: string): string {
-    if (!name) {
-      return '';
-    }
-    return name.charAt(0) + '.';
-  }
+  // // Get the employee name initials
+  // getInitials(name: string): string {
+  //   if (!name) {
+  //     return '';
+  //   }
+  //   return name.charAt(0) + '.';
+  // }
 
 
 }
