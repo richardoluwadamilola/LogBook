@@ -21,7 +21,6 @@
         <li *ngFor="let employee of filteredEmployees" (click)="selectEmployee(employee)">{{ employee.lastName }} {{
           employee.middleName }} {{ employee.firstName }}</li>
       </ul>
-
       <label for="department">**Department:</label>
       <input type="text" id="department" formControlName="department" (input)="filterDepartments()" required>
       <ul class="suggestions" *ngIf="visitorForm.get('department')?.value">
