@@ -27,8 +27,6 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   reasonForVisit: ReasonForVisit[] = [];
   formSubmitted = false;
 
-
-
   constructor(private fb: FormBuilder, private visitorService: VisitorService, private router: Router, private reasonForVisitService: ReasonforvisitService) { }
 
   ngOnInit(): void {
@@ -43,7 +41,6 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
     $('#departmentId').select();
   }
 
-
   createForm(): void {
     this.visitorForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -53,7 +50,6 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       personHereToSee: ['', Validators.required],
       department: ['', Validators.required],
       departmentId: [null, Validators.required],
-      //departmentName: ['', Validators.required],
       employeeNumber: [null, Validators.required],
       reasonForVisit: [null, Validators.required],
       reasonForVisitDescription: [''],
@@ -72,9 +68,6 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       }
     );
   }
-
-
-
 
   getEmployees(): void {
     this.visitorService.getEmployees().subscribe(
@@ -124,7 +117,7 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   selectEmployee(employee: Employee): void {
     this.visitorForm.patchValue({
       employeeNumber: employee.employeeNumber,
-      personHereToSee: `${employee.firstName} ${employee.middleName ? employee.middleName + ' ' : ''}${employee.lastName}`,
+      personHereToSee: `${employee.lastName} ${employee.firstName} ${employee.middleName ? employee.middleName + ' ' : ''}`,
     });
     this.filteredEmployees = []; // Clear suggestions
   }

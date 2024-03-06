@@ -1,23 +1,23 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="./tag">Tag</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./department">Department</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./employee">Employee</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./visitor">Visitors</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./reason">Reasons</a>
-      </ul>
-    </div>
-  </nav>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="./tag">Tag</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./department">Department</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./employee">Employee</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./visitor">Visitors</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./reason">Reasons</a>
+    </ul>
+  </div>
+</nav>
 <div class="container-fluid bg-light" style="min-height: 100vh">
   <div class="row py-5">
     <div class="col-md-8 mx-auto text-center">
@@ -29,7 +29,7 @@
   <div class="row justify-content-center">
     <div class="col-md-7 mx-auto">
       <form [formGroup]="searchForm" (ngSubmit)="submitForm()" class="search-form border p-4 rounded shadow-sm">
-        <div class="row row-cols-lg-3 gx-4 gy-3">
+        <div class="row align-items-center">
           <div class="col">
             <div class="form-group">
               <label for="startDate" class="form-label">Start Date:</label>
@@ -60,13 +60,16 @@
               <input type="text" id="tagNumber" formControlName="tagNumber" class="form-control">
             </div>
           </div>
-        </div>
-        <div class="text-center mt-3">
-          <button type="submit" class="btn btn-primary btn-lg">Search</button>
+          <div class="col-auto">
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary btn-lg">Search</button>
+            </div>
+          </div>
         </div>
       </form>
     </div>
   </div>
+
 
   <div class="row mt-5 justify-content-center">
     <div class="col-md-10">
@@ -98,7 +101,8 @@
               <td>{{ visitor.departureTime | date: 'yyyy-MM-dd HH:mm' }}</td>
               <td>{{ visitor.reasonForVisitDescription }}</td>
               <td>
-                <img src="{{ visitor.photo }}"  (click)="openPhotoModal(visitor.photo)" alt="Visitor Photo" class="img-fluid" style="max-width: 200px;">
+                <img src="{{ visitor.photo }}" (click)="openPhotoModal(visitor.photo)" alt="Visitor Photo"
+                  class="img-fluid" style="max-width: 200px;">
               </td>
             </tr>
           </tbody>
@@ -110,23 +114,17 @@
 
 <!-- Modal -->
 <div class="container">
-<div class="modal fade" id="photoModal" data-toggle="modal" data-target="#myModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl justify-content-center">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="photoModalLabel">Visitor Photo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <img id="modalPhoto" src="" alt="Visitor Photo" class="img-fluid"> 
+  <div class="modal fade" id="photoModal" data-toggle="modal" data-target="#myModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl justify-content-center">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="photoModalLabel">Visitor Photo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img id="modalPhoto" src="" alt="Visitor Photo" class="img-fluid">
+        </div>
       </div>
     </div>
   </div>
 </div>
-</div>
-
-
-
-  
-  
-

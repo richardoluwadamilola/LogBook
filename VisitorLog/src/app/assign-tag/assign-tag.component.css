@@ -66,6 +66,28 @@ button:hover {
 
 }
 
+/* Adjustments for phones */
+@media (max-width: 767px) {
+    .custom-table {
+      width: 100% !important;
+    }
+  }
+  
+  /* Adjustments for tablets */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .custom-table {
+      width: 80% !important;
+    }
+  }
+  
+  /* Adjustments for laptops/desktops */
+  @media (min-width: 992px) {
+    .custom-table {
+      width: 50% !important;
+    }
+  }
+  
+
 
 
   

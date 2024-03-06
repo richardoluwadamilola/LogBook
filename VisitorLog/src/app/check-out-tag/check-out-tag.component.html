@@ -1,14 +1,12 @@
 <div class="row mb-3" [formGroup]="searchForm" placeholder="Enter Tag Number">
-    <div class="col-md-6">
+    <p class="col-md-6">
         <input type="text" class="form-control" formControlName="tagNumber" placeholder="Search visitors"
             (keydown.enter)="searchVisitor()">
-    </div>
-    <div class="col-md-6">
         <button class="btn btn-primary" (click)="searchVisitor()">Search</button>
-    </div>
+</p>
 </div>
 <h3 class="text-center">VISITORS</h3>
-<table class="m-1 table table-bordered custom-table w-75 mx-auto"
+<table class="m-1 table table-bordered custom-table w-50 mx-auto"
     style="border: 1px #000 solid !important; border-right: 0px !important;">
     <tbody>
         <tr *ngIf="visitors">

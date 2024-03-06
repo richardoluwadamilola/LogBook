@@ -1,0 +1,10 @@
+input {
+    width: 30%;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+}
