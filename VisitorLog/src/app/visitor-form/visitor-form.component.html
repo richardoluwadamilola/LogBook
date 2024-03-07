@@ -1,13 +1,12 @@
-<body>
-  <div>
-    <h2>Visitor Form</h2>
-    <p>Please fill in the following details(Fields in astericks are compulsory).</p>
-    <form [formGroup]="visitorForm" (ngSubmit)="submitForm()">
-      <label for="firstName">**Full Name:</label>
-      <input type="text" id="fullName" formControlName="fullName" required>
+<div>
+  <h2>Visitor Form</h2>
+  <p>Please fill in the following details (Fields in asterisks are compulsory).</p>
 
-      <label for="contactAddress">**Contact Address:</label>
-      <textarea id="contactAddress" formControlName="contactAddress" rows="3" cols="75" required></textarea>
+  <!-- Step 1: Personal Information -->
+  <div *ngIf="currentStep === 1">
+    <form [formGroup]="visitorForm" (ngSubmit)="nextStep()">
+      <label for="fullName">**Full Name:</label>
+      <input type="text" id="fullName" formControlName="fullName" required>
 
       <label for="phoneNumber">**Phone Number:</label>
       <input type="text" id="phoneNumber" formControlName="phoneNumber" placeholder="Enter phone number" required>
@@ -15,19 +14,38 @@
       <label for="emailAddress">Email Address:</label>
       <input type="emailAddress" id="emailAddress" formControlName="emailAddress" placeholder="Enter email address">
 
+      <button type="submit" class="next-button">Next</button>
+      <button type="button" class="cancel-button" (click)="quitForm()">Cancel</button>
+    </form>
+  </div>
+
+  <!-- Step 2: Contact Information and employee here to see details -->
+  <div *ngIf="currentStep === 2">
+    <form [formGroup]="visitorForm" (ngSubmit)="nextStep()">
+      <label for="contactAddress">**Contact Address:</label>
+      <textarea id="contactAddress" formControlName="contactAddress" rows="3" cols="75" required></textarea>
+
       <label for="personHereToSee">**Person Here To See:</label>
       <input type="text" id="personHereToSee" formControlName="personHereToSee" (input)="filterEmployees()" required>
       <ul class="suggestions" *ngIf="visitorForm.get('personHereToSee')?.value">
-        <li *ngFor="let employee of filteredEmployees" (click)="selectEmployee(employee)">{{ employee.lastName }} {{
-          employee.middleName }} {{ employee.firstName }}</li>
+        <li *ngFor="let employee of filteredEmployees" (click)="selectEmployee(employee)">{{ employee.lastName }} {{ employee.middleName }} {{ employee.firstName }}</li>
       </ul>
+
       <label for="department">**Department:</label>
       <input type="text" id="department" formControlName="department" (input)="filterDepartments()" required>
       <ul class="suggestions" *ngIf="visitorForm.get('department')?.value">
-        <li *ngFor="let department of filteredDepartments" (click)="selectDepartment(department)">{{
-          department.departmentName }}</li>
+        <li *ngFor="let department of filteredDepartments" (click)="selectDepartment(department)">{{ department.departmentName }}</li>
       </ul>
 
+      <button type="button" class="previous-button" (click)="prevStep()">Previous</button>
+      <button type="submit" class="next-button">Next</button>
+      <button type="button" class="cancel-button" (click)="quitForm()">Cancel</button>
+    </form>
+  </div>
+
+  <!-- Step 3: Additional Information -->
+  <div *ngIf="currentStep === 3">
+    <form [formGroup]="visitorForm" (ngSubmit)="submitForm()">
       <label for="reasonForVisit">**Reason For Visit:</label>
       <select formControlName="reasonForVisit" required>
         <option disabled value="">Please select a reason for visit</option>
@@ -38,10 +56,9 @@
       <input type="text" id="reasonForVisitDescription" formControlName="reasonForVisitDescription">
 
       <app-camera (photoCaptured)="handlePhotoCapture($event)"></app-camera>
-      
+
       <button type="submit" class="submit-button" *ngIf="!formSubmitted && visitorForm.valid">Submit</button>
       <button type="button" class="cancel-button" (click)="quitForm()">Cancel</button>
-      
     </form>
   </div>
-</body>
+</div>

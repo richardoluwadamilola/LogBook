@@ -20,6 +20,7 @@ declare var $: any;
 export class VisitorFormComponent implements OnInit, AfterViewInit {
   @ViewChild(CameraComponent) cameraComponent!: CameraComponent;
   visitorForm!: FormGroup;
+  currentStep = 1;
   employees: Employee[] = [];
   departments: Department[] = [];
   filteredEmployees: Employee[] = [];
@@ -56,6 +57,15 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       photo: [null, Validators.required],
     });
   }
+
+  nextStep(): void {
+    this.currentStep++;
+  }
+
+  prevStep(): void {
+    this.currentStep--;
+  }
+
 
   getReasonsForVisit(): void {
     this.reasonForVisitService.getReasonsForVisit().subscribe(
