@@ -69,25 +69,32 @@ button:hover {
 /* Adjustments for phones */
 @media (max-width: 767px) {
     .custom-table {
-      width: 100% !important;
+        width: 100% !important;
     }
-  }
-  
-  /* Adjustments for tablets */
-  @media (min-width: 768px) and (max-width: 991px) {
+}
+
+/* Adjustments for tablets */
+@media (min-width: 768px) and (max-width: 991px) {
     .custom-table {
-      width: 80% !important;
+        width: 80% !important;
     }
-  }
-  
-  /* Adjustments for laptops/desktops */
-  @media (min-width: 992px) {
+}
+
+/* Adjustments for laptops/desktops */
+@media (min-width: 992px) {
     .custom-table {
-      width: 50% !important;
+        width: 50% !important;
     }
-  }
-  
+}
 
+.lh-1 p {
+    margin-bottom: 5px;
+}
 
+#tagAssign input {
+    margin-right: 5px;
+}
 
-  
+.modal-xl {
+    max-width: 90%;
+}
