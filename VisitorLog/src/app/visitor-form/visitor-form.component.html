@@ -32,11 +32,13 @@
       </ul>
 
       <label for="department">**Department:</label>
-      <input type="text" id="department" formControlName="department" (input)="filterDepartments()" required>
-      <ul class="suggestions" *ngIf="visitorForm.get('department')?.value">
-        <li *ngFor="let department of filteredDepartments" (click)="selectDepartment(department)">{{ department.departmentName }}</li>
-      </ul>
+<select id="department" formControlName="department" required>
+  <option value="" disabled selected>Select Department</option>
+  <option *ngFor="let department of departments" [value]="department.departmentName">{{ department.departmentName }}</option>
+</select>
 
+
+      
       <button type="button" class="previous-button" (click)="prevStep()">Previous</button>
       <button type="submit" class="next-button">Next</button>
       <button type="button" class="cancel-button" (click)="quitForm()">Cancel</button>

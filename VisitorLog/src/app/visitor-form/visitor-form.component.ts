@@ -96,53 +96,70 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   getDepartments(): void {
     this.visitorService.getDepartments().subscribe(
       (data: Department[]) => {
-        this.departments = data;
+        this.departments = data.sort((a, b) => a.departmentName.localeCompare(b.departmentName));
         console.log('Departments:', this.departments);
       },
       (error: any) => {
         console.error('Error getting departments', error);
       }
     );
-  }
+  }  
 
-  // Filter employees
+  // Filter Employees
   filterEmployees(): void {
-    const searchTerm = this.visitorForm.get('personHereToSee')?.value.trim().toLowerCase();
+    const input = this.visitorForm.get('personHereToSee')?.value.trim().toLowerCase();
+  
+    // Check if the input contains a space
+    const spaceIndex = input.indexOf(' ');
+  
+    // Check if there is a space and the term before it is not empty
+    if (spaceIndex > 0) {
+      const lastName = input.substring(0, spaceIndex);
+      const firstNamePrefix = input.substring(spaceIndex + 1); // Get the entered first name prefix
+
+      // Check if at least four characters are entered after the space
+      if (firstNamePrefix.length >= 4) {
+        // Filter employees based on last name and first name
+        const matchingEmployees = this.employees.filter(employee =>
+          this.doesEmployeeMatchSearchTerm(employee, lastName, firstNamePrefix.charAt(0))
+        );
     
-    if (searchTerm.length >= 2) { // At least 2 characters for search
-      this.filteredEmployees = this.employees.filter(employee =>
-        this.doesEmployeeMatchSearchTerm(employee, searchTerm)
-      );
+        // Display error message if no matching employees found
+        if (matchingEmployees.length === 0) {
+          alert('Employee not found. Please confirm who you are here to see.');
+        } else {
+          // If matching employees found, assign them to filteredEmployees
+          this.filteredEmployees = matchingEmployees;
+        }
+      }
     } else {
+      // If no space found, clear filteredEmployees
       this.filteredEmployees = [];
     }
-  }
-  
-  doesEmployeeMatchSearchTerm(employee: Employee, searchTerm: string): boolean {
-    const lastName = employee.lastName.toLowerCase();
-    return lastName.includes(searchTerm);
-  }
+}
 
-  
+doesEmployeeMatchSearchTerm(employee: Employee, lastName: string, firstNameFirstLetter: string): boolean {
+    // Check if the last name matches
+    if (employee.lastName.toLowerCase() !== lastName) {
+        return false;
+    }
+
+    // Check if the first letter of the first name matches
+    return employee.firstName.toLowerCase().startsWith(firstNameFirstLetter);
+}
+
+
+
+
   selectEmployee(employee: Employee): void {
     this.visitorForm.patchValue({
       employeeNumber: employee.employeeNumber,
-      personHereToSee: `${employee.lastName} ${employee.firstName} ${employee.middleName ? employee.middleName + ' ' : ''}`,
+      personHereToSee: `${employee.lastName} ${employee.middleName ? employee.middleName + ' ' : ''} ${employee.firstName}`,
     });
-    this.filteredEmployees = []; // Clear suggestions
+    this.filteredEmployees = [];
   }
 
-  // Filter departments
-  filterDepartments(): void {
-    const searchTerm = this.visitorForm.get('department')?.value.toLowerCase();
-    if (searchTerm.length >= 3) { // Check if at least 3 characters are entered
-      this.filteredDepartments = this.departments.filter(department =>
-        department.departmentName.toLowerCase().includes(searchTerm)
-      );
-    } else {
-      this.filteredDepartments = []; 
-    }
-  }
+ 
   selectDepartment(department: Department): void {
     this.visitorForm.patchValue({
       departmentId: department.departmentId,
@@ -157,7 +174,7 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/home']);
   }
 
-  
+
 
   handlePhotoCapture(photoData: string): void {
     this.visitorForm.patchValue({
@@ -172,24 +189,24 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       const formData = this.visitorForm.value;
       const selectedDepartmentId = formData.departmentId;
       const employee = this.employees.find(emp => emp.employeeNumber === formData.employeeNumber);
-  
+
       if (employee) {
         const employeeDepartmentId = employee.departmentId;
-  
+
         if (selectedDepartmentId !== employeeDepartmentId) {
           console.error('Selected department does not match the employee\'s department');
           alert('The person you are here to see is not in the department specified. Please confirm the department inputted.');
           return; // Abort form submission
         }
       }
-  
+
       this.saveVisitorDetails(formData);
     } else {
       console.error('Invalid form data');
       return; // Abort form submission
     }
   }
-  
+
 
   saveVisitorDetails(formData: any): void {
     this.visitorService.saveVisitorDetails(formData).subscribe(
@@ -216,7 +233,7 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       }
     );
   }
-  
+
 
 
 
