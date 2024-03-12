@@ -6,7 +6,6 @@ import { Visitor } from '../services/api/models/visitor';
 import { AuthService } from '../services/api/Auth/auth.service';
 import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
-import { Subscription, interval, switchMap } from 'rxjs';
 import { DatePipe } from '@angular/common';
 
 
@@ -147,11 +146,6 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     this.visitorService.getVisitors().subscribe(
       (data: Visitor[]) => {
         this.visitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
-
-        // Sort visitors by arrival time in descending order (most recent first)
-        this.visitors.sort((a, b) => {
-          return new Date(b.arrivalTime!).getTime() - new Date(a.arrivalTime!).getTime();
-        });
 
         console.log('Visitors:', this.visitors);
         this.filteredVisitors = this.visitors;

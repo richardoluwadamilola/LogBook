@@ -9,6 +9,7 @@ import { ReasonforvisitService } from '../services/api/Reason/reasonforvisit.ser
 import { ReasonForVisit } from '../services/api/models/reason-for-visit';
 import { Department } from '../services/api/models/department.model';
 import { Observable } from 'rxjs';
+import { DepartmentService } from '../services/api/department/department.service';
 
 declare var $: any;
 
@@ -24,11 +25,12 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   employees: Employee[] = [];
   departments: Department[] = [];
   filteredEmployees: Employee[] = [];
-  filteredDepartments: Department[] = [];
   reasonForVisit: ReasonForVisit[] = [];
   formSubmitted = false;
+  departmentId = '';
+  reasonForVisitId = '';
 
-  constructor(private fb: FormBuilder, private visitorService: VisitorService, private router: Router, private reasonForVisitService: ReasonforvisitService) { }
+  constructor(private fb: FormBuilder, private visitorService: VisitorService, private router: Router, private reasonForVisitService: ReasonforvisitService, private departmentService: DepartmentService) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -49,7 +51,6 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       phoneNumber: ['', Validators.required],
       emailAddress: [''],
       personHereToSee: ['', Validators.required],
-      department: ['', Validators.required],
       departmentId: [null, Validators.required],
       employeeNumber: [null, Validators.required],
       reasonForVisit: [null, Validators.required],
@@ -94,7 +95,7 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
 
   //Get departments
   getDepartments(): void {
-    this.visitorService.getDepartments().subscribe(
+    this.departmentService.getDepartments().subscribe(
       (data: Department[]) => {
         this.departments = data.sort((a, b) => a.departmentName.localeCompare(b.departmentName));
         console.log('Departments:', this.departments);
@@ -104,6 +105,7 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       }
     );
   }  
+
 
   // Filter Employees
   filterEmployees(): void {
@@ -148,9 +150,6 @@ doesEmployeeMatchSearchTerm(employee: Employee, lastName: string, firstNameFirst
     return employee.firstName.toLowerCase().startsWith(firstNameFirstLetter);
 }
 
-
-
-
   selectEmployee(employee: Employee): void {
     this.visitorForm.patchValue({
       employeeNumber: employee.employeeNumber,
@@ -159,14 +158,7 @@ doesEmployeeMatchSearchTerm(employee: Employee, lastName: string, firstNameFirst
     this.filteredEmployees = [];
   }
 
- 
-  selectDepartment(department: Department): void {
-    this.visitorForm.patchValue({
-      departmentId: department.departmentId,
-      department: department.departmentName,
-    });
-    this.filteredDepartments = []; // Clear suggestions
-  }
+  
 
   // Quit the form
   quitForm(): void {
@@ -187,13 +179,15 @@ doesEmployeeMatchSearchTerm(employee: Employee, lastName: string, firstNameFirst
     //debugger;
     if (this.visitorForm.valid) {
       const formData = this.visitorForm.value;
-      const selectedDepartmentId = formData.departmentId;
+      const selectedDepartmentId = parseInt(formData.departmentId, 10);
       const employee = this.employees.find(emp => emp.employeeNumber === formData.employeeNumber);
 
       if (employee) {
         const employeeDepartmentId = employee.departmentId;
 
         if (selectedDepartmentId !== employeeDepartmentId) {
+          console.log('Selected department:', selectedDepartmentId);
+          console.log('Employee department:', employeeDepartmentId);
           console.error('Selected department does not match the employee\'s department');
           alert('The person you are here to see is not in the department specified. Please confirm the department inputted.');
           return; // Abort form submission
@@ -203,6 +197,9 @@ doesEmployeeMatchSearchTerm(employee: Employee, lastName: string, firstNameFirst
       this.saveVisitorDetails(formData);
     } else {
       console.error('Invalid form data');
+      alert('Please fill in all required fields.');
+      console.log('Form data:', this.visitorForm.value);
+      console.log('Form errors:', this.visitorForm.errors);
       return; // Abort form submission
     }
   }
@@ -234,18 +231,6 @@ doesEmployeeMatchSearchTerm(employee: Employee, lastName: string, firstNameFirst
     );
   }
 
-
-
-
-
-
-  // // Get the employee name initials
-  // getInitials(name: string): string {
-  //   if (!name) {
-  //     return '';
-  //   }
-  //   return name.charAt(0) + '.';
-  // }
 
 
 }

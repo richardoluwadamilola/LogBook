@@ -51,16 +51,6 @@ namespace DigiLog.Services.Implementation
                 };
             }
 
-            var department = _context.Departments.FirstOrDefault(d => d.DepartmentId == employee.DepartmentId);
-            if (department == null)
-            {
-                return new ServiceResponse<string>
-                {
-                    HasError = true,
-                    Description = "Department not found",
-                };
-            }
-
             // Concatenate first name, middle name, and last name of the employee
             var employeeName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
 
@@ -72,9 +62,7 @@ namespace DigiLog.Services.Implementation
                 PhoneNumber = visitorDto.PhoneNumber,
                 EmailAddress = visitorDto.EmailAddress,
                 EmployeeNumber = visitorDto.EmployeeNumber,
-                EmployeeName = employeeName,
-                DepartmentId = department.DepartmentId,
-                DepartmentName = department.DepartmentName,
+                DepartmentId = visitorDto.DepartmentId, // Assign selected department ID
                 ReasonForVisit = reasonForVisit,
                 ReasonForVisitDescription = visitorDto.ReasonForVisitDescription,
                 Photo = photo,
@@ -94,6 +82,7 @@ namespace DigiLog.Services.Implementation
 
             return new ServiceResponse<string>();
         }
+
 
 
 

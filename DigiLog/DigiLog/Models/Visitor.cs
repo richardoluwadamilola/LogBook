@@ -50,8 +50,6 @@ namespace DigiLog.Models
         public long DepartmentId { get; set; }
         public Department? Department { get; set; }
 
-        public string EmployeeName { get; set; } = string.Empty;
-        public string DepartmentName { get; set; } = string.Empty;
 
         
     }

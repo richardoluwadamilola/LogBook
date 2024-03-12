@@ -28,17 +28,16 @@
       <label for="personHereToSee">**Person Here To See:</label>
       <input type="text" id="personHereToSee" formControlName="personHereToSee" (input)="filterEmployees()" required>
       <ul class="suggestions" *ngIf="visitorForm.get('personHereToSee')?.value">
-        <li *ngFor="let employee of filteredEmployees" (click)="selectEmployee(employee)">{{ employee.lastName }} {{ employee.middleName }} {{ employee.firstName }}</li>
+        <li *ngFor="let employee of filteredEmployees" (click)="selectEmployee(employee)">{{ employee.lastName }} {{
+          employee.middleName }} {{ employee.firstName }}</li>
       </ul>
 
       <label for="department">**Department:</label>
-<select id="department" formControlName="department" required>
-  <option value="" disabled selected>Select Department</option>
-  <option *ngFor="let department of departments" [value]="department.departmentName">{{ department.departmentName }}</option>
-</select>
+      <select id="department" formControlName="departmentId" [ngModel]="departmentId" required>
+        <option value="" disabled selected>Select Department</option>
+        <option *ngFor="let department of departments" [value]="department.departmentId">{{ department.departmentName }}</option>
+      </select>
 
-
-      
       <button type="button" class="previous-button" (click)="prevStep()">Previous</button>
       <button type="submit" class="next-button">Next</button>
       <button type="button" class="cancel-button" (click)="quitForm()">Cancel</button>
@@ -49,7 +48,7 @@
   <div *ngIf="currentStep === 3">
     <form [formGroup]="visitorForm" (ngSubmit)="submitForm()">
       <label for="reasonForVisit">**Reason For Visit:</label>
-      <select formControlName="reasonForVisit" required>
+      <select formControlName="reasonForVisit" [ngModel]="reasonForVisitId" required>
         <option disabled value="">Please select a reason for visit</option>
         <option *ngFor="let reason of reasonForVisit" [value]="reason.reason">{{ reason.reason }}</option>
       </select>
@@ -59,7 +58,7 @@
 
       <app-camera (photoCaptured)="handlePhotoCapture($event)"></app-camera>
 
-      <button type="submit" class="submit-button" *ngIf="!formSubmitted && visitorForm.valid">Submit</button>
+      <button type="submit" class="submit-button">Submit</button>
       <button type="button" class="cancel-button" (click)="quitForm()">Cancel</button>
     </form>
   </div>

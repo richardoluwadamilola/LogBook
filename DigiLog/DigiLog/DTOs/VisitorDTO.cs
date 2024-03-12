@@ -19,6 +19,7 @@ namespace DigiLog.DTOs
         public string EmailAddress { get; set; }
         public string EmployeeNumber { get; set; } = string.Empty;
         public string EmployeeName { get; set; } = string.Empty;
+        public int DepartmentId { get; set; }   
         public string DepartmentName { get; set; } = string.Empty;
         public string TagNumber { get; set; } = string.Empty;
         public string ReasonForVisit { get; set; }
