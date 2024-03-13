@@ -40,11 +40,13 @@ div {
 
   .cancel-button {
     background-color: #750e03; /* Red color for cancel button */
-    margin-left: 20px;
+    margin-left: 10px;
   }
   
   .submit-button {
     background-color: #2ecc71; /* Green color for submit button */
+    margin-left: 300px;
+    
   }
 
   .next-button {
@@ -54,6 +56,11 @@ div {
 
   .previous-button {
     background-color: #0a1487; /* Green color for submit button */
+  }
+
+  .button-container {
+    display: flex;
+    margin-top: 20px; /* Adjust margin as needed */
   }
 
   p {

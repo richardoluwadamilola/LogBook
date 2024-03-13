@@ -100,7 +100,7 @@ export class CheckOutTagComponent  implements OnInit {
 
   getEmployeeName(employeeNumber: string): string {
     const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);
-    return employee ? `${employee.firstName} ${employee.middleName} ${employee.lastName}` : '';
+    return employee ? `${employee.lastName} ${employee.middleName} ${employee.firstName}` : '';
   }
 
   //filter visitor with tag number searched  for the current date

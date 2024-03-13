@@ -125,7 +125,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   getEmployeeName(employeeNumber: string): string {
     const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);
-    return employee ? `${employee.firstName} ${employee.middleName} ${employee.lastName}` : '';
+    return employee ? `${employee.lastName} ${employee.middleName} ${employee.firstName}` : '';
   }
 
   loadAvailableTags(): void {
@@ -142,18 +142,29 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   loadVisitors(): void {
     const currentDate = new Date();
     const currentDateString = currentDate.toISOString().slice(0, 10);
-
+  
     this.visitorService.getVisitors().subscribe(
       (data: Visitor[]) => {
-        this.visitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
-
+        // Filter visitors for today
+        const filteredVisitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
+        
+        // Sort visitors in chronological order
+        this.visitors = filteredVisitors.sort((a, b) => {
+          if (a.arrivalTime && b.arrivalTime) {
+            return new Date(a.arrivalTime).getTime() - new Date(b.arrivalTime).getTime();
+          }
+          return 0;
+        });
+  
         console.log('Visitors:', this.visitors);
         this.filteredVisitors = this.visitors;
         this.updateCurrentVisitorsCount(currentDate);
       },
       (error: any) => console.error('Error fetching visitors', error)
     );
-}
+  }
+  
+  
 
   loadEmployees(): void {
     // Call your service to get employee data

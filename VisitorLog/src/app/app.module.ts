@@ -55,7 +55,7 @@ import { CheckOutTagComponent } from './check-out-tag/check-out-tag.component';
       AppRoutingModule,
       HttpClientModule,
       WebcamModule,
-      LightboxModule
+      LightboxModule,
       
 
     ],

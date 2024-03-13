@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { VisitorService } from '../services/api/visitors/visitor.service';
 import { Employee } from '../services/api/models/employee.model';
 //import { ReasonForVisit } from '../services/api/models/visitor';
@@ -10,6 +10,7 @@ import { ReasonForVisit } from '../services/api/models/reason-for-visit';
 import { Department } from '../services/api/models/department.model';
 import { Observable } from 'rxjs';
 import { DepartmentService } from '../services/api/department/department.service';
+import { error } from 'jquery';
 
 declare var $: any;
 
@@ -181,28 +182,43 @@ doesEmployeeMatchSearchTerm(employee: Employee, lastName: string, firstNameFirst
       const formData = this.visitorForm.value;
       const selectedDepartmentId = parseInt(formData.departmentId, 10);
       const employee = this.employees.find(emp => emp.employeeNumber === formData.employeeNumber);
-
+  
       if (employee) {
         const employeeDepartmentId = employee.departmentId;
-
+  
         if (selectedDepartmentId !== employeeDepartmentId) {
-          console.log('Selected department:', selectedDepartmentId);
-          console.log('Employee department:', employeeDepartmentId);
           console.error('Selected department does not match the employee\'s department');
           alert('The person you are here to see is not in the department specified. Please confirm the department inputted.');
           return; // Abort form submission
         }
       }
-
+  
       this.saveVisitorDetails(formData);
     } else {
       console.error('Invalid form data');
-      alert('Please fill in all required fields.');
+      alert('Please correct the following errors:');
+      Object.keys(this.visitorForm.controls).forEach(field => {
+        const control = this.visitorForm.get(field);
+        if (control && control.invalid) {
+          alert(`- ${field.toUpperCase()}: ${this.getErrorMessage(control)}`);
+        }
+      });
       console.log('Form data:', this.visitorForm.value);
       console.log('Form errors:', this.visitorForm.errors);
       return; // Abort form submission
     }
   }
+  
+  getErrorMessage(control: AbstractControl): string {
+    if (control.errors && control.errors['required']) {
+      return 'This field is required.';
+    } else if (control.errors && control.errors['pattern']) {
+      return 'Please enter a valid value.';
+    } // Add more error messages as needed
+
+    return ''; // Default error message
+  }
+  
 
 
   saveVisitorDetails(formData: any): void {
@@ -211,6 +227,7 @@ doesEmployeeMatchSearchTerm(employee: Employee, lastName: string, firstNameFirst
         console.log('Visitor details saved successfully', response);
         if (response && response.hasError) {
           console.error('Error saving visitor details:', response.description);
+          alert('Error saving visitor details. Please fill the right details');
         } else {
           console.log('Visitor details saved successfully');
           alert('Visitor details saved successfully, please proceed to get a tag.');

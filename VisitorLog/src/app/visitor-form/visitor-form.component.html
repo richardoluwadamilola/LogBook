@@ -35,7 +35,8 @@
       <label for="department">**Department:</label>
       <select id="department" formControlName="departmentId" [ngModel]="departmentId" required>
         <option value="" disabled selected>Select Department</option>
-        <option *ngFor="let department of departments" [value]="department.departmentId">{{ department.departmentName }}</option>
+        <option *ngFor="let department of departments" [value]="department.departmentId">{{ department.departmentName }}
+        </option>
       </select>
 
       <button type="button" class="previous-button" (click)="prevStep()">Previous</button>
@@ -58,8 +59,11 @@
 
       <app-camera (photoCaptured)="handlePhotoCapture($event)"></app-camera>
 
-      <button type="submit" class="submit-button">Submit</button>
+      <div class="button-container">
+      <button type="button" class="previous-button" (click)="prevStep()">Previous</button>
       <button type="button" class="cancel-button" (click)="quitForm()">Cancel</button>
+      <button type="submit" class="submit-button">Submit</button>
+      </div>
     </form>
   </div>
 </div>

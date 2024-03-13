@@ -52,7 +52,7 @@ namespace DigiLog.Services.Implementation
             }
 
             // Concatenate first name, middle name, and last name of the employee
-            var employeeName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
+            var employeeName = $"{employee.LastName} {employee.MiddleName} {employee.FirstName}";
 
             // Create a Visitor object
             var visitor = new Visitor
@@ -102,7 +102,7 @@ namespace DigiLog.Services.Implementation
                     PhoneNumber = visitor.PhoneNumber,
                     EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
-                    EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    EmployeeName = $"{visitor.Employee.LastName} {visitor.Employee.FirstName}",
                     DepartmentName = visitor.Department.DepartmentName,
                     TagNumber = visitor.Tag.TagNumber,
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
@@ -140,7 +140,7 @@ namespace DigiLog.Services.Implementation
                     PhoneNumber = visitor.PhoneNumber,
                     EmailAddress = visitor.EmailAddress,
                     EmployeeNumber = visitor.EmployeeNumber,
-                    EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                    EmployeeName = $"{visitor.Employee.LastName} {visitor.Employee.FirstName}",
                     DepartmentName = visitor.Department.DepartmentName,
                     TagNumber = visitor.Tag.TagNumber,
                     ReasonForVisit = visitor.ReasonForVisit.Reason,
@@ -217,7 +217,7 @@ namespace DigiLog.Services.Implementation
                 PhoneNumber = visitor.PhoneNumber,
                 EmailAddress = visitor.EmailAddress,
                 EmployeeNumber = visitor.EmployeeNumber,
-                EmployeeName = $"{visitor.Employee.FirstName} {visitor.Employee.LastName}",
+                EmployeeName = $"{visitor.Employee.LastName}   {visitor.Employee.FirstName}",
                 DepartmentName = visitor.Department.DepartmentName,
                 TagNumber = visitor.Tag.TagNumber,
                 ReasonForVisit = visitor.ReasonForVisit.Reason,
