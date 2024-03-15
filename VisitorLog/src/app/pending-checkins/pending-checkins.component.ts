@@ -41,22 +41,17 @@ export class PendingCheckinsComponent implements OnInit {
       (data: Visitor[]) => {
         // Filter visitors for today
         const filteredVisitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
-        
-        // Sort visitors in reverse chronological order
-        this.visitors = filteredVisitors.sort((a, b) => {
-          if (a.arrivalTime && b.arrivalTime) {
-            return new Date(b.arrivalTime).getTime() - new Date(a.arrivalTime).getTime();
-          }
-          return 0;
-        });
+  
+        // Filter visitors with assigned tags
+        this.visitors = filteredVisitors.filter(visitor => new Date(visitor.tagAssignedDateTime) !== new Date('0001-01-01T00:00:00'));
   
         console.log('Visitors:', this.visitors);
-        
+  
       },
       (error: any) => console.error('Error fetching visitors', error)
     );
   }
-
+  
   loadEmployees(): void {
     // Call your service to get employee data
     this.visitorService.getEmployees().subscribe(

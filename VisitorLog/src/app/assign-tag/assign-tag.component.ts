@@ -92,7 +92,10 @@ export class AssignTagComponent implements OnInit, OnDestroy {
         if (!response.hasError) {
           console.log('Tag assigned successfully:', response);
           alert(`Tag ${response.data} assigned successfully`);
-          
+  
+          // Remove the assigned visitor from the list
+          this.visitors = this.visitors.filter(visitor => visitor.id !== visitorId);
+  
           // Update the visitor's tagAssignedDateTime locally
           const assignedVisitor = this.visitors.find(visitor => visitor.id === visitorId);
           if (assignedVisitor) {
@@ -100,16 +103,10 @@ export class AssignTagComponent implements OnInit, OnDestroy {
             assignedVisitor.tagNumber = tagNumber; // Update tagNumber for the visitor
           }
   
-          // Move the visitor to the bottom of the list
-          const visitorIndex = this.visitors.findIndex(visitor => visitor.id === visitorId);
-          if (visitorIndex !== -1) {
-            const [visitor] = this.visitors.splice(visitorIndex, 1);
-            this.visitors.push(visitor);
-          }
           this.tagAssignmentForm.reset();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
-          this.loadVisitors();
+          this.updateCurrentVisitorsCount(new Date()); // Update the visitor count
         } else {
           alert(response.description || 'Error assigning tag');
           console.error('Error assigning tag:', response.description);
@@ -239,11 +236,15 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   updateCurrentVisitorsCount(currentDate: Date): void {
     const currentVisitors = this.visitors.filter(visitor => {
-      return visitor.tagAssignedDateTime !== '0001-01-01T00:00:00' && visitor.departureTime === '0001-01-01T00:00:00';
+      // Check if visitor has been assigned a tag and has not departed yet
+      return (
+        (visitor.tagAssignedDateTime && visitor.tagAssignedDateTime !== '0001-01-01T00:00:00') &&
+        (visitor.departureTime === '0001-01-01T00:00:00' || new Date(visitor.departureTime) > currentDate)
+      );
     });
     console.log("Current Visitors:", currentVisitors);
     this.currentVisitorsCount = currentVisitors.length;
-  }
+  }  
 
   openPhotoModal(photoUrl: string): void {
     const modalPhoto = document.getElementById('modalPhoto') as HTMLImageElement;
