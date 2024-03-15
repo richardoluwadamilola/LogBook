@@ -24,6 +24,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { LightboxModule } from 'ngx-lightbox';
 import { ReasonforvisitComponent } from './reasonforvisit/reasonforvisit.component';
 import { CheckOutTagComponent } from './check-out-tag/check-out-tag.component';
+import { PendingCheckinsComponent } from './pending-checkins/pending-checkins.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { CheckOutTagComponent } from './check-out-tag/check-out-tag.component';
     ChangePasswordComponent,
     ReasonforvisitComponent,
     CheckOutTagComponent,
+    PendingCheckinsComponent,
   ],
   // ...
 

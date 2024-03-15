@@ -15,6 +15,7 @@ import { SuperadminComponent } from './superadmin/superadmin.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ReasonforvisitComponent } from './reasonforvisit/reasonforvisit.component';
 import { CheckOutTagComponent } from './check-out-tag/check-out-tag.component';
+import { PendingCheckinsComponent } from './pending-checkins/pending-checkins.component';
 
 
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent, canActivate: [authGuard]},
   { path: 'entry', component: AssignTagComponent, canActivate: [authGuard]},
   { path: 'checkout', component: CheckOutTagComponent},
+  { path: 'pending', component: PendingCheckinsComponent},
   { path: 'tag', component: TagManagementComponent},
   { path: 'employee', component: EmployeeManagementComponent},
   { path: 'visitor', component: VisitorManagementComponent},

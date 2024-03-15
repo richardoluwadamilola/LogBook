@@ -163,8 +163,6 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       (error: any) => console.error('Error fetching visitors', error)
     );
   }
-  
-  
 
   loadEmployees(): void {
     // Call your service to get employee data
