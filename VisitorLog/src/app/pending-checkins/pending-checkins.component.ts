@@ -18,6 +18,8 @@ export class PendingCheckinsComponent implements OnInit {
   visitors: any[] = [];
   employees: any[] = [];
   departments: any[] = [];
+  assignedVisitorsCount: number = 0;
+
 
   constructor(private visitorService: VisitorService, private employeeService: EmployeeService, private departmentService: DepartmentService) { }
 
@@ -26,7 +28,6 @@ export class PendingCheckinsComponent implements OnInit {
     this.loadEmployees();
     this.loadDepartments();
   }
-
 
   getEmployeeName(employeeNumber: string): string {
     const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);
@@ -43,7 +44,7 @@ export class PendingCheckinsComponent implements OnInit {
         const filteredVisitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
   
         // Filter visitors with assigned tags
-        this.visitors = filteredVisitors.filter(visitor => new Date(visitor.tagAssignedDateTime) !== new Date('0001-01-01T00:00:00'));
+        this.visitors = filteredVisitors.filter(visitor => new Date(visitor.tagAssignedDateTime).getTime() !== new Date('0001-01-01T00:00:00').getTime());
   
         console.log('Visitors:', this.visitors);
   

@@ -80,45 +80,53 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   initForm(): void { }
 
   assignTagToVisitor(visitorId: number, tagNumber: string): void {
+    // Check if tag number is provided
     if (!tagNumber) {
       alert('Please enter a tag number.');
       return;
     }
   
+    // Create DTO for assigning tag
     const assignTagDto = { VisitorId: visitorId, TagNumber: tagNumber };
   
+    // Call tag service to assign tag to visitor
     this.tagService.assignTagToVisitor(assignTagDto).subscribe(
       (response: any) => {
-        if (!response.hasError) {
+        if (!response.hasError) { // If no error
           console.log('Tag assigned successfully:', response);
           alert(`Tag ${response.data} assigned successfully`);
+
+          
   
           // Remove the assigned visitor from the list
           this.visitors = this.visitors.filter(visitor => visitor.id !== visitorId);
-  
-          // Update the visitor's tagAssignedDateTime locally
+
+         
+          // (Update tagAssignedDateTime and tagNumber for the visitor)
           const assignedVisitor = this.visitors.find(visitor => visitor.id === visitorId);
           if (assignedVisitor) {
-            assignedVisitor.tagAssignedDateTime = new Date(); // Update with current date and time
-            assignedVisitor.tagNumber = tagNumber; // Update tagNumber for the visitor
+            assignedVisitor.tagAssignedDateTime = new Date().toISOString();
+            assignedVisitor.tagNumber = tagNumber;
           }
-  
+          
+          // Reset form and update messages
           this.tagAssignmentForm.reset();
+          this.reloadPage();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
-          this.updateCurrentVisitorsCount(new Date()); // Update the visitor count
-        } else {
+          
+          
+        } else { // If error occurred
           alert(response.description || 'Error assigning tag');
           console.error('Error assigning tag:', response.description);
         }
       },
-      (error: any) => {
+      (error: any) => { // If HTTP request fails
         console.error('Error assigning tag:', error);
         alert('Error assigning tag. Please try again later.');
       }
     );
   }
-  
 
   getEmployeeName(employeeNumber: string): string {
     const employee = this.employees.find(emp => emp.employeeNumber === employeeNumber);
@@ -144,16 +152,27 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       (data: Visitor[]) => {
         // Filter visitors for today
         const filteredVisitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
-        
+  
         // Sort visitors in chronological order
-        this.visitors = filteredVisitors.sort((a, b) => {
+        filteredVisitors.sort((a, b) => {
           if (a.arrivalTime && b.arrivalTime) {
             return new Date(a.arrivalTime).getTime() - new Date(b.arrivalTime).getTime();
           }
           return 0;
         });
+
+        // Store all visitors for count purposes
+        this['allVisitors'] = filteredVisitors;
+
+        // Filter visitors without assigned tags
+        this.visitors = this['allVisitors'].filter((visitor: { tagAssignedDateTime: { toString: () => string; }; }) => {
+          // Check if tagAssignedDateTime is null or equal to the default date string
+          return !visitor.tagAssignedDateTime || visitor.tagAssignedDateTime.toString() === '0001-01-01T00:00:00';
+        });
+        
   
-        console.log('Visitors:', this.visitors);
+        console.log('All Visitors:', this['allVisitors']);
+        console.log('Visitors without tags:', this.visitors);
         this.filteredVisitors = this.visitors;
         this.updateCurrentVisitorsCount(currentDate);
       },
@@ -161,6 +180,9 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     );
   }
 
+
+
+  
   loadEmployees(): void {
     // Call your service to get employee data
     this.visitorService.getEmployees().subscribe(
@@ -235,7 +257,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   }
 
   updateCurrentVisitorsCount(currentDate: Date): void {
-    const currentVisitors = this.visitors.filter(visitor => {
+    const currentVisitors = this['allVisitors'].filter((visitor: { tagAssignedDateTime: string; departureTime: string | number | Date; }) => {
       // Check if visitor has been assigned a tag and has not departed yet
       return (
         (visitor.tagAssignedDateTime && visitor.tagAssignedDateTime !== '0001-01-01T00:00:00') &&
@@ -244,7 +266,8 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     });
     console.log("Current Visitors:", currentVisitors);
     this.currentVisitorsCount = currentVisitors.length;
-  }  
+  }
+  
 
   openPhotoModal(photoUrl: string): void {
     const modalPhoto = document.getElementById('modalPhoto') as HTMLImageElement;
