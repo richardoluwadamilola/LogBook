@@ -199,7 +199,7 @@ namespace DigiLog.Services.Implementation
 
            if (searchRequestDTO.StartDate != null && searchRequestDTO.EndDate != null)
             {
-                query = query.Where(v => v.ArrivalTime >= searchRequestDTO.StartDate && v.ArrivalTime <= searchRequestDTO.EndDate);
+                query = query.Where(v => v.ArrivalTime >= searchRequestDTO.StartDate && v.ArrivalTime <= searchRequestDTO.EndDate.Value.AddDays(1));
             }
 
            query = query
