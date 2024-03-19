@@ -1,36 +1,40 @@
 body {
-    overflow: hidden;
+  overflow: hidden !important;
 }
 
-.container {
-    margin: 0;
-    height: 100vh; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgb(25, 3, 3); 
-    font-size: 2em;
-    overflow: hidden !important;
-    cursor: pointer;
-  }
-  
-  .container h1, br {
+.container h1, br {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(25, 3, 3);
+  overflow: hidden !important;
+  cursor: pointer;
+}
+
+@media (min-width: 1200px) {
+  .container, h1, br {
     margin: 0;
     text-align: center;
-    margin-left: 200px;
+    margin-left: auto;
+    margin-right: auto;
     overflow: hidden;
+    align-items: center;
+    justify-content: center;
   }
-  
-  @media screen and (max-width: 600px) {
-    div {
-      max-width: 100%;
-    }
+}
+
+@media (min-width: 600px) {
+  .container, h1, br {
+    margin: 0;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
   }
-  
-  @media screen and (max-width: 400px) {
-    button {
-      font-size: 14px;
-    }
-  }
-  
+}
+
   

@@ -117,14 +117,14 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   
     // Check if there is a space and the term before it is not empty
     if (spaceIndex > 0) {
-      const lastName = input.substring(0, spaceIndex);
-      const firstNamePrefix = input.substring(spaceIndex + 1); // Get the entered first name prefix
+      const firstName = input.substring(0, spaceIndex);
+      const lastNamePrefix = input.substring(spaceIndex + 1); // Get the entered first name prefix
 
       // Check if at least four characters are entered after the space
-      if (firstNamePrefix.length >= 4) {
+      if (lastNamePrefix.length >= 4) {
         // Filter employees based on last name and first name
         const matchingEmployees = this.employees.filter(employee =>
-          this.doesEmployeeMatchSearchTerm(employee, lastName, firstNamePrefix.charAt(0))
+          this.doesEmployeeMatchSearchTerm(employee, firstName, lastNamePrefix.charAt(0))
         );
     
         // Display error message if no matching employees found
@@ -141,14 +141,14 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
     }
 }
 
-doesEmployeeMatchSearchTerm(employee: Employee, lastName: string, firstNameFirstLetter: string): boolean {
+doesEmployeeMatchSearchTerm(employee: Employee, firstName: string, lastNameFirstLetter: string): boolean {
     // Check if the last name matches
-    if (employee.lastName.toLowerCase() !== lastName) {
+    if (employee.firstName.toLowerCase() !== firstName) {
         return false;
     }
 
     // Check if the first letter of the first name matches
-    return employee.firstName.toLowerCase().startsWith(firstNameFirstLetter);
+    return employee.lastName.toLowerCase().startsWith(lastNameFirstLetter);
 }
 
   selectEmployee(employee: Employee): void {
