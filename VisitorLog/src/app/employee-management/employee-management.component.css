@@ -1,0 +1,22 @@
+/* CSS for forcing navigation to be visible on tablets */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+      display: block !important;
+    }
+  
+    .navbar-nav {
+      flex-direction: row !important;
+    }
+  
+    .navbar-nav .nav-item {
+      float: none !important;
+    }
+  
+    .navbar-nav .nav-link {
+      padding-top: 0.5rem !important;
+      padding-bottom: 0.5rem !important;
+      margin-right: 0.25rem !important;
+      margin-left: 0.25rem !important;
+    }
+  }
+  

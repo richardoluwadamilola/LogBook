@@ -1,3 +1,6 @@
+button {
+  margin-top: 30px; /* Adjust button margin-top for spacing */
+}
 /* CSS for modal */
 .modal-dialog {
     margin: auto;
@@ -18,4 +21,45 @@
 #modalPhoto {
   max-width: 100%; /* Ensure the image fits within the modal */
   height: auto; /* Maintain aspect ratio */
+}
+/* CSS for forcing navigation to be visible on tablets */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    display: block !important;
+  }
+
+  .navbar-nav {
+    flex-direction: row !important;
+  }
+
+  .navbar-nav .nav-item {
+    float: none !important;
+  }
+
+  .navbar-nav .nav-link {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    margin-right: 0.25rem !important;
+    margin-left: 0.25rem !important;
+  }
+}
+
+/* Custom CSS for tablet and mobile devices */
+@media (max-width: 991.98px) { /* Tablets and smaller */
+  .search-form .form-group {
+    margin-bottom: 10px; /* Adjust as needed for spacing */
+  }
+
+  .search-form .btn {
+    width: 100%; /* Make button full width on smaller screens */
+    margin-top: 50px; /* Adjust button margin-top for spacing */
+  }
+}
+
+@media (max-width: 767.98px) { /* Mobile devices */
+  .search-form .col-sm-6,
+  .search-form .col-md-4 {
+    width: 100%; /* Make form fields full width on mobile */
+    margin-bottom: 10px; /* Adjust as needed for spacing */
+  }
 }
