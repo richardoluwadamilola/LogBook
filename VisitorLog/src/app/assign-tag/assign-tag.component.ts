@@ -32,7 +32,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
-  private readonly reloadPeriod = 30000; // 10 seconds
+  private readonly reloadPeriod = 15000; // 15 seconds
 
   constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe) { }
 
@@ -61,13 +61,11 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     }, this.inactivityPeriod);
   }
 
-  reloadPage(): void {
-    location.reload();
-  }
+  
 
   initReloadTimer(): void {
     setInterval(() => {
-      this['reloadPage']();
+     this.loadVisitors();
     }, this.reloadPeriod);
   }
 
@@ -111,10 +109,9 @@ export class AssignTagComponent implements OnInit, OnDestroy {
           
           // Reset form and update messages
           this.tagAssignmentForm.reset();
-          this.reloadPage();
+          this.loadVisitors();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
-          
           
         } else { // If error occurred
           alert(response.description || 'Error assigning tag');
@@ -236,7 +233,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   logout(): void {
     // Implement your logout logic here
     this.authService.clearAuthToken();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/home');
     console.log('User logged out due to inactivity');
   }
 

@@ -1,5 +1,5 @@
-<div class="menu navbar navbar-expand-lg  bg-primary">
-    <ul class="navbar-nav">
+<div class="menu bg-primary">
+    <ul>
         <li class="nav-item">
             <a class="nav-link" *ngIf="!isloggedIn"  routerLink="./home">Home</a>
         </li>
@@ -14,7 +14,7 @@
             <a class="nav-link" routerLink="./entry">Reception</a>
         </li>
         <li class="nav-item" *ngIf="department=='Reception'">
-            <a class="nav-link" href="./checkout">CheckOut</a>
+            <a class="nav-link" href="./checkout">Checkout</a>
           </li>
         <li class="nav-item" *ngIf="department=='Reception'">
             <a class="nav-link" href="./pending">Pending</a>

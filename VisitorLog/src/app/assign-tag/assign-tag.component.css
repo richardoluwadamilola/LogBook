@@ -76,7 +76,7 @@ button:hover {
 /* Adjustments for tablets */
 @media (min-width: 768px) and (max-width: 991px) {
     .custom-table {
-        width: 80% !important;
+        width: 100% !important;
     }
 }
 

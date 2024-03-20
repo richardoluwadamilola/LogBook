@@ -8,3 +8,44 @@ button {
     color: white;
     cursor: pointer;
 }
+
+#photoModal {
+    max-width: 100vw;
+    align-self: center;
+}
+
+#photomodal1 {
+    max-width: 100vw;
+    align-self: center;
+}
+
+#photomodal2 {
+    max-width: 100vw;
+    align-self: center;
+}
+
+#modalPhoto {
+    max-width: fit-content;
+
+}
+
+/* Adjustments for phones */
+@media (max-width: 767px) {
+    .custom-table {
+        width: 100% !important;
+    }
+}
+
+/* Adjustments for tablets */
+@media (min-width: 768px) and (max-width: 991px) {
+    .custom-table {
+        width: 100% !important;
+    }
+}
+
+/* Adjustments for laptops/desktops */
+@media (min-width: 992px) {
+    .custom-table {
+        width: 50% !important;
+    }
+}

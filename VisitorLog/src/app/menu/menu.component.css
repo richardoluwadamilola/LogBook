@@ -1,7 +1,6 @@
 .menu {
     background-color: #87ceeb;
-    padding: 10px;
-    margin-top: 20px;
+   
   }
   
   .menu ul {
@@ -24,4 +23,14 @@
   .menu a:hover {
     color: #f2f2f2;
   }
-  
+
+  @media screen and (max-width: 768px) {
+    .menu li {
+      flex-basis: calc(33.33% - 15px); /* Three items per row with some space between */
+      margin: 0; 
+    padding: 0;
+    display: inline-block;
+    margin-right: 20px;
+    
+    }
+  }

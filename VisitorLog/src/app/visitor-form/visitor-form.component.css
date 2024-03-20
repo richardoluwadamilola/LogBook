@@ -132,6 +132,16 @@ div {
     background-color: #f0f0f0;
   }
 
-  
+  /* Tablet Styles */
+@media screen and (max-width: 1024px) {
+  div {
+    max-width: 90%; /* Adjust the width for tablets */
+    padding: 15px; /* Adjust padding for better spacing */
+  }
+
+  .suggestions {
+    width: 40%; /* Adjust suggestion width for better visibility */
+  }
+}
   
   

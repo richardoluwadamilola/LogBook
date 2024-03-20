@@ -97,21 +97,33 @@ export class CheckOutTagComponent  implements OnInit {
   
   searchVisitor(): void {
     const formData = this.searchForm.value;
-
+  
     if (formData.tagNumber) {
       this.visitorService.getVisitorbyTagNumber(formData.tagNumber).subscribe(
-        (data: Visitor) => { 
+        (data: Visitor | Visitor[]) => { 
           if (Array.isArray(data)) {
             // Handle the case where the API returns an array for tagNumber search
-            this.visitors = data;
+            if (data.length === 0) {
+              // Show alert indicating tag number is not assigned
+              alert('Tag number not assigned');
+            } else {
+              this.visitors = data;
+            }
           } else {
             // Handle the case where the API returns a single object for tagNumber search
             this.visitors = data ? [data] : [];
           }
+        },
+        error => {
+          // Handle error if any
+          console.error('Error occurred:', error);
+          // Show alert with error message
+          alert('An error occurred while fetching data');
         }
       );
     }
   }
+  
   
   checkoutVisitor(visitorId: number, tagNumber: string) {
 
