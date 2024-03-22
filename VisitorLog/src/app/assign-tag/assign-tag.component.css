@@ -1,7 +1,4 @@
-div {
-    margin: auto;
-    width: 50%;
-}
+
 
 #tagAssign {
     margin: 0px;
@@ -12,9 +9,14 @@ label {
     display: block;
     margin-bottom: 8px;
 }
+#search {
+    width: 30%;
+    box-sizing: border-box;
+
+}
 
 input {
-    width: 30%;
+    width: 50%;
     box-sizing: border-box;
 }
 
@@ -46,25 +48,7 @@ button:hover {
     color: #28a745;
 }
 
-#photoModal {
-    max-width: 100vw;
-    align-self: center;
-}
 
-#photomodal1 {
-    max-width: 100vw;
-    align-self: center;
-}
-
-#photomodal2 {
-    max-width: 100vw;
-    align-self: center;
-}
-
-#modalPhoto {
-    max-width: fit-content;
-
-}
 
 /* Adjustments for phones */
 @media (max-width: 767px) {

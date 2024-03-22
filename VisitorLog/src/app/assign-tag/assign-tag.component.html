@@ -1,24 +1,27 @@
-<p class="text-center">Current Visitors in the Building: {{ currentVisitorsCount }}</p>
-<h3 class="text-center">VISITORS</h3>
-<p class="col-md-6" [formGroup]="searchForm">
-  <input type="text" class="form-control" formControlName="searchTerm" placeholder="Search visitors"
-    (keydown.enter)="searchVisitors()">
-  <button class="btn btn-primary" (click)="searchVisitors()">Search</button>
-</p>
-<table class="m-1 table table-bordered custom-table w-50 mx-auto "
-  style="border: 1px #000 solid !important; border-right: 0px !important;">
-  <tbody>
-    <tr *ngFor="let visitor of filteredVisitors; let i = index">
-      <th scope="col">{{ i + 1 }}</th>
-      <th scope="col" style="width: 100px !important;">
-        <img [src]="visitor.photo" alt="Visitor Photo" style="max-width: 300px;">
-      </th>
-      <td scope="row" class="lh-1">
+<div class="container-fluid">
+  <p class="text-center">Current Visitors in the Building: {{ currentVisitorsCount }}</p>
+  <p class="col-md-6" [formGroup]="searchForm">
+    <input id="search" type="text" class="form-control" formControlName="searchTerm" placeholder="Search visitors"
+      (keydown.enter)="searchVisitors()">
+    <button class="btn btn-primary" (click)="searchVisitors()">Search</button>
+  </p>
+  <div class="row">
+    <!-- Start of first column -->
+    <div class="d-flex col-sm-6 text-nowrap" *ngFor="let visitor of filteredVisitors; let i = index">
+      <table class="m-1 table table-bordered custom-table p-0 !important"
+      style="border: 1px #000 solid !important; border-right: 0px !important;">
+        <tbody>
+          <tr >
+            <th scope="col">{{ i + 1 }}</th>
+            <th  scope="col" style="width: 100px !important;">
+              <img [src]="visitor.photo" alt="Visitor Photo" style="max-width: 300px;">
+            </th>
+            <td scope="row" class="lh-1" >
         <p><b>Full Name: </b>{{ visitor.fullName}}</p>
-        <p><b>Contact Address: </b>{{ visitor.contactAddress}}</p>
+        <p class="text-wrap"><b>Contact Address: </b>{{ visitor.contactAddress}}</p>
         <p><b>Phone Number: </b>{{ visitor.phoneNumber}}</p>
         <p><b>Reason For Visit: </b>{{ visitor.reasonForVisit}}</p>
-        <p><b>Reason For Visit Description: </b>{{ visitor.reasonForVisitDescription}}</p>
+        <p class="text-wrap"><b>Reason For Visit Description: </b>{{ visitor.reasonForVisitDescription}}</p>
         <p><b>Person Here To See: </b> {{ visitor.employeeName}}</p>
         <p><b>Department: </b>{{ visitor.departmentName}}</p>
         <p><b>Arrival Time: </b>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</p>
@@ -27,18 +30,19 @@
           <button class="btn btn-primary"
             (click)="assignTagToVisitor(visitor.id, tagAssignmentForm.get('selectedTag')?.value)">Assign Tag</button>
         </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- End of first column -->
+  </div>
+</div>
+
 
 <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl" id="photomodal1">
     <div class="modal-content" id="photomodal2">
-      <div class="modal-header">
-        <h5 class="modal-title" id="photoModalLabel">Visitor Photo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
       <div class="modal-body">
         <img id="modalPhoto" src="" alt="Visitor Photo" class="img-fluid">
       </div>

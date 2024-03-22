@@ -32,7 +32,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
-  private readonly reloadPeriod = 15000; // 15 seconds
+  //private readonly reloadPeriod = 15000; // 15 seconds
 
   constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe) { }
 
@@ -47,7 +47,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       searchTerm: ['', Validators.required]
     });
     this.initInactivityTimer();
-    this.initReloadTimer();
+    //this.initReloadTimer();
   }
 
   ngOnDestroy(): void {
@@ -63,11 +63,11 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   
 
-  initReloadTimer(): void {
-    setInterval(() => {
-     this.loadVisitors();
-    }, this.reloadPeriod);
-  }
+  // initReloadTimer(): void {
+  //   setInterval(() => {
+  //    this.loadVisitors();
+  //   }, this.reloadPeriod);
+  // }
 
   initTagAssignmentForm(): void {
     this.tagAssignmentForm = this.fb.group({
@@ -110,6 +110,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
           // Reset form and update messages
           this.tagAssignmentForm.reset();
           this.loadVisitors();
+          this.searchForm.reset();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
           
@@ -212,6 +213,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       this.filteredVisitors = this.visitors;
     }
     this.updateCurrentVisitorsCount(new Date());
+    
   }
 
   @HostListener('window:mousemove') refreshUserState() {
@@ -233,7 +235,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   logout(): void {
     // Implement your logout logic here
     this.authService.clearAuthToken();
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/');
     console.log('User logged out due to inactivity');
   }
 
