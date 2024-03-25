@@ -32,7 +32,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
-  private readonly reloadPeriod = 15000; // 15 seconds
+  private readonly reloadPeriod = 10000; // 10 seconds
 
   constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe) { }
 
@@ -60,8 +60,6 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       this.logout();
     }, this.inactivityPeriod);
   }
-
-  
 
   initReloadTimer(): void {
     setInterval(() => {
@@ -93,12 +91,9 @@ export class AssignTagComponent implements OnInit, OnDestroy {
         if (!response.hasError) { // If no error
           console.log('Tag assigned successfully:', response);
           alert(`Tag ${response.data} assigned successfully`);
-
           
-  
           // Remove the assigned visitor from the list
           this.visitors = this.visitors.filter(visitor => visitor.id !== visitorId);
-
          
           // (Update tagAssignedDateTime and tagNumber for the visitor)
           const assignedVisitor = this.visitors.find(visitor => visitor.id === visitorId);
@@ -235,7 +230,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   logout(): void {
     // Implement your logout logic here
     this.authService.clearAuthToken();
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/home');
     console.log('User logged out due to inactivity');
   }
 

@@ -13,7 +13,7 @@ import { Department } from '../models/department.model';
 })
 export class VisitorService {
   private apiUrl = 'https://localhost:7020/api/Visitor'
-
+  
   constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
 
