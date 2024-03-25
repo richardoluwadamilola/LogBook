@@ -32,7 +32,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
-  //private readonly reloadPeriod = 15000; // 15 seconds
+  private readonly reloadPeriod = 15000; // 15 seconds
 
   constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe) { }
 
@@ -47,7 +47,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
       searchTerm: ['', Validators.required]
     });
     this.initInactivityTimer();
-    //this.initReloadTimer();
+    this.initReloadTimer();
   }
 
   ngOnDestroy(): void {
@@ -63,11 +63,11 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   
 
-  // initReloadTimer(): void {
-  //   setInterval(() => {
-  //    this.loadVisitors();
-  //   }, this.reloadPeriod);
-  // }
+  initReloadTimer(): void {
+    setInterval(() => {
+     this.loadVisitors();
+    }, this.reloadPeriod);
+  }
 
   initTagAssignmentForm(): void {
     this.tagAssignmentForm = this.fb.group({
