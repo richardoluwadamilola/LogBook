@@ -25,6 +25,8 @@ import { LightboxModule } from 'ngx-lightbox';
 import { ReasonforvisitComponent } from './reasonforvisit/reasonforvisit.component';
 import { CheckOutTagComponent } from './check-out-tag/check-out-tag.component';
 import { PendingCheckinsComponent } from './pending-checkins/pending-checkins.component';
+import { MessagesmodalComponent } from './messagesmodal/messagesmodal.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -47,6 +49,7 @@ import { PendingCheckinsComponent } from './pending-checkins/pending-checkins.co
     ReasonforvisitComponent,
     CheckOutTagComponent,
     PendingCheckinsComponent,
+    MessagesmodalComponent,
   ],
   // ...
 
@@ -58,6 +61,7 @@ import { PendingCheckinsComponent } from './pending-checkins/pending-checkins.co
       HttpClientModule,
       WebcamModule,
       LightboxModule,
+      NgbModule,
       
 
     ],

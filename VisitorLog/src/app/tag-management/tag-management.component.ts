@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Tag } from '../services/api/models/tag';
 import { TagService } from '../services/api/tags/tag.service';
+import { DialogService } from '../services/dialog.service';
 
 @Component({
   selector: 'app-tag-management',
@@ -15,8 +16,10 @@ export class TagManagementComponent implements OnInit {
   tagForm: FormGroup;
   tags: Tag[] = [];
   tagNumber!: string;
+  modalTitle: string = '';
+  modalBody: string = '';
 
-  constructor(private fb: FormBuilder, private tagService: TagService) {
+  constructor(private fb: FormBuilder, private tagService: TagService, private dialogService: DialogService) {
     this.tagForm = this.fb.group({
       tagNumber: ['', Validators.required],
       isAvailable: [true, Validators.required],
@@ -36,8 +39,11 @@ export class TagManagementComponent implements OnInit {
     };
 
     this.tagService.createTag(tag).subscribe(
-      (data: any) => {
+      async (data: any) => {
         console.log('Tag created successfully', data);
+        this.modalTitle = 'Error';
+        this.modalBody = 'Tag created successfully.';
+        await this.dialogService.showDialog(this.modalTitle, this.modalBody);
         this.tagForm.reset();
         this.getTags();
       },
@@ -76,6 +82,8 @@ export class TagManagementComponent implements OnInit {
     return tag.isDisabled;
   }
 
-  
+onModalConfirm(): void {
+    $('#errorModal').modal('hide');
+  }
 
 }

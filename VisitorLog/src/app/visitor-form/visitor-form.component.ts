@@ -11,6 +11,7 @@ import { Department } from '../services/api/models/department.model';
 import { Observable } from 'rxjs';
 import { DepartmentService } from '../services/api/department/department.service';
 import { error } from 'jquery';
+import { DialogService } from '../services/dialog.service';
 
 declare var $: any;
 
@@ -20,6 +21,7 @@ declare var $: any;
   styleUrls: ['./visitor-form.component.css']
 })
 export class VisitorFormComponent implements OnInit, AfterViewInit {
+  [x: string]: any;
   @ViewChild(CameraComponent) cameraComponent!: CameraComponent;
   visitorForm!: FormGroup;
   currentStep = 1;
@@ -30,8 +32,10 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   formSubmitted = false;
   departmentId = '';
   reasonForVisitId = '';
+  modalTitle: string = '';
+  modalBody: string = '';
 
-  constructor(private fb: FormBuilder, private visitorService: VisitorService, private router: Router, private reasonForVisitService: ReasonforvisitService, private departmentService: DepartmentService) { }
+  constructor(private fb: FormBuilder, private visitorService: VisitorService, private router: Router, private reasonForVisitService: ReasonforvisitService, private departmentService: DepartmentService, private dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -105,30 +109,32 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
         console.error('Error getting departments', error);
       }
     );
-  }  
+  }
 
 
   // Filter Employees
-  filterEmployees(): void {
+  async filterEmployees(): Promise<void> {
     const input = this.visitorForm.get('personHereToSee')?.value.trim().toLowerCase();
-  
+
     // Check if the input contains a space
     const spaceIndex = input.indexOf(' ');
-  
+
     // Check if there is a space and the term before it is not empty
     if (spaceIndex > 0) {
       const firstPart = input.substring(0, spaceIndex);
       const secondPart = input.substring(spaceIndex + 1); // Get the entered second part
-  
+
       // Check if second part has at least three characters
       if (secondPart.length >= 3) {
         // Check if the second part matches either first name or last name
         const matchingEmployees = this.employees.filter(employee =>
           this.doesEmployeeMatchSearchTerm(employee, firstPart, secondPart)
         );
-  
+
         if (matchingEmployees.length === 0) {
-          alert('Employee not found. Please confirm who you are here to see.');
+          this.modalTitle = 'Error';
+          this.modalBody = 'Employee not found. Please confirm who you are here to see.';
+          await this.dialogService.showDialog(this.modalTitle, this.modalBody);
         } else {
           this.filteredEmployees = matchingEmployees;
         }
@@ -137,19 +143,19 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       this.filteredEmployees = [];
     }
   }
-  
+
   doesEmployeeMatchSearchTerm(employee: Employee, firstPart: string, secondPart: string): boolean {
     const firstNameLower = employee.firstName.toLowerCase();
     const lastNameLower = employee.lastName.toLowerCase();
-  
+
     // Check if first part matches either first name or last name
     if (!(firstNameLower === firstPart || lastNameLower === firstPart)) {
       return false;
     }
-  
+
     // Check if the second part matches the remaining part of the name
     return (firstNameLower === firstPart && lastNameLower.startsWith(secondPart)) ||
-           (lastNameLower === firstPart && firstNameLower.startsWith(secondPart));
+      (lastNameLower === firstPart && firstNameLower.startsWith(secondPart));
   }
 
   selectEmployee(employee: Employee): void {
@@ -172,28 +178,32 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  submitForm(): void {
+  async submitForm(): Promise<void> {
     console.log('Form data:', this.visitorForm.value);
     //debugger;
     if (this.visitorForm.valid) {
       const formData = this.visitorForm.value;
       const selectedDepartmentId = parseInt(formData.departmentId, 10);
       const employee = this.employees.find(emp => emp.employeeNumber === formData.employeeNumber);
-  
+
       if (employee) {
         const employeeDepartmentId = employee.departmentId;
-  
+
         if (selectedDepartmentId !== employeeDepartmentId) {
           console.error('Selected department does not match the employee\'s department');
-          alert('The person you are here to see is not in the department specified. Please confirm the department inputted.');
+          this.modalTitle = 'Error';
+          this.modalBody = 'Selected department does not match the employee\'s department';
+          await this.dialogService.showDialog(this.modalTitle, this.modalBody);
           return; // Abort form submission
         }
       }
-  
+
       this.saveVisitorDetails(formData);
     } else {
       console.error('Invalid form data');
-      alert('Please correct the following errors:');
+      this.modalTitle = 'Error';
+      this.modalBody = 'Please correct the following errors:';
+      await this.dialogService.showDialog(this.modalTitle, this.modalBody);
       Object.keys(this.visitorForm.controls).forEach(field => {
         const control = this.visitorForm.get(field);
         if (control && control.invalid) {
@@ -205,7 +215,11 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
       return; // Abort form submission
     }
   }
-  
+
+  onModalConfirm(): void {
+    $('#errorModal').modal('hide');
+  }
+
   getErrorMessage(control: AbstractControl): string {
     if (control.errors && control.errors['required']) {
       return 'This field is required.';
@@ -215,19 +229,23 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
 
     return ''; // Default error message
   }
-  
 
 
-  saveVisitorDetails(formData: any): void {
+
+  async saveVisitorDetails(formData: any): Promise<void> {
     this.visitorService.saveVisitorDetails(formData).subscribe(
-      (response: any) => {
+      async (response: any) => {
         console.log('Visitor details saved successfully', response);
         if (response && response.hasError) {
           console.error('Error saving visitor details:', response.description);
-          alert('Error saving visitor details. Please fill the right details');
+          this.modalTitle = 'Error';
+          this.modalBody = 'Error', response.description;
+          await this.dialogService.showDialog(this.modalTitle, this.modalBody);
         } else {
           console.log('Visitor details saved successfully');
-          alert('Visitor details saved successfully, please proceed to the security personnel to get a tag.');
+          this.modalTitle = 'Success';
+          this.modalBody = 'Visitor details saved successfully, please proceed to the security personnel to get a tag.';
+          await this.dialogService.showDialog(this.modalTitle, this.modalBody);
           this.formSubmitted = true;
           setTimeout(() => {
             this.formSubmitted = false;

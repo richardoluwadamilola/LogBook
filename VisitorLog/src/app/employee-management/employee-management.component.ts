@@ -4,6 +4,7 @@ import { EmployeeService } from '../services/api/employees/employee.service';
 import { Department } from '../services/api/models/department.model';
 import { DepartmentService } from '../services/api/department/department.service';
 import { Employee } from '../services/api/models/employee.model';
+import { DialogService } from '../services/dialog.service';
 
 declare var $: any;
 
@@ -17,16 +18,17 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
   departments: Department[] = [];
   employees: Employee[] = [];
   employeeNumber!: string;
+  modalTitle: string = '';
+  modalBody: string = '';
 
 
-  constructor(private fb: FormBuilder, private employeeService: EmployeeService, private departmentService: DepartmentService) {
+  constructor(private fb: FormBuilder, private employeeService: EmployeeService, private departmentService: DepartmentService, private dialogService: DialogService) {
     this.employeeForm = this.fb.group({
       employeeNumber: ['', Validators.required],
       firstName: ['', Validators.required],
       middleName: [''],
       lastName: ['', Validators.required],
       department: ['', Validators.required],
-      //departmentId: [null, Validators.required]
     });
   }
 
@@ -52,21 +54,23 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
     );
   }
 
-  submitForm(): void {
+  async submitForm(): Promise<void> {
     if (this.employeeForm.valid) {
       console.log('Employee details:', this.employeeForm.value);
-  
+
       const employeeData = this.employeeForm.value;
-  
+
       // Check if the employee number exists
       const existingEmployee = this.employees.find(e => e.employeeNumber === employeeData.employeeNumber);
-  
+
       if (!existingEmployee) {
         // If employeeNumber doesn't exist, it's a new employee, call the save API
         this.employeeService.saveEmployeeDetails(employeeData).subscribe(
-          (data: any) => {
+          async (data: any) => {
             console.log('Employee details saved successfully', data);
-            alert('Employee saved successfully');
+            this.modalTitle = 'Success';
+            this.modalBody = 'Employee details saved successfully.';
+            await this.dialogService.showDialog(this.modalTitle, this.modalBody);
             this.employeeForm.reset();
             this.getEmployees(); // Assuming this method retrieves the updated employee list
           },
@@ -77,9 +81,11 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
       } else {
         // If employeeNumber exists, it's an update operation
         this.employeeService.updateEmployeeDetails(employeeData).subscribe(
-          (data: any) => {
+          async (data: any) => {
             console.log('Employee details updated successfully', data);
-            alert('Employee updated successfully');
+            this.modalTitle = 'Success';
+            this.modalBody = 'Employee details updated successfully.';
+            await this.dialogService.showDialog(this.modalTitle, this.modalBody);
             this.employeeForm.reset();
             this.getEmployees(); // Assuming this method retrieves the updated employee list
           },
@@ -89,7 +95,11 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
         );
       }
     }
-  }  
+  }
+
+  onModalConfirm(): void {
+    $('#errorModal').modal('hide');
+  }
 
   getEmployees(): void {
     this.employeeService.getEmployees().subscribe(
@@ -105,9 +115,11 @@ export class EmployeeManagementComponent implements OnInit, AfterViewInit {
 
   deleteEmployee(employeeNumber: string): void {
     this.employeeService.deleteEmployee(employeeNumber).subscribe(
-      (data: any) => {
+      async (data: any) => {
         console.log('Employee deleted successfully', data);
-        alert('Employee deleted successfully');
+        this.modalTitle = 'Error';
+      this.modalBody = 'Employee deleted successfully.';
+      await this.dialogService.showDialog(this.modalTitle, this.modalBody);
         this.getEmployees();
       },
       (error: any) => {

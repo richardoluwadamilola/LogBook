@@ -7,6 +7,7 @@ import { AuthService } from '../services/api/Auth/auth.service';
 import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { DatePipe } from '@angular/common';
+import { DialogService } from '../services/dialog.service';
 
 
 @Component({
@@ -23,18 +24,17 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   employees: any[] = [];
   departments: any[] = [];
   filteredVisitors: Visitor[] = [];
-  
   tagAssignmentForm!: FormGroup;
   availableTags: any[] = [];
   currentVisitorsCount: number = 0;
-  
-
+  modalTitle: string = '';
+  modalBody: string = '';
 
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
   private readonly reloadPeriod = 10000; // 10 seconds
 
-  constructor( private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe) { }
+  constructor(private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe, private dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -60,7 +60,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   initReloadTimer(): void {
     setInterval(() => {
-     this.loadVisitors();
+      this.loadVisitors();
     }, this.reloadPeriod);
   }
 
@@ -72,47 +72,59 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
   initForm(): void { }
 
-  assignTagToVisitor(visitorId: number, tagNumber: string): void {
+  onModalConfirm(): void {
+    $('#errorModal').modal('hide');
+  }
+
+  async assignTagToVisitor(visitorId: number, tagNumber: string): Promise<void> {
     // Check if tag number is provided
     if (!tagNumber) {
-      alert('Please enter a tag number.');
+      this.modalTitle = 'Error';
+      this.modalBody = 'Please enter a tag number.';
+      await this.dialogService.showDialog(this.modalTitle, this.modalBody);
       return;
     }
-  
+
     // Create DTO for assigning tag
     const assignTagDto = { VisitorId: visitorId, TagNumber: tagNumber };
-  
+
     // Call tag service to assign tag to visitor
     this.tagService.assignTagToVisitor(assignTagDto).subscribe(
-      (response: any) => {
+      async (response: any) => {
         if (!response.hasError) { // If no error
           console.log('Tag assigned successfully:', response);
-          alert(`Tag ${response.data} assigned successfully`);
-          
+          this.modalTitle = 'Success';
+          this.modalBody = 'Tag ${response.data} assigned successfully.';
+          await this.dialogService.showDialog(this.modalTitle, this.modalBody);
+
           // Remove the assigned visitor from the list
           this.visitors = this.visitors.filter(visitor => visitor.id !== visitorId);
-         
+
           // (Update tagAssignedDateTime and tagNumber for the visitor)
           const assignedVisitor = this.visitors.find(visitor => visitor.id === visitorId);
           if (assignedVisitor) {
             assignedVisitor.tagAssignedDateTime = new Date().toISOString();
             assignedVisitor.tagNumber = tagNumber;
           }
-          
+
           // Reset form and update messages
           this.tagAssignmentForm.reset();
           this.loadVisitors();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
-          
+
         } else { // If error occurred
-          alert(response.description || 'Error assigning tag');
+          this.modalTitle = 'Error';
+          this.modalBody = 'Error assigning tag:', response.description;
+          await this.dialogService.showDialog(this.modalTitle, this.modalBody);
           console.error('Error assigning tag:', response.description);
         }
       },
-      (error: any) => { // If HTTP request fails
+      async (error: any) => { // If HTTP request fails
         console.error('Error assigning tag:', error);
-        alert('Error assigning tag. Please try again later.');
+        this.modalTitle = 'Error';
+        this.modalBody = 'Error assigning tag. Please try again later.';
+        await this.dialogService.showDialog(this.modalTitle, this.modalBody);
       }
     );
   }
@@ -136,12 +148,12 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   loadVisitors(): void {
     const currentDate = new Date();
     const currentDateString = currentDate.toISOString().slice(0, 10);
-  
+
     this.visitorService.getVisitors().subscribe(
       (data: Visitor[]) => {
         // Filter visitors for today
         const filteredVisitors = data.filter(visitor => visitor.arrivalTime?.toString().startsWith(currentDateString));
-  
+
         // Sort visitors in chronological order
         filteredVisitors.sort((a, b) => {
           if (a.arrivalTime && b.arrivalTime) {
@@ -158,8 +170,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
           // Check if tagAssignedDateTime is null or equal to the default date string
           return !visitor.tagAssignedDateTime || visitor.tagAssignedDateTime.toString() === '0001-01-01T00:00:00';
         });
-        
-  
+
         console.log('All Visitors:', this['allVisitors']);
         console.log('Visitors without tags:', this.visitors);
         this.filteredVisitors = this.visitors;
@@ -171,7 +182,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
 
 
 
-  
+
   loadEmployees(): void {
     // Call your service to get employee data
     this.visitorService.getEmployees().subscribe(
@@ -196,7 +207,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     );
   }
 
-  
+
   @HostListener('window:mousemove') refreshUserState() {
     console.log('Mousemove detected');
     this.resetInactivityTimer();
@@ -247,7 +258,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     console.log("Current Visitors:", currentVisitors);
     this.currentVisitorsCount = currentVisitors.length;
   }
-  
+
 
   openPhotoModal(photoUrl: string): void {
     const modalPhoto = document.getElementById('modalPhoto') as HTMLImageElement;

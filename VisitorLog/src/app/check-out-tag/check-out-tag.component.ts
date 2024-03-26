@@ -9,13 +9,14 @@ import { TagService } from '../services/api/tags/tag.service';
 import { FormBuilder } from '@angular/forms';
 import { Employee } from '../services/api/models/employee.model';
 import { Department } from '../services/api/models/department.model';
+import { DialogService } from '../services/dialog.service';
 
 @Component({
   selector: 'app-check-out-tag',
   templateUrl: './check-out-tag.component.html',
   styleUrls: ['./check-out-tag.component.css']
 })
-export class CheckOutTagComponent  implements OnInit {
+export class CheckOutTagComponent implements OnInit {
   searchForm!: FormGroup;
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -24,11 +25,13 @@ export class CheckOutTagComponent  implements OnInit {
   departments: Department[] = [];
   filteredVisitors: Visitor[] = [];
   checkedInVisitors: Visitor[] = [];
+  modalTitle: string = '';
+  modalBody: string = '';
 
   private inactivityTimeout: any;
   private readonly inactivityPeriod = 300000; // 5 minutes
 
-  constructor(private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe) { }
+  constructor(private fb: FormBuilder, private tagService: TagService, private visitorService: VisitorService, private authService: AuthService, private router: Router, private datepipe: DatePipe, private dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -43,7 +46,7 @@ export class CheckOutTagComponent  implements OnInit {
     this.searchForm = this.fb.group({
       tagNumber: ['', Validators.required]
     });
-  
+
   }
 
   ngOnDestroy(): void {
@@ -57,9 +60,9 @@ export class CheckOutTagComponent  implements OnInit {
     }, this.inactivityPeriod);
   }
 
-  initForm() {}
+  initForm() { }
 
-  initCheckOutForm() {}
+  initCheckOutForm() { }
 
   loadDepartments() {
     this.visitorService.getDepartments().subscribe(
@@ -70,6 +73,10 @@ export class CheckOutTagComponent  implements OnInit {
         console.error('Error fetching departments', error);
       }
     );
+  }
+
+  onModalConfirm(): void {
+    $('#errorModal').modal('hide');
   }
 
   loadEmployees() {
@@ -91,21 +98,21 @@ export class CheckOutTagComponent  implements OnInit {
   //filter visitor with tag number searched  for the current date
   filterVisitorsByTagNumber(tagNumber: string): void {
     this.visitors = this.visitors.filter(visitor => visitor.tagNumber === tagNumber);
-    
-
   }
-  
+
   searchVisitor(): void {
     const formData = this.searchForm.value;
-  
+
     if (formData.tagNumber) {
       this.visitorService.getVisitorbyTagNumber(formData.tagNumber).subscribe(
-        (data: Visitor | Visitor[]) => { 
+        async (data: Visitor | Visitor[]) => {
           if (Array.isArray(data)) {
             // Handle the case where the API returns an array for tagNumber search
             if (data.length === 0) {
               // Show alert indicating tag number is not assigned
-              alert('Tag number not assigned');
+              this.modalTitle = 'Error';
+              this.modalBody = 'Tag number not assigned';
+              await this.dialogService.showDialog(this.modalTitle, this.modalBody);
             } else {
               this.visitors = data;
             }
@@ -123,16 +130,18 @@ export class CheckOutTagComponent  implements OnInit {
       );
     }
   }
-  
-  
+
+
   checkoutVisitor(visitorId: number, tagNumber: string) {
 
     const checkoutTagDto = { VisitorId: visitorId, TagNumber: tagNumber };
     this.tagService.checkOutVisitor(checkoutTagDto).subscribe(
-      (response: any) => {
+      async (response: any) => {
         if (!response.hasError) {
           console.log('Visitor checked out successfully:', response);
-          alert('Visitor checked out successfully');
+          this.modalTitle = 'Success';
+          this.modalBody = 'Visitor checked out successfully';
+          await this.dialogService.showDialog(this.modalTitle, this.modalBody);
           this.errorMessage = null;
           this.successMessage = 'Visitor checked out successfully';
           this.searchForm.reset();
@@ -140,7 +149,9 @@ export class CheckOutTagComponent  implements OnInit {
           this.router.navigateByUrl('/entry');
         } else {
           console.error('Error checking out visitor:', response.description);
-          alert(`Visitor check out failed: ${response.description}`);
+          this.modalTitle = 'Error';
+          this.modalBody = 'Visitor check out failed: ${response.description}';
+          await this.dialogService.showDialog(this.modalTitle, this.modalBody);
           this.errorMessage = response.description || 'Error checking out visitor';
           this.successMessage = null;
         }
