@@ -4,6 +4,7 @@ import { EmployeeService } from '../services/api/employees/employee.service';
 import { DepartmentService } from '../services/api/department/department.service';
 import { Visitor } from '../services/api/models/visitor';
 import * as bootstrap from 'bootstrap';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-pending-checkins',
@@ -12,21 +13,24 @@ import * as bootstrap from 'bootstrap';
 })
 export class PendingCheckinsComponent implements OnInit {
 
-
   errorMessage: string | null = null;
   successMessage: string | null = null;
   visitors: any[] = [];
   employees: any[] = [];
   departments: any[] = [];
+  searchForm!: FormGroup;
   assignedVisitorsCount: number = 0;
+  filteredVisitors: Visitor[] = [];
 
-
-  constructor(private visitorService: VisitorService, private employeeService: EmployeeService, private departmentService: DepartmentService) { }
+  constructor( private fb: FormBuilder, private visitorService: VisitorService, private employeeService: EmployeeService, private departmentService: DepartmentService) { }
 
   ngOnInit(): void {
     this.loadVisitors();
     this.loadEmployees();
     this.loadDepartments();
+    this.searchForm = this.fb.group({
+      searchTerm: ['', Validators.required]
+    });
   }
 
   getEmployeeName(employeeNumber: string): string {
@@ -77,11 +81,19 @@ export class PendingCheckinsComponent implements OnInit {
     );
   }
 
+  searchVisitors(): void {
+    const searchTerm = this.searchForm.get('searchTerm')?.value;
+    if (searchTerm) {
+      this.filteredVisitors = this.visitors.filter(visitor => visitor.fullName.toLowerCase().includes(searchTerm.toLowerCase()));
+    } else {
+      this.filteredVisitors = this.visitors;
+    }
+  }
+
   openPhotoModal(photoUrl: string): void {
     const modalPhoto = document.getElementById('modalPhoto') as HTMLImageElement;
     modalPhoto.src = photoUrl;
     const photoModal = new bootstrap.Modal(document.getElementById('photoModal') as HTMLElement);
     photoModal.show();
   }
-
 }

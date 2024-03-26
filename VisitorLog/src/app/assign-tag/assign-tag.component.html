@@ -1,10 +1,4 @@
 <div class="container-fluid">
-  <p class="text-center">Current Visitors in the Building: {{ currentVisitorsCount }}</p>
-  <p class="col-md-6" [formGroup]="searchForm">
-    <input id="search" type="text" class="form-control" formControlName="searchTerm" placeholder="Search visitors"
-      (keydown.enter)="searchVisitors()">
-    <button class="btn btn-primary" (click)="searchVisitors()">Search</button>
-  </p>
   <div class="row">
     <!-- Start of first column -->
     <div class="d-flex col-sm text-nowrap" *ngFor="let visitor of filteredVisitors; let i = index">

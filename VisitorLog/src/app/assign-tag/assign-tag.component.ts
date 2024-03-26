@@ -23,7 +23,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
   employees: any[] = [];
   departments: any[] = [];
   filteredVisitors: Visitor[] = [];
-  searchForm!: FormGroup;
+  
   tagAssignmentForm!: FormGroup;
   availableTags: any[] = [];
   currentVisitorsCount: number = 0;
@@ -43,9 +43,6 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     this.loadDepartments();
     this.initTagAssignmentForm();
     this.loadAvailableTags();
-    this.searchForm = this.fb.group({
-      searchTerm: ['', Validators.required]
-    });
     this.initInactivityTimer();
     this.initReloadTimer();
   }
@@ -105,7 +102,6 @@ export class AssignTagComponent implements OnInit, OnDestroy {
           // Reset form and update messages
           this.tagAssignmentForm.reset();
           this.loadVisitors();
-          this.searchForm.reset();
           this.errorMessage = null;
           this.successMessage = `Tag ${response.data} assigned successfully`;
           
@@ -200,17 +196,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     );
   }
 
-  searchVisitors(): void {
-    const searchTerm = this.searchForm.get('searchTerm')?.value;
-    if (searchTerm) {
-      this.filteredVisitors = this.visitors.filter(visitor => visitor.fullName.toLowerCase().includes(searchTerm.toLowerCase()));
-    } else {
-      this.filteredVisitors = this.visitors;
-    }
-    this.updateCurrentVisitorsCount(new Date());
-    
-  }
-
+  
   @HostListener('window:mousemove') refreshUserState() {
     console.log('Mousemove detected');
     this.resetInactivityTimer();

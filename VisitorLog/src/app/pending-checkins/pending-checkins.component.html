@@ -1,4 +1,10 @@
-<h3 class="text-center">PENDING CHECKOUTS</h3>
+<h3 class="text-center">VISITORS</h3>
+<div class="container-fluid">
+  <p class="col-md-6" [formGroup]="searchForm">
+    <input id="search" type="text" class="form-control" formControlName="searchTerm" placeholder="Search visitors"
+      (keydown.enter)="searchVisitors()">
+    <button class="btn btn-primary" (click)="searchVisitors()">Search</button>
+  </p>
 
 
 <div class="row">
@@ -28,6 +34,7 @@
     </table>
   </div>
   <!-- End of first column -->
+</div>
 </div>
 
 

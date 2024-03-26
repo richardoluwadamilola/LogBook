@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent, canActivate: [authGuard]},
   { path: 'entry', component: AssignTagComponent, canActivate: [authGuard]},
   { path: 'checkout', component: CheckOutTagComponent},
-  { path: 'pending', component: PendingCheckinsComponent},
+  { path: 'visitors', component: PendingCheckinsComponent},
   { path: 'tag', component: TagManagementComponent},
   { path: 'employee', component: EmployeeManagementComponent},
   { path: 'visitor', component: VisitorManagementComponent},

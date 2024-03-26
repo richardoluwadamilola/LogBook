@@ -117,39 +117,40 @@ export class VisitorFormComponent implements OnInit, AfterViewInit {
   
     // Check if there is a space and the term before it is not empty
     if (spaceIndex > 0) {
-      const firstName = input.substring(0, spaceIndex);
-      const lastNamePrefix = input.substring(spaceIndex + 1); // Get the entered first name prefix
-
-      // Check if at least four characters are entered after the space
-      if (lastNamePrefix.length >= 4) {
-        // Filter employees based on last name and first name
+      const firstPart = input.substring(0, spaceIndex);
+      const secondPart = input.substring(spaceIndex + 1); // Get the entered second part
+  
+      // Check if second part has at least three characters
+      if (secondPart.length >= 3) {
+        // Check if the second part matches either first name or last name
         const matchingEmployees = this.employees.filter(employee =>
-          this.doesEmployeeMatchSearchTerm(employee, firstName, lastNamePrefix.charAt(0))
+          this.doesEmployeeMatchSearchTerm(employee, firstPart, secondPart)
         );
-    
-        // Display error message if no matching employees found
+  
         if (matchingEmployees.length === 0) {
           alert('Employee not found. Please confirm who you are here to see.');
         } else {
-          // If matching employees found, assign them to filteredEmployees
           this.filteredEmployees = matchingEmployees;
         }
       }
     } else {
-      // If no space found, clear filteredEmployees
       this.filteredEmployees = [];
     }
-}
-
-doesEmployeeMatchSearchTerm(employee: Employee, firstName: string, lastNameFirstLetter: string): boolean {
-    // Check if the last name matches
-    if (employee.firstName.toLowerCase() !== firstName) {
-        return false;
+  }
+  
+  doesEmployeeMatchSearchTerm(employee: Employee, firstPart: string, secondPart: string): boolean {
+    const firstNameLower = employee.firstName.toLowerCase();
+    const lastNameLower = employee.lastName.toLowerCase();
+  
+    // Check if first part matches either first name or last name
+    if (!(firstNameLower === firstPart || lastNameLower === firstPart)) {
+      return false;
     }
-
-    // Check if the first letter of the first name matches
-    return employee.lastName.toLowerCase().startsWith(lastNameFirstLetter);
-}
+  
+    // Check if the second part matches the remaining part of the name
+    return (firstNameLower === firstPart && lastNameLower.startsWith(secondPart)) ||
+           (lastNameLower === firstPart && firstNameLower.startsWith(secondPart));
+  }
 
   selectEmployee(employee: Employee): void {
     this.visitorForm.patchValue({
@@ -159,15 +160,11 @@ doesEmployeeMatchSearchTerm(employee: Employee, firstName: string, lastNameFirst
     this.filteredEmployees = [];
   }
 
-  
-
   // Quit the form
   quitForm(): void {
     // Navigate to the home page
     this.router.navigate(['/home']);
   }
-
-
 
   handlePhotoCapture(photoData: string): void {
     this.visitorForm.patchValue({
@@ -230,7 +227,7 @@ doesEmployeeMatchSearchTerm(employee: Employee, firstName: string, lastNameFirst
           alert('Error saving visitor details. Please fill the right details');
         } else {
           console.log('Visitor details saved successfully');
-          alert('Visitor details saved successfully, please proceed to get a tag.');
+          alert('Visitor details saved successfully, please proceed to the security personnel to get a tag.');
           this.formSubmitted = true;
           setTimeout(() => {
             this.formSubmitted = false;
