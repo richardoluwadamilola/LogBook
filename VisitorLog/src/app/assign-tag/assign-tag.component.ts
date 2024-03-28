@@ -207,7 +207,6 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     );
   }
 
-
   @HostListener('window:mousemove') refreshUserState() {
     console.log('Mousemove detected');
     this.resetInactivityTimer();
@@ -223,28 +222,11 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     this.initInactivityTimer();
   }
 
-
   logout(): void {
     // Implement your logout logic here
     this.authService.clearAuthToken();
     this.router.navigateByUrl('/home');
     console.log('User logged out due to inactivity');
-  }
-
-  calculateDuration(arrivalTime: string, departureTime: string): string {
-    const arrival = new Date(arrivalTime);
-    const departure = departureTime ? new Date(departureTime) : new Date('0001-01-01T00:00:00'); // Default to a valid date
-
-    if (departure.getFullYear() === 1 && departure.getMonth() === 0 && departure.getDate() === 1) {
-      // If departure time is not set, return "Not Departed Yet"
-      return "Not Departed Yet";
-    } else {
-      // If departure time is set, calculate duration
-      const duration = Math.abs(departure.getTime() - arrival.getTime());
-      const hours = Math.floor(duration / 3600000);
-      const minutes = Math.floor((duration % 3600000) / 60000);
-      return `${hours} hours, ${minutes} minutes`;
-    }
   }
 
   updateCurrentVisitorsCount(currentDate: Date): void {
@@ -258,7 +240,6 @@ export class AssignTagComponent implements OnInit, OnDestroy {
     console.log("Current Visitors:", currentVisitors);
     this.currentVisitorsCount = currentVisitors.length;
   }
-
 
   openPhotoModal(photoUrl: string): void {
     const modalPhoto = document.getElementById('modalPhoto') as HTMLImageElement;

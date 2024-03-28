@@ -1,4 +1,24 @@
-
+.container-fluid {
+    padding: 20px;
+  }
+  
+  #search {
+    margin-bottom: 10px;
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .table {
+    width: 100%;
+  }
+  
+  .table-bordered td,
+  .table-bordered th {
+    border: 1px solid #000;
+  }
 
 label {
     display: block;

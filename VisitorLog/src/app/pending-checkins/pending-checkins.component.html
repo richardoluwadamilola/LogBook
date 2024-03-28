@@ -11,7 +11,7 @@
   <!-- Start of first column -->
   <div class="d-flex col-sm text-nowrap" *ngFor="let visitor of visitors; let i = index">
     <table class="m-1 table table-bordered custom-table p-0 !important"
-    style="border: 1px #000 solid !important; border-right: 0px !important;">
+    >
       <tbody>
         <tr >
           <th scope="col">{{ i + 1 }}</th>
@@ -28,6 +28,7 @@
       <p><b>Department: </b>{{ visitor.departmentName}}</p>
       <p><b>Arrival Time: </b>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</p>
       <p><b>Departure Time: </b>{{ visitor.departureTime | date: 'yyyy-MM-dd HH:mm' }}</p>
+      <p><b>Duration: </b> {{ calculateDuration(visitor.arrivalTime.toString(), visitor.departureTime.toString()) }}</p>
       </td>
         </tr>
       </tbody>
