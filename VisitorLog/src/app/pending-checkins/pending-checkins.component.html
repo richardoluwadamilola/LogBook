@@ -10,7 +10,7 @@
 <div class="row">
   <!-- Start of first column -->
   <div class="d-flex col-sm text-nowrap" *ngFor="let visitor of visitors; let i = index">
-    <table class="m-1 table table-bordered custom-table p-0 !important"
+    <table class=" table table-bordered custom-table"
     >
       <tbody>
         <tr >
@@ -19,7 +19,7 @@
             <img [src]="visitor.photo" alt="Visitor Photo" style="max-width: 300px;">
           </th>
           <td scope="row" class="lh-1" >
-      <p><b>Full Name: </b>{{ visitor.fullName}}</p>
+      <p class="text-wrap"><b>Full Name: </b>{{ visitor.fullName}}</p>
       <p class="text-wrap"><b>Contact Address: </b>{{ visitor.contactAddress}}</p>
       <p><b>Phone Number: </b>{{ visitor.phoneNumber}}</p>
       <p><b>Reason For Visit: </b>{{ visitor.reasonForVisit}}</p>
