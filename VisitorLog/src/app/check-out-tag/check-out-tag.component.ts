@@ -150,7 +150,7 @@ export class CheckOutTagComponent implements OnInit {
         } else {
           console.error('Error checking out visitor:', response.description);
           this.modalTitle = 'Error';
-          this.modalBody = 'Visitor check out failed: ${response.description}';
+          this.modalBody = `Visitor check out failed: ${response.description}`;
           await this.dialogService.showDialog(this.modalTitle, this.modalBody);
           this.errorMessage = response.description || 'Error checking out visitor';
           this.successMessage = null;

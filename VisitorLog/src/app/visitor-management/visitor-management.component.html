@@ -80,7 +80,6 @@
               <th scope="col">Full Name</th>
               <th scope="col">Phone Number</th>
               <th scope="col">Contact Address</th>
-              <th scope="col">Email Address</th>
               <th scope="col">Person here to see</th>
               <th scope="col">Reason for Visit</th>
               <th scope="col">Reason for Visit Description</th>
@@ -96,13 +95,10 @@
               <td>{{ visitor.contactAddress }}</td>
               <td>{{ getEmployeeName(visitor.employeeNumber) }}</td>
               <td>{{ visitor.reasonForVisit }}</td>
+              <td>{{ visitor.reasonForVisitDescription }}</td>
               <td>{{ visitor.arrivalTime | date: 'yyyy-MM-dd HH:mm' }}</td>
               <td>{{ visitor.departureTime | date: 'yyyy-MM-dd HH:mm' }}</td>
-              <td>{{ visitor.reasonForVisitDescription }}</td>
-              <td>
-                <img src="{{ visitor.photo }}" (click)="openPhotoModal(visitor.photo)" alt="Visitor Photo"
-                  class="img-fluid" style="max-width: 200px;">
-              </td>
+              <td><img [src]="visitor.photo" (click)="openPhotoModal(visitor.photo)" alt="Visitor Photo" class="img-fluid" style="max-width: 200px;"></td>
             </tr>
           </tbody>
         </table>

@@ -94,7 +94,7 @@ export class AssignTagComponent implements OnInit, OnDestroy {
         if (!response.hasError) { // If no error
           console.log('Tag assigned successfully:', response);
           this.modalTitle = 'Success';
-          this.modalBody = 'Tag ${response.data} assigned successfully.';
+          this.modalBody = `Tag ${response.data} assigned successfully.`;
           await this.dialogService.showDialog(this.modalTitle, this.modalBody);
 
           // Remove the assigned visitor from the list

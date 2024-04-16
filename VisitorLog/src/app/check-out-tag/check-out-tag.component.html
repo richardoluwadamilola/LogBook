@@ -1,3 +1,4 @@
+<h3 class="text-center">VISITORS</h3>
 <div class="row mb-3" [formGroup]="searchForm" placeholder="Enter Tag Number">
     <p class="col-md-6">
         <input type="text" class="form-control" formControlName="tagNumber" placeholder="Search visitors"
@@ -5,7 +6,7 @@
         <button class="btn btn-primary" (click)="searchVisitor()">Search</button>
 </p>
 </div>
-<h3 class="text-center">VISITORS</h3>
+
 <table class="m-1 table table-bordered custom-table w-30"
     style="border: 1px #000 solid !important; border-right: 0px !important;">
     <tbody>
@@ -17,7 +18,7 @@
                 <p><b>Full Name: </b>{{ visitor.fullName}}</p>
                 <p><b>Contact Address: </b>{{ visitor.contactAddress}}</p>
                 <p><b>Phone Number: </b>{{ visitor.phoneNumber}}</p>
-                <p><b>Reason Fo rVisit: </b>{{ visitor.reasonForVisit}}</p>
+                <p><b>Reason Fo Visit: </b>{{ visitor.reasonForVisit}}</p>
                 <p><b>Reason For Visit Description: </b>{{ visitor.reasonForVisitDescription}}</p>
                 <p><b>Person Here To See: </b> {{ visitor.employeeName}}</p>
                 <p><b>Department: </b>{{ visitor.departmentName}}</p>
